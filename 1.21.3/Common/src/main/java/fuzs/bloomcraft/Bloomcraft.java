@@ -1,7 +1,9 @@
 package fuzs.bloomcraft;
 
+import fuzs.bloomcraft.init.ModBlocks;
 import fuzs.bloomcraft.init.ModItems;
 import fuzs.bloomcraft.init.ModRegistry;
+import fuzs.bloomcraft.util.FlowerPatchFeatureHelper;
 import fuzs.bloomcraft.world.entity.animal.FlowerMobVariant;
 import fuzs.puzzleslib.api.biome.v1.BiomeLoadingPhase;
 import fuzs.puzzleslib.api.core.v1.ContentRegistrationFlags;
@@ -17,6 +19,7 @@ import net.minecraft.world.entity.animal.Chicken;
 import net.minecraft.world.entity.animal.Cow;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.biome.MobSpawnSettings;
+import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.Heightmap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,6 +59,11 @@ public class Bloomcraft implements ModConstructor {
     }
 
     @Override
+    public void onRegisterFlammableBlocks(FlammableBlocksContext context) {
+        context.registerFlammable(60, 100, ModBlocks.BUTTERCUP.value(), ModBlocks.PINK_DAISY.value());
+    }
+
+    @Override
     public void onRegisterCompostableBlocks(CompostableBlocksContext context) {
         context.registerCompostable(0.65F, ModItems.BUTTERCUP, ModItems.PINK_DAISY);
     }
@@ -77,6 +85,20 @@ public class Bloomcraft implements ModConstructor {
         }, biomeModificationContext -> {
             biomeModificationContext.mobSpawnSettings().removeSpawnsOfEntityType(EntityType.COW);
             biomeModificationContext.mobSpawnSettings().removeSpawnsOfEntityType(EntityType.CHICKEN);
+        });
+        context.register(BiomeLoadingPhase.MODIFICATIONS, biomeLoadingContext -> {
+            return biomeLoadingContext.is(ModRegistry.HAS_BUTTERCUP_BIOME_TAG);
+        }, biomeModificationContext -> {
+            FlowerPatchFeatureHelper.registerFlowerFeatureModification(biomeModificationContext.generationSettings()
+                            .getFeatures(GenerationStep.Decoration.VEGETAL_DECORATION),
+                    ModBlocks.BUTTERCUP.value().defaultBlockState());
+        });
+        context.register(BiomeLoadingPhase.MODIFICATIONS, biomeLoadingContext -> {
+            return biomeLoadingContext.is(ModRegistry.HAS_PINK_DAISY_BIOME_TAG);
+        }, biomeModificationContext -> {
+            FlowerPatchFeatureHelper.registerFlowerFeatureModification(biomeModificationContext.generationSettings()
+                            .getFeatures(GenerationStep.Decoration.VEGETAL_DECORATION),
+                    ModBlocks.PINK_DAISY.value().defaultBlockState());
         });
     }
 
