@@ -1,0 +1,7 @@
+{
+  "asset_id": "bloomcraft:entity/moobloom/oxeye_daisy_moobloom",
+  "carried_block": {
+    "Name": "minecraft:oxeye_daisy"
+  },
+  "shearing_loot_table": "bloomcraft:shearing/moobloom/oxeye_daisy"
+}

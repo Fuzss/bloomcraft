@@ -1,0 +1,7 @@
+{
+  "asset_id": "bloomcraft:entity/moobloom/cornflower_moobloom",
+  "carried_block": {
+    "Name": "minecraft:cornflower"
+  },
+  "shearing_loot_table": "bloomcraft:shearing/moobloom/cornflower"
+}
