@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "bottom": "bloomcraft:block/stemwood_planks",
+    "side": "bloomcraft:block/stemwood_planks",
+    "top": "bloomcraft:block/stemwood_planks"
+  }
+}

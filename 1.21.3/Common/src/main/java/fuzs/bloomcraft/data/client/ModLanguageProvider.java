@@ -1,6 +1,7 @@
 package fuzs.bloomcraft.data.client;
 
 import fuzs.bloomcraft.Bloomcraft;
+import fuzs.bloomcraft.init.ModBlockFamilies;
 import fuzs.bloomcraft.init.ModBlocks;
 import fuzs.bloomcraft.init.ModItems;
 import fuzs.bloomcraft.init.ModRegistry;
@@ -31,5 +32,12 @@ public class ModLanguageProvider extends AbstractLanguageProvider {
         builder.add(ModRegistry.CLUCKBLOOM_ENTITY_TYPE.value(), "Cluckbloom");
         builder.addSpawnEgg(ModItems.MOOBLOOM_SPAWN_EGG.value(), "Moobloom");
         builder.addSpawnEgg(ModItems.CLUCKBLOOM_SPAWN_EGG.value(), "Cluckbloom");
+        builder.blockFamily("Stemwood", "Stemwood Planks")
+                .generateFor(ModBlockFamilies.STEMWOOD_FAMILY.getWoodenFamily());
+        builder.addBlock(ModBlockFamilies.STEMWOOD_FAMILY.hangingSignBlock(), "Stemwood Hanging Sign");
+        builder.add(ModBlockFamilies.STEMWOOD_FAMILY.boatItem().value(), "Stemwood Boat");
+        builder.add(ModBlockFamilies.STEMWOOD_FAMILY.chestBoatItem().value(), "Stemwood Chest Boat");
+        builder.add(ModBlockFamilies.STEMWOOD_FAMILY.boatEntityType().value(), "Stemwood Boat");
+        builder.add(ModBlockFamilies.STEMWOOD_FAMILY.chestBoatEntityType().value(), "Stemwood Chest Boat");
     }
 }

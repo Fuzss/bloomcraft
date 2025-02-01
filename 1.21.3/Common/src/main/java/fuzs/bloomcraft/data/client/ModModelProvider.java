@@ -1,9 +1,12 @@
 package fuzs.bloomcraft.data.client;
 
+import fuzs.bloomcraft.init.BlockFamilyRegistrar;
+import fuzs.bloomcraft.init.ModBlockFamilies;
 import fuzs.bloomcraft.init.ModBlocks;
 import fuzs.bloomcraft.init.ModItems;
 import fuzs.puzzleslib.api.client.data.v2.AbstractModelProvider;
 import fuzs.puzzleslib.api.data.v2.core.DataProviderContext;
+import net.minecraft.data.BlockFamily;
 import net.minecraft.data.models.BlockModelGenerators;
 import net.minecraft.data.models.ItemModelGenerators;
 import net.minecraft.data.models.blockstates.Variant;
@@ -38,9 +41,27 @@ public class ModModelProvider extends AbstractModelProvider {
         builder.createTrivialCube(ModBlocks.RED_PETAL_BLOCK.value());
         builder.createTrivialCube(ModBlocks.PINK_PETAL_BLOCK.value());
         builder.createTrivialCube(ModBlocks.ORANGE_PETAL_BLOCK.value());
+        builder.woodProvider(ModBlocks.STEMWOOD_LOG.value())
+                .logWithHorizontal(ModBlocks.STEMWOOD_LOG.value())
+                .wood(ModBlocks.STEMWOOD_WOOD.value());
+        builder.woodProvider(ModBlocks.STRIPPED_STEMWOOD_LOG.value())
+                .logWithHorizontal(ModBlocks.STRIPPED_STEMWOOD_LOG.value())
+                .wood(ModBlocks.STRIPPED_STEMWOOD_WOOD.value());
+        ModBlockFamilies.getAllFamilies()
+                .filter(BlockFamily::shouldGenerateModel)
+                .forEach(blockFamily -> builder.family(blockFamily.getBaseBlock()).generateFor(blockFamily));
+        this.createHangingSign(builder, ModBlocks.STRIPPED_STEMWOOD_LOG.value(), ModBlockFamilies.STEMWOOD_FAMILY);
     }
 
-    private void createGrassLikeBlock(Block block, BlockModelGenerators builder) {
+    public void createHangingSign(BlockModelGenerators builder, Block particleBlock, BlockFamilyRegistrar registrar) {
+        if (registrar.hangingSignBlock() != null && registrar.wallHangingSignBlock() != null) {
+            builder.createHangingSign(particleBlock,
+                    registrar.hangingSignBlock().value(),
+                    registrar.wallHangingSignBlock().value());
+        }
+    }
+
+    public void createGrassLikeBlock(Block block, BlockModelGenerators builder) {
         TexturedModel texturedModel = TexturedModel.CUBE_TOP_BOTTOM.get(block)
                 .updateTextures((TextureMapping textureMappingX) -> textureMappingX.put(TextureSlot.BOTTOM,
                         TextureMapping.getBlockTexture(Blocks.DIRT)));
@@ -57,5 +78,7 @@ public class ModModelProvider extends AbstractModelProvider {
     public void addItemModels(ItemModelGenerators builder) {
         builder.generateFlatItem(ModItems.MOOBLOOM_SPAWN_EGG.value(), ModelTemplates.FLAT_ITEM);
         builder.generateFlatItem(ModItems.CLUCKBLOOM_SPAWN_EGG.value(), ModelTemplates.FLAT_ITEM);
+        builder.generateFlatItem(ModBlockFamilies.STEMWOOD_FAMILY.boatItem().value(), ModelTemplates.FLAT_ITEM);
+        builder.generateFlatItem(ModBlockFamilies.STEMWOOD_FAMILY.chestBoatItem().value(), ModelTemplates.FLAT_ITEM);
     }
 }

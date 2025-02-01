@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/door_bottom_left_open",
+  "textures": {
+    "bottom": "bloomcraft:block/stemwood_door_bottom",
+    "top": "bloomcraft:block/stemwood_door_top"
+  }
+}

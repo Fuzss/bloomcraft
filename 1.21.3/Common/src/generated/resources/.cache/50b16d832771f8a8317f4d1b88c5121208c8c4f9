@@ -1,10 +1,25 @@
-// 1.21.3	2025-02-01T14:02:03.941232	Tags for minecraft:block mod id vanilla
+// 1.21.3	2025-02-01T14:52:02.76518	Tags for minecraft:block mod id vanilla
+2153dbecfaf52952230a31bf47b95a12f02261ff data/bloomcraft/tags/block/stemwood_logs.json
 b3bcb2e45874f86c95f7b7b279b581b4733c0d82 data/minecraft/tags/block/animals_spawnable_on.json
+50751d2f3d5bff68e110d81f3fbbb7f406fbc891 data/minecraft/tags/block/ceiling_hanging_signs.json
 b3bcb2e45874f86c95f7b7b279b581b4733c0d82 data/minecraft/tags/block/dirt.json
+1f50af6b45d88f3d79c0af8f5efc458efc89f30f data/minecraft/tags/block/fence_gates.json
 8b08b8f55250bb32958fc58d2821d4f02f66f035 data/minecraft/tags/block/flower_pots.json
+e148bc63ec1c69e1e3da397c4afb60da2af26dd4 data/minecraft/tags/block/logs_that_burn.json
 c65fe4555384810cae65dde5c7077c5cb839d8ad data/minecraft/tags/block/mineable/hoe.json
 b3bcb2e45874f86c95f7b7b279b581b4733c0d82 data/minecraft/tags/block/mineable/shovel.json
+98e626ae30951499a99fe3b82934741c3732427d data/minecraft/tags/block/planks.json
 b3bcb2e45874f86c95f7b7b279b581b4733c0d82 data/minecraft/tags/block/rabbits_spawnable_on.json
 93c3a78cf47074084bbe29151fe580e3fe56c64c data/minecraft/tags/block/small_flowers.json
 b3bcb2e45874f86c95f7b7b279b581b4733c0d82 data/minecraft/tags/block/sniffer_diggable_block.json
+3b3457645f9193ae049087a4426d9d0ab94f3b75 data/minecraft/tags/block/standing_signs.json
 c65fe4555384810cae65dde5c7077c5cb839d8ad data/minecraft/tags/block/sword_efficient.json
+ec3140fb9683148d3a10a5fe3a18fbee9e52b11d data/minecraft/tags/block/wall_hanging_signs.json
+d67e9d22d93d65c4dadacc58ad526888f8a56d65 data/minecraft/tags/block/wall_signs.json
+ae92f9d65c9391b5d012b72e38f0170245204918 data/minecraft/tags/block/wooden_buttons.json
+57c36c10c853d937e37d71c61a7cfe3aef00c8fe data/minecraft/tags/block/wooden_doors.json
+a54669859ece3267249160b870e17b2ee111d033 data/minecraft/tags/block/wooden_fences.json
+79a68343fc285d990df4034c643b774cd5a2eec6 data/minecraft/tags/block/wooden_pressure_plates.json
+d8ee196e51100e4ef2226b6b6051fe5466d1a1a5 data/minecraft/tags/block/wooden_slabs.json
+4d7725f94e8104fedc5a157a4c7725adcadd5ce1 data/minecraft/tags/block/wooden_stairs.json
+891abeb8544d5755c8742b76aa3f8f43871e601f data/minecraft/tags/block/wooden_trapdoors.json

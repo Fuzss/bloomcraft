@@ -10,4 +10,6 @@ public class ModModelLayers {
     public static final ModelLayerLocation MOOBLOOM_BABY = MODEL_LAYERS.register("moobloom_baby");
     public static final ModelLayerLocation CLUCKBLOOM = MODEL_LAYERS.register("cluckbloom");
     public static final ModelLayerLocation CLUCKBLOOM_BABY = MODEL_LAYERS.register("cluckbloom_baby");
+    public static final ModelLayerLocation STEMWOOD_BOAT = MODEL_LAYERS.register("boat/stemwood");
+    public static final ModelLayerLocation STEMWOOD_CHEST_BOAT = MODEL_LAYERS.register("chest_boat/stemwood");
 }

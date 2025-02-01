@@ -1,4 +1,4 @@
-// 1.21.3	2025-02-01T14:02:03.940316	Block Loot Tables
+// 1.21.3	2025-02-01T14:52:02.764397	Block Loot Tables
 9e371123a1c787755596d2b6927d09ed3f935f6b data/bloomcraft/loot_table/blocks/buttercup.json
 af7f5ebe5bc318e23d02129147201cd53d9bc133 data/bloomcraft/loot_table/blocks/flowering_grass_block.json
 9052273b47e6f3be3b1fcb6f08fe2a6859adf039 data/bloomcraft/loot_table/blocks/orange_petal_block.json
@@ -9,4 +9,19 @@ d264853d786f26575f414f0f4b63418d0d8bfc46 data/bloomcraft/loot_table/blocks/potte
 277618165ab20c9f26816adb6444dfc658b88cbc data/bloomcraft/loot_table/blocks/potted_rose.json
 167dd70d8118b0cfab213f5ddb298d43645a4971 data/bloomcraft/loot_table/blocks/red_petal_block.json
 1279aebfb2703d167cf40ad63fed63d8ce775d1e data/bloomcraft/loot_table/blocks/rose.json
+666b655e317bccd1907afbf943a25c832b832b56 data/bloomcraft/loot_table/blocks/stemwood_button.json
+a39b37e20904b0f08798b02b83724b7b69413c29 data/bloomcraft/loot_table/blocks/stemwood_door.json
+5ff1dea023b6e95630ca4ca4332cd41927c9dca3 data/bloomcraft/loot_table/blocks/stemwood_fence.json
+7c1ecb3f4d4ba9d83546c688554f41b9ca04e270 data/bloomcraft/loot_table/blocks/stemwood_fence_gate.json
+eff6d1d6f47cb27bee89dafcb8ce1f1834048e8d data/bloomcraft/loot_table/blocks/stemwood_hanging_sign.json
+168e54bd07ed62dfefe7bebeae1c2e4dc74db4ca data/bloomcraft/loot_table/blocks/stemwood_log.json
+e9704ab1bfdbd2fe1a4788d8bf58dcdf83e0e63d data/bloomcraft/loot_table/blocks/stemwood_planks.json
+f2a5f3859319dd75a9b2b8a95600f3ebed00c2ee data/bloomcraft/loot_table/blocks/stemwood_pressure_plate.json
+0073238355e34cb0e6e678d7e54d3f00e40b9587 data/bloomcraft/loot_table/blocks/stemwood_sign.json
+4d3036c4a7e77bbba3a1d396cec6ff6aace9ed57 data/bloomcraft/loot_table/blocks/stemwood_slab.json
+6a8f41278a9d8d48bdae334f36f904d0d0cd4867 data/bloomcraft/loot_table/blocks/stemwood_stairs.json
+889d07e5622b04e4492f517c066d1de15f50872e data/bloomcraft/loot_table/blocks/stemwood_trapdoor.json
+3235c5215ccc038dff50d2abe6da9219a745a8a8 data/bloomcraft/loot_table/blocks/stemwood_wood.json
+1f59953f12271a5a4370e74806b580bf15bd4c54 data/bloomcraft/loot_table/blocks/stripped_stemwood_log.json
+dfce27dc1f6d73842e8a8718e8afa6f1e1c62042 data/bloomcraft/loot_table/blocks/stripped_stemwood_wood.json
 540a9ac74fe32de9e72f2b7ea2ecba05f16ccec9 data/bloomcraft/loot_table/blocks/yellow_petal_block.json

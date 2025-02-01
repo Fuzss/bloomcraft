@@ -45,18 +45,36 @@ public class ModBlocks {
                     .strength(0.2F)
                     .sound(SoundType.WOOL)
                     .pushReaction(PushReaction.DESTROY));
-    public static final Holder.Reference<Block> PINK_PETAL_BLOCK = ModRegistry.REGISTRIES.registerBlock("pink_petal_block",
+    public static final Holder.Reference<Block> PINK_PETAL_BLOCK = ModRegistry.REGISTRIES.registerBlock(
+            "pink_petal_block",
             () -> BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_RED)
                     .strength(0.2F)
                     .sound(SoundType.WOOL)
                     .pushReaction(PushReaction.DESTROY));
-    public static final Holder.Reference<Block> ORANGE_PETAL_BLOCK = ModRegistry.REGISTRIES.registerBlock("orange_petal_block",
+    public static final Holder.Reference<Block> ORANGE_PETAL_BLOCK = ModRegistry.REGISTRIES.registerBlock(
+            "orange_petal_block",
             () -> BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_RED)
                     .strength(0.2F)
                     .sound(SoundType.WOOL)
                     .pushReaction(PushReaction.DESTROY));
+    public static final Holder.Reference<Block> STEMWOOD_LOG = ModRegistry.REGISTRIES.registerBlock("stemwood_log",
+            RotatedPillarBlock::new,
+            () -> Blocks.logProperties(MapColor.PLANT, MapColor.PLANT, SoundType.WOOD));
+    public static final Holder.Reference<Block> STEMWOOD_WOOD = ModRegistry.REGISTRIES.registerBlock("stemwood_wood",
+            RotatedPillarBlock::new,
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WOOD).mapColor(MapColor.PLANT));
+    public static final Holder.Reference<Block> STRIPPED_STEMWOOD_LOG = ModRegistry.REGISTRIES.registerBlock(
+            "stripped_stemwood_log",
+            RotatedPillarBlock::new,
+            () -> Blocks.logProperties(MapColor.PLANT, MapColor.PLANT, SoundType.WOOD));
+    public static final Holder.Reference<Block> STRIPPED_STEMWOOD_WOOD = ModRegistry.REGISTRIES.registerBlock(
+            "stripped_stemwood_wood",
+            RotatedPillarBlock::new,
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_OAK_WOOD).mapColor(MapColor.PLANT));
+    public static final Holder.Reference<Block> STEMWOOD_PLANKS = ModRegistry.REGISTRIES.registerBlock("stemwood_planks",
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).mapColor(MapColor.PLANT));
 
     public static void bootstrap() {
         // NO-OP

@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "bloomcraft:block/stemwood_slab"
+    },
+    "type=double": {
+      "model": "bloomcraft:block/stemwood_planks"
+    },
+    "type=top": {
+      "model": "bloomcraft:block/stemwood_slab_top"
+    }
+  }
+}

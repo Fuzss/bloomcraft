@@ -1,8 +1,12 @@
 package fuzs.bloomcraft.data.loot;
 
+import fuzs.bloomcraft.init.BlockFamilyRegistrar;
+import fuzs.bloomcraft.init.ModBlockFamilies;
 import fuzs.bloomcraft.init.ModBlocks;
 import fuzs.puzzleslib.api.data.v2.AbstractLootProvider;
 import fuzs.puzzleslib.api.data.v2.core.DataProviderContext;
+import net.minecraft.core.Holder;
+import net.minecraft.data.BlockFamily;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
@@ -13,6 +17,8 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.LimitCount;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+
+import java.util.Objects;
 
 public class ModBlockLootProvider extends AbstractLootProvider.Blocks {
 
@@ -36,6 +42,27 @@ public class ModBlockLootProvider extends AbstractLootProvider.Blocks {
         this.add(ModBlocks.PINK_PETAL_BLOCK.value(), (Block block) -> this.createPetalBlockDrop(block, Items.PINK_DYE));
         this.add(ModBlocks.ORANGE_PETAL_BLOCK.value(),
                 (Block block) -> this.createPetalBlockDrop(block, Items.ORANGE_DYE));
+        this.dropSelf(ModBlocks.STEMWOOD_LOG.value());
+        this.dropSelf(ModBlocks.STEMWOOD_WOOD.value());
+        this.dropSelf(ModBlocks.STRIPPED_STEMWOOD_LOG.value());
+        this.dropSelf(ModBlocks.STRIPPED_STEMWOOD_WOOD.value());
+        this.dropSelf(ModBlocks.STEMWOOD_PLANKS.value());
+        ModBlockFamilies.getAllFamilies().forEach((BlockFamily blockFamily) -> {
+            blockFamily.getVariants().forEach((BlockFamily.Variant variant, Block block) -> {
+                if (variant == BlockFamily.Variant.SLAB) {
+                    this.add(block, this::createSlabItemTable);
+                } else if (variant == BlockFamily.Variant.DOOR) {
+                    this.add(block, this::createDoorTable);
+                } else if (variant != BlockFamily.Variant.WALL_SIGN) {
+                    this.dropSelf(block);
+                }
+            });
+        });
+        ModBlockFamilies.getAllFamilyRegistrars()
+                .map(BlockFamilyRegistrar::hangingSignBlock)
+                .filter(Objects::nonNull)
+                .map(Holder.Reference::value)
+                .forEach(this::dropSelf);
     }
 
     /**

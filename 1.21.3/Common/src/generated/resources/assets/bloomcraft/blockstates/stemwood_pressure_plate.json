@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "powered=false": {
+      "model": "bloomcraft:block/stemwood_pressure_plate"
+    },
+    "powered=true": {
+      "model": "bloomcraft:block/stemwood_pressure_plate_down"
+    }
+  }
+}

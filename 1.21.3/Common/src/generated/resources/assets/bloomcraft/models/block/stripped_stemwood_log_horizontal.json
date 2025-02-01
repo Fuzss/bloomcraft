@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column_horizontal",
+  "textures": {
+    "end": "bloomcraft:block/stripped_stemwood_log_top",
+    "side": "bloomcraft:block/stripped_stemwood_log"
+  }
+}

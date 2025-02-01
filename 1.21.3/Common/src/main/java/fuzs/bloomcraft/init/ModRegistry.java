@@ -15,7 +15,9 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.Vec3;
 
 public class ModRegistry {
@@ -49,6 +51,8 @@ public class ModRegistry {
             () -> EntityDataSerializer.forValueType(CluckbloomVariant.STREAM_CODEC));
 
     static final TagFactory TAGS = TagFactory.make(Bloomcraft.MOD_ID);
+    public static final TagKey<Block> STEMWOOD_LOGS_BLOCK_TAG = TAGS.registerBlockTag("stemwood_logs");
+    public static final TagKey<Item> STEMWOOD_LOGS_ITEM_TAG = TAGS.registerItemTag("stemwood_logs");
     public static final TagKey<Biome> HAS_BUTTERCUP_BIOME_TAG = TAGS.registerBiomeTag("has_buttercup");
     public static final TagKey<Biome> HAS_PINK_DAISY_BIOME_TAG = TAGS.registerBiomeTag("has_pink_daisy");
     public static final TagKey<Biome> HAS_ROSE_BIOME_TAG = TAGS.registerBiomeTag("has_rose");
@@ -56,6 +60,7 @@ public class ModRegistry {
     public static void bootstrap() {
         ModBlocks.bootstrap();
         ModItems.bootstrap();
+        ModBlockFamilies.bootstrap();
         ModCluckbloomVariants.bootstrap();
         ModMoobloomVariants.bootstrap();
     }

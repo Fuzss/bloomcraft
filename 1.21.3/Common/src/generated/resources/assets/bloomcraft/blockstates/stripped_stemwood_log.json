@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "bloomcraft:block/stripped_stemwood_log_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "bloomcraft:block/stripped_stemwood_log"
+    },
+    "axis=z": {
+      "model": "bloomcraft:block/stripped_stemwood_log_horizontal",
+      "x": 90
+    }
+  }
+}

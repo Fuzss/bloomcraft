@@ -1,0 +1,13 @@
+// 1.21.3	2025-02-01T14:52:02.766701	Tags for minecraft:item mod id vanilla
+2153dbecfaf52952230a31bf47b95a12f02261ff data/bloomcraft/tags/item/stemwood_logs.json
+018710b226bf80abdb8e4ee1a2422bd637eb2fc9 data/minecraft/tags/item/boats.json
+c58c73595d360bf061a9a2c3c61a60fc37bda576 data/minecraft/tags/item/chest_boats.json
+1f50af6b45d88f3d79c0af8f5efc458efc89f30f data/minecraft/tags/item/fence_gates.json
+98e626ae30951499a99fe3b82934741c3732427d data/minecraft/tags/item/planks.json
+ae92f9d65c9391b5d012b72e38f0170245204918 data/minecraft/tags/item/wooden_buttons.json
+57c36c10c853d937e37d71c61a7cfe3aef00c8fe data/minecraft/tags/item/wooden_doors.json
+a54669859ece3267249160b870e17b2ee111d033 data/minecraft/tags/item/wooden_fences.json
+79a68343fc285d990df4034c643b774cd5a2eec6 data/minecraft/tags/item/wooden_pressure_plates.json
+d8ee196e51100e4ef2226b6b6051fe5466d1a1a5 data/minecraft/tags/item/wooden_slabs.json
+4d7725f94e8104fedc5a157a4c7725adcadd5ce1 data/minecraft/tags/item/wooden_stairs.json
+891abeb8544d5755c8742b76aa3f8f43871e601f data/minecraft/tags/item/wooden_trapdoors.json

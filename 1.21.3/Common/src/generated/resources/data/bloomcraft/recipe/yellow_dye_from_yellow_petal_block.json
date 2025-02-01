@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "yellow_dye",
+  "ingredients": [
+    "bloomcraft:yellow_petal_block"
+  ],
+  "result": {
+    "count": 4,
+    "id": "minecraft:yellow_dye"
+  }
+}

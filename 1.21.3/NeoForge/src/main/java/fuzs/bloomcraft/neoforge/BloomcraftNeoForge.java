@@ -10,6 +10,7 @@ import fuzs.bloomcraft.data.loot.ModShearingLootProvider;
 import fuzs.bloomcraft.data.tags.ModBiomeTagProvider;
 import fuzs.bloomcraft.data.tags.ModBlockTagProvider;
 import fuzs.bloomcraft.data.tags.ModEntityTypeTagProvider;
+import fuzs.bloomcraft.data.tags.ModItemTagProvider;
 import fuzs.puzzleslib.api.core.v1.ModConstructor;
 import fuzs.puzzleslib.neoforge.api.data.v2.core.DataProviderHelper;
 import net.neoforged.fml.common.Mod;
@@ -26,6 +27,7 @@ public class BloomcraftNeoForge {
                 ModGiftLootProvider::new,
                 ModShearingLootProvider::new,
                 ModBlockTagProvider::new,
+                ModItemTagProvider::new,
                 ModEntityTypeTagProvider::new,
                 ModBiomeTagProvider::new,
                 ModRecipeProvider::new);
