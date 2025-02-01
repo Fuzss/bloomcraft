@@ -1,4 +1,11 @@
-// 1.21.3	2025-01-31T15:06:02.581402	Tags for minecraft:worldgen/biome mod id vanilla
+// 1.21.3	2025-02-01T17:45:07.680882	Tags for minecraft:worldgen/biome mod id vanilla
 c9c5bb812d18a2cc6d2687448cbe6d0c6b431e94 data/bloomcraft/tags/worldgen/biome/has_buttercup.json
 c9c5bb812d18a2cc6d2687448cbe6d0c6b431e94 data/bloomcraft/tags/worldgen/biome/has_pink_daisy.json
 c9c5bb812d18a2cc6d2687448cbe6d0c6b431e94 data/bloomcraft/tags/worldgen/biome/has_rose.json
+7ef32c3a6dfc0114fe9f1344479ee7bbe0307869 data/minecraft/tags/worldgen/biome/has_structure/mineshaft.json
+7ef32c3a6dfc0114fe9f1344479ee7bbe0307869 data/minecraft/tags/worldgen/biome/has_structure/trial_chambers.json
+7ef32c3a6dfc0114fe9f1344479ee7bbe0307869 data/minecraft/tags/worldgen/biome/has_structure/village_plains.json
+7ef32c3a6dfc0114fe9f1344479ee7bbe0307869 data/minecraft/tags/worldgen/biome/is_overworld.json
+7ef32c3a6dfc0114fe9f1344479ee7bbe0307869 data/minecraft/tags/worldgen/biome/stronghold_biased_to.json
+7ef32c3a6dfc0114fe9f1344479ee7bbe0307869 data/minecraft/tags/worldgen/biome/without_patrol_spawns.json
+7ef32c3a6dfc0114fe9f1344479ee7bbe0307869 data/minecraft/tags/worldgen/biome/without_zombie_sieges.json

@@ -12,6 +12,7 @@ import fuzs.puzzleslib.api.client.core.v1.ClientModConstructor;
 import fuzs.puzzleslib.api.client.core.v1.context.EntityRenderersContext;
 import fuzs.puzzleslib.api.client.core.v1.context.LayerDefinitionsContext;
 import fuzs.puzzleslib.api.client.core.v1.context.RenderTypesContext;
+import net.minecraft.client.model.BoatModel;
 import net.minecraft.client.model.ChickenModel;
 import net.minecraft.client.model.CowModel;
 import net.minecraft.client.renderer.RenderType;
@@ -71,5 +72,7 @@ public class BloomcraftClient implements ClientModConstructor {
         context.registerLayerDefinition(ModModelLayers.CLUCKBLOOM, CluckbloomRenderer::createBodyLayer);
         context.registerLayerDefinition(ModModelLayers.CLUCKBLOOM_BABY,
                 () -> CluckbloomRenderer.createBodyLayer().apply(ChickenModel.BABY_TRANSFORMER));
+        context.registerLayerDefinition(ModModelLayers.STEMWOOD_BOAT, BoatModel::createBoatModel);
+        context.registerLayerDefinition(ModModelLayers.STEMWOOD_CHEST_BOAT, BoatModel::createChestBoatModel);
     }
 }

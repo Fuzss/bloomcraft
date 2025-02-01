@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:random_boolean_selector",
+  "config": {
+    "feature_false": {
+      "feature": {
+        "type": "bloomcraft:huge_red_mushroom",
+        "config": {}
+      },
+      "placement": []
+    },
+    "feature_true": {
+      "feature": {
+        "type": "bloomcraft:huge_yellow_mushroom",
+        "config": {}
+      },
+      "placement": []
+    }
+  }
+}

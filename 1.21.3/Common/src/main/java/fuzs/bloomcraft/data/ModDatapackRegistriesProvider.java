@@ -1,18 +1,40 @@
 package fuzs.bloomcraft.data;
 
-import fuzs.bloomcraft.init.ModBlocks;
-import fuzs.bloomcraft.init.ModCluckbloomVariants;
-import fuzs.bloomcraft.init.ModMoobloomVariants;
-import fuzs.bloomcraft.init.ModRegistry;
+import fuzs.bloomcraft.init.*;
 import fuzs.bloomcraft.world.entity.animal.CluckbloomVariant;
 import fuzs.bloomcraft.world.entity.animal.MoobloomVariant;
 import fuzs.puzzleslib.api.data.v2.AbstractDatapackRegistriesProvider;
 import fuzs.puzzleslib.api.data.v2.core.DataProviderContext;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.BiomeDefaultFeatures;
 import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.data.worldgen.biome.OverworldBiomes;
+import net.minecraft.data.worldgen.features.FeatureUtils;
+import net.minecraft.data.worldgen.placement.PlacementUtils;
+import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.BiomeGenerationSettings;
+import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FlowerBlock;
+import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.RandomBooleanFeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.SimpleBlockConfiguration;
+import net.minecraft.world.level.levelgen.feature.stateproviders.NoiseThresholdProvider;
+import net.minecraft.world.level.levelgen.placement.*;
+import net.minecraft.world.level.levelgen.synth.NormalNoise;
+
+import java.util.List;
 
 public class ModDatapackRegistriesProvider extends AbstractDatapackRegistriesProvider {
 
@@ -22,10 +44,100 @@ public class ModDatapackRegistriesProvider extends AbstractDatapackRegistriesPro
 
     @Override
     public void addBootstrap(RegistryBoostrapConsumer consumer) {
+        consumer.add(Registries.CONFIGURED_FEATURE, ModDatapackRegistriesProvider::bootstrapConfiguredFeatures);
+        consumer.add(Registries.PLACED_FEATURE, ModDatapackRegistriesProvider::bootstrapPlacedFeatures);
+        consumer.add(Registries.BIOME, ModDatapackRegistriesProvider::bootstrapBiomes);
         consumer.add(ModRegistry.MOOBLOOM_VARIANT_REGISTRY_KEY,
                 ModDatapackRegistriesProvider::bootstrapMoobloomVariants);
         consumer.add(ModRegistry.CLUCKBLOOM_VARIANT_REGISTRY_KEY,
                 ModDatapackRegistriesProvider::bootstrapCluckbloomVariants);
+    }
+
+    static void bootstrapConfiguredFeatures(BootstrapContext<ConfiguredFeature<?, ?>> context) {
+        FeatureUtils.register(context,
+                ModFeatures.FLOWERING_GARDEN_VEGETATION_CONFIGURED_FEATURE,
+                Feature.RANDOM_BOOLEAN_SELECTOR,
+                new RandomBooleanFeatureConfiguration(PlacementUtils.inlinePlaced(ModFeatures.HUGE_YELLOW_FLOWER_FEATURE.value(),
+                        FeatureConfiguration.NONE),
+                        PlacementUtils.inlinePlaced(ModFeatures.HUGE_RED_FLOWER_FEATURE.value(),
+                                FeatureConfiguration.NONE)));
+        FeatureUtils.register(context,
+                ModFeatures.FLOWER_GARDEN_CONFIGURED_FEATURE,
+                Feature.FLOWER,
+                new RandomPatchConfiguration(64,
+                        6,
+                        2,
+                        PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK,
+                                new SimpleBlockConfiguration(new NoiseThresholdProvider(2345L,
+                                        new NormalNoise.NoiseParameters(0, 1.0),
+                                        0.005F,
+                                        -0.8F,
+                                        0.33333334F,
+                                        Blocks.DANDELION.defaultBlockState(),
+                                        List.of(Blocks.ORANGE_TULIP.defaultBlockState(),
+                                                Blocks.RED_TULIP.defaultBlockState(),
+                                                Blocks.PINK_TULIP.defaultBlockState(),
+                                                Blocks.WHITE_TULIP.defaultBlockState()),
+                                        List.of(ModBlocks.ROSE.value().defaultBlockState(),
+                                                ModBlocks.BUTTERCUP.value().defaultBlockState(),
+                                                ModBlocks.PINK_DAISY.value().defaultBlockState()))))));
+    }
+
+    static void bootstrapPlacedFeatures(BootstrapContext<PlacedFeature> context) {
+        HolderGetter<ConfiguredFeature<?, ?>> configuredFeatureLookup = context.lookup(Registries.CONFIGURED_FEATURE);
+        PlacementUtils.register(context,
+                ModFeatures.FLOWERING_GARDEN_VEGETATION_PLACED_FEATURE,
+                configuredFeatureLookup.getOrThrow(ModFeatures.FLOWERING_GARDEN_VEGETATION_CONFIGURED_FEATURE),
+                InSquarePlacement.spread(),
+                PlacementUtils.HEIGHTMAP,
+                BiomeFilter.biome());
+        PlacementUtils.register(context,
+                ModFeatures.FLOWER_GARDEN_PLACED_FEATURE,
+                configuredFeatureLookup.getOrThrow(ModFeatures.FLOWER_GARDEN_CONFIGURED_FEATURE),
+                NoiseThresholdCountPlacement.of(-0.8, 15, 4),
+                RarityFilter.onAverageOnceEvery(32),
+                InSquarePlacement.spread(),
+                PlacementUtils.HEIGHTMAP,
+                BiomeFilter.biome());
+    }
+
+    static void bootstrapBiomes(BootstrapContext<Biome> context) {
+        context.register(ModRegistry.FLOWERING_GARDEN_BIOME,
+                floweringGarden(context.lookup(Registries.PLACED_FEATURE),
+                        context.lookup(Registries.CONFIGURED_CARVER)));
+    }
+
+    public static Biome floweringGarden(HolderGetter<PlacedFeature> placedFeatureLookup, HolderGetter<ConfiguredWorldCarver<?>> worldCarverLookup) {
+        MobSpawnSettings.Builder mobSpawnSettings = new MobSpawnSettings.Builder();
+        addFloweringGardenSpawns(mobSpawnSettings);
+        BiomeGenerationSettings.Builder biomeGenerationSettings = new BiomeGenerationSettings.Builder(
+                placedFeatureLookup,
+                worldCarverLookup);
+        OverworldBiomes.globalOverworldGeneration(biomeGenerationSettings);
+        BiomeDefaultFeatures.addDefaultOres(biomeGenerationSettings);
+        BiomeDefaultFeatures.addDefaultSoftDisks(biomeGenerationSettings);
+        addFloweringGardenVegetation(biomeGenerationSettings);
+        BiomeDefaultFeatures.addDefaultExtraVegetation(biomeGenerationSettings);
+        return OverworldBiomes.biome(true, 0.9F, 1.0F, mobSpawnSettings, biomeGenerationSettings, null);
+    }
+
+    public static void addFloweringGardenSpawns(MobSpawnSettings.Builder builder) {
+        builder.addSpawn(MobCategory.CREATURE,
+                new MobSpawnSettings.SpawnerData(ModRegistry.MOOBLOOM_ENTITY_TYPE.value(), 8, 4, 8));
+        builder.addSpawn(MobCategory.CREATURE,
+                new MobSpawnSettings.SpawnerData(ModRegistry.CLUCKBLOOM_ENTITY_TYPE.value(), 8, 4, 8));
+        builder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.RABBIT, 4, 2, 4));
+        BiomeDefaultFeatures.caveSpawns(builder);
+        builder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.DONKEY, 2, 1, 2));
+    }
+
+    public static void addFloweringGardenVegetation(BiomeGenerationSettings.Builder builder) {
+        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION,
+                ModFeatures.FLOWERING_GARDEN_VEGETATION_PLACED_FEATURE);
+        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.PATCH_TALL_GRASS_2);
+        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ModFeatures.FLOWER_GARDEN_PLACED_FEATURE);
+        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.PATCH_GRASS_PLAIN);
+        BiomeDefaultFeatures.addDefaultMushrooms(builder);
     }
 
     static void bootstrapMoobloomVariants(BootstrapContext<MoobloomVariant> context) {
