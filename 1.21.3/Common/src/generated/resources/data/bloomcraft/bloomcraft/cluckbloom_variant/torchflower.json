@@ -3,5 +3,6 @@
   "carried_block": {
     "Name": "minecraft:torchflower"
   },
+  "laying_loot_table": "bloomcraft:gameplay/cluckbloom/laying/torchflower",
   "shearing_loot_table": "bloomcraft:shearing/cluckbloom/torchflower"
 }

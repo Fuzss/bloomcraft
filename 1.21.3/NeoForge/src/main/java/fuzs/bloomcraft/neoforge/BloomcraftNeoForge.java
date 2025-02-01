@@ -5,6 +5,7 @@ import fuzs.bloomcraft.data.ModDatapackRegistriesProvider;
 import fuzs.bloomcraft.data.ModRecipeProvider;
 import fuzs.bloomcraft.data.loot.ModBlockLootProvider;
 import fuzs.bloomcraft.data.loot.ModEntityLootProvider;
+import fuzs.bloomcraft.data.loot.ModGiftLootProvider;
 import fuzs.bloomcraft.data.loot.ModShearingLootProvider;
 import fuzs.bloomcraft.data.tags.ModBiomeTagProvider;
 import fuzs.bloomcraft.data.tags.ModBlockTagProvider;
@@ -22,6 +23,7 @@ public class BloomcraftNeoForge {
                 ModDatapackRegistriesProvider::new,
                 ModBlockLootProvider::new,
                 ModEntityLootProvider::new,
+                ModGiftLootProvider::new,
                 ModShearingLootProvider::new,
                 ModBlockTagProvider::new,
                 ModEntityTypeTagProvider::new,

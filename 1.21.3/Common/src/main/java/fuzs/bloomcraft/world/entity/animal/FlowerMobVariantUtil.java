@@ -19,30 +19,30 @@ public final class FlowerMobVariantUtil {
         // NO-OP
     }
 
-    public static Holder<FlowerMobVariant> getSpawnVariant(Registry<FlowerMobVariant> registry, Holder<Biome> biome, RandomSource randomSource) {
-        return getRandomSpawnVariant(registry, (Holder<FlowerMobVariant> holder) -> {
+    public static <T extends FlowerMobVariant> Holder<T> getSpawnVariant(Registry<T> registry, Holder<Biome> biome, RandomSource randomSource) {
+        return getRandomSpawnVariant(registry, (Holder<T> holder) -> {
             return holder.value().biomes().contains(biome);
         }).or(() -> registry.getRandom(randomSource)).orElseThrow();
     }
 
-    public static Optional<Holder<FlowerMobVariant>> getRandomSpawnVariant(Registry<FlowerMobVariant> registry, Predicate<Holder<FlowerMobVariant>> filter) {
+    public static <T extends FlowerMobVariant> Optional<Holder<T>> getRandomSpawnVariant(Registry<T> registry, Predicate<Holder<T>> filter) {
         return Optional.ofNullable(registry.listElements()
                 .filter(filter)
                 .collect(Collectors.collectingAndThen(Collectors.toCollection(ArrayList::new),
-                        (List<Holder.Reference<FlowerMobVariant>> list) -> {
+                        (List<Holder.Reference<T>> list) -> {
                             Collections.shuffle(list);
                             return !list.isEmpty() ? list.getFirst() : null;
                         })));
     }
 
-    public static class VariantGroupData extends AgeableMob.AgeableMobGroupData {
-        public final Holder<FlowerMobVariant> variant;
+    public static class VariantGroupData<T extends FlowerMobVariant> extends AgeableMob.AgeableMobGroupData {
+        public final Holder<T> variant;
 
-        public VariantGroupData(Holder<FlowerMobVariant> variant) {
+        public VariantGroupData(Holder<T> variant) {
             this(variant, true);
         }
 
-        public VariantGroupData(Holder<FlowerMobVariant> variant, boolean shouldSpawnBaby) {
+        public VariantGroupData(Holder<T> variant, boolean shouldSpawnBaby) {
             super(shouldSpawnBaby);
             this.variant = variant;
         }

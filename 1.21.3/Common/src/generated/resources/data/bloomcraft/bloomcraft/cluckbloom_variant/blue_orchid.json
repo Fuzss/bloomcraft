@@ -3,5 +3,6 @@
   "carried_block": {
     "Name": "minecraft:blue_orchid"
   },
+  "laying_loot_table": "bloomcraft:gameplay/cluckbloom/laying/blue_orchid",
   "shearing_loot_table": "bloomcraft:shearing/cluckbloom/blue_orchid"
 }

@@ -4,7 +4,9 @@ import fuzs.bloomcraft.init.ModBlocks;
 import fuzs.bloomcraft.init.ModCluckbloomVariants;
 import fuzs.bloomcraft.init.ModMoobloomVariants;
 import fuzs.bloomcraft.init.ModRegistry;
+import fuzs.bloomcraft.world.entity.animal.CluckbloomVariant;
 import fuzs.bloomcraft.world.entity.animal.FlowerMobVariant;
+import fuzs.bloomcraft.world.entity.animal.MoobloomVariant;
 import fuzs.puzzleslib.api.data.v2.AbstractLootProvider;
 import fuzs.puzzleslib.api.data.v2.core.DataProviderContext;
 import net.minecraft.resources.ResourceKey;
@@ -40,6 +42,7 @@ public class ModShearingLootProvider extends AbstractLootProvider.Simple {
         this.registerMoobloomShearingLootTable(ModMoobloomVariants.TORCHFLOWER, Blocks.TORCHFLOWER);
         this.registerMoobloomShearingLootTable(ModMoobloomVariants.BUTTERCUP, ModBlocks.BUTTERCUP.value());
         this.registerMoobloomShearingLootTable(ModMoobloomVariants.PINK_DAISY, ModBlocks.PINK_DAISY.value());
+        this.registerMoobloomShearingLootTable(ModMoobloomVariants.ROSE, ModBlocks.ROSE.value());
 
         this.registerCluckbloomShearingLootTable(ModCluckbloomVariants.DANDELION, Blocks.DANDELION);
         this.registerCluckbloomShearingLootTable(ModCluckbloomVariants.POPPY, Blocks.POPPY);
@@ -57,9 +60,10 @@ public class ModShearingLootProvider extends AbstractLootProvider.Simple {
         this.registerCluckbloomShearingLootTable(ModCluckbloomVariants.TORCHFLOWER, Blocks.TORCHFLOWER);
         this.registerCluckbloomShearingLootTable(ModCluckbloomVariants.BUTTERCUP, ModBlocks.BUTTERCUP.value());
         this.registerCluckbloomShearingLootTable(ModCluckbloomVariants.PINK_DAISY, ModBlocks.PINK_DAISY.value());
+        this.registerCluckbloomShearingLootTable(ModCluckbloomVariants.ROSE, ModBlocks.ROSE.value());
     }
 
-    void registerMoobloomShearingLootTable(ResourceKey<FlowerMobVariant> resourceKey, Block block) {
+    void registerMoobloomShearingLootTable(ResourceKey<MoobloomVariant> resourceKey, Block block) {
         this.add(FlowerMobVariant.getShearingLootTable(ModRegistry.MOOBLOOM_ENTITY_TYPE, resourceKey),
                 LootTable.lootTable()
                         .withPool(LootPool.lootPool()
@@ -67,7 +71,7 @@ public class ModShearingLootProvider extends AbstractLootProvider.Simple {
                                 .add(LootItem.lootTableItem(block))));
     }
 
-    void registerCluckbloomShearingLootTable(ResourceKey<FlowerMobVariant> resourceKey, Block block) {
+    void registerCluckbloomShearingLootTable(ResourceKey<CluckbloomVariant> resourceKey, Block block) {
         this.add(FlowerMobVariant.getShearingLootTable(ModRegistry.CLUCKBLOOM_ENTITY_TYPE, resourceKey),
                 LootTable.lootTable()
                         .withPool(LootPool.lootPool()

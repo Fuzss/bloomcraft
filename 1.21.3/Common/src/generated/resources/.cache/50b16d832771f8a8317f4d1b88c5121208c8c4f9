@@ -1,3 +1,10 @@
-// 1.21.3	2025-01-30T11:27:19.585514	Tags for minecraft:block mod id vanilla
-fa6535d09b3795d278be8610893f03249a492e6e data/minecraft/tags/block/flower_pots.json
-c55bb3f34bfac8fbf4ee8b1a7a48c2cdfb071c19 data/minecraft/tags/block/small_flowers.json
+// 1.21.3	2025-02-01T14:02:03.941232	Tags for minecraft:block mod id vanilla
+b3bcb2e45874f86c95f7b7b279b581b4733c0d82 data/minecraft/tags/block/animals_spawnable_on.json
+b3bcb2e45874f86c95f7b7b279b581b4733c0d82 data/minecraft/tags/block/dirt.json
+8b08b8f55250bb32958fc58d2821d4f02f66f035 data/minecraft/tags/block/flower_pots.json
+c65fe4555384810cae65dde5c7077c5cb839d8ad data/minecraft/tags/block/mineable/hoe.json
+b3bcb2e45874f86c95f7b7b279b581b4733c0d82 data/minecraft/tags/block/mineable/shovel.json
+b3bcb2e45874f86c95f7b7b279b581b4733c0d82 data/minecraft/tags/block/rabbits_spawnable_on.json
+93c3a78cf47074084bbe29151fe580e3fe56c64c data/minecraft/tags/block/small_flowers.json
+b3bcb2e45874f86c95f7b7b279b581b4733c0d82 data/minecraft/tags/block/sniffer_diggable_block.json
+c65fe4555384810cae65dde5c7077c5cb839d8ad data/minecraft/tags/block/sword_efficient.json

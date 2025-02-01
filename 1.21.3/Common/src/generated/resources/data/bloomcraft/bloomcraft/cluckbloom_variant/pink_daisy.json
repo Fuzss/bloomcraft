@@ -3,5 +3,6 @@
   "carried_block": {
     "Name": "bloomcraft:pink_daisy"
   },
+  "laying_loot_table": "bloomcraft:gameplay/cluckbloom/laying/pink_daisy",
   "shearing_loot_table": "bloomcraft:shearing/cluckbloom/pink_daisy"
 }

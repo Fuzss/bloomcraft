@@ -3,8 +3,23 @@
     "bloomcraft:buttercup": {
       "chance": 0.65
     },
+    "bloomcraft:orange_petal_block": {
+      "chance": 0.3
+    },
     "bloomcraft:pink_daisy": {
       "chance": 0.65
+    },
+    "bloomcraft:pink_petal_block": {
+      "chance": 0.3
+    },
+    "bloomcraft:red_petal_block": {
+      "chance": 0.3
+    },
+    "bloomcraft:rose": {
+      "chance": 0.65
+    },
+    "bloomcraft:yellow_petal_block": {
+      "chance": 0.3
     }
   }
 }

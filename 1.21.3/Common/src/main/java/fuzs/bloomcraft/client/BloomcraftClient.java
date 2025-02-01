@@ -27,8 +27,10 @@ public class BloomcraftClient implements ClientModConstructor {
         context.registerRenderType(RenderType.cutout(),
                 ModBlocks.BUTTERCUP.value(),
                 ModBlocks.PINK_DAISY.value(),
+                ModBlocks.ROSE.value(),
                 ModBlocks.POTTED_BUTTERCUP.value(),
-                ModBlocks.POTTED_PINK_DAISY.value());
+                ModBlocks.POTTED_PINK_DAISY.value(),
+                ModBlocks.POTTED_ROSE.value());
     }
 
     @Override

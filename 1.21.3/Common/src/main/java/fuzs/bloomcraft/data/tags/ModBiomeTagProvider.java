@@ -18,5 +18,6 @@ public class ModBiomeTagProvider extends AbstractTagProvider<Biome> {
     public void addTags(HolderLookup.Provider registries) {
         this.add(ModRegistry.HAS_BUTTERCUP_BIOME_TAG).add(Biomes.PLAINS, Biomes.MEADOW, Biomes.FLOWER_FOREST);
         this.add(ModRegistry.HAS_PINK_DAISY_BIOME_TAG).add(Biomes.PLAINS, Biomes.MEADOW, Biomes.FLOWER_FOREST);
+        this.add(ModRegistry.HAS_ROSE_BIOME_TAG).add(Biomes.PLAINS, Biomes.MEADOW, Biomes.FLOWER_FOREST);
     }
 }

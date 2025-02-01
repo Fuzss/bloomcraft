@@ -3,5 +3,6 @@
   "carried_block": {
     "Name": "minecraft:white_tulip"
   },
+  "laying_loot_table": "bloomcraft:gameplay/cluckbloom/laying/white_tulip",
   "shearing_loot_table": "bloomcraft:shearing/cluckbloom/white_tulip"
 }

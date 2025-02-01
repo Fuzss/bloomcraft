@@ -3,5 +3,10 @@
   "carried_block": {
     "Name": "bloomcraft:pink_daisy"
   },
-  "shearing_loot_table": "bloomcraft:shearing/moobloom/pink_daisy"
+  "shearing_loot_table": "bloomcraft:shearing/moobloom/pink_daisy",
+  "suspicious_stew_effects": [
+    {
+      "id": "minecraft:regeneration"
+    }
+  ]
 }

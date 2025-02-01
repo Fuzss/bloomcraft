@@ -3,5 +3,11 @@
   "carried_block": {
     "Name": "minecraft:lily_of_the_valley"
   },
-  "shearing_loot_table": "bloomcraft:shearing/moobloom/lily_of_the_valley"
+  "shearing_loot_table": "bloomcraft:shearing/moobloom/lily_of_the_valley",
+  "suspicious_stew_effects": [
+    {
+      "duration": 240,
+      "id": "minecraft:poison"
+    }
+  ]
 }

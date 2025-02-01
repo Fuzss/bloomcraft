@@ -1,5 +1,12 @@
-// 1.21.3	2025-01-30T11:27:19.58474	Block Loot Tables
+// 1.21.3	2025-02-01T14:02:03.940316	Block Loot Tables
 9e371123a1c787755596d2b6927d09ed3f935f6b data/bloomcraft/loot_table/blocks/buttercup.json
+af7f5ebe5bc318e23d02129147201cd53d9bc133 data/bloomcraft/loot_table/blocks/flowering_grass_block.json
+9052273b47e6f3be3b1fcb6f08fe2a6859adf039 data/bloomcraft/loot_table/blocks/orange_petal_block.json
 b26befa4e729cb8ac69517673953fb5852874506 data/bloomcraft/loot_table/blocks/pink_daisy.json
+f6fe48a15e935b2d293ea28eebda8ac0f54dd9ac data/bloomcraft/loot_table/blocks/pink_petal_block.json
 cc54005a0af0d0a24ccddbcf6e5cab70bea77961 data/bloomcraft/loot_table/blocks/potted_buttercup.json
 d264853d786f26575f414f0f4b63418d0d8bfc46 data/bloomcraft/loot_table/blocks/potted_pink_daisy.json
+277618165ab20c9f26816adb6444dfc658b88cbc data/bloomcraft/loot_table/blocks/potted_rose.json
+167dd70d8118b0cfab213f5ddb298d43645a4971 data/bloomcraft/loot_table/blocks/red_petal_block.json
+1279aebfb2703d167cf40ad63fed63d8ce775d1e data/bloomcraft/loot_table/blocks/rose.json
+540a9ac74fe32de9e72f2b7ea2ecba05f16ccec9 data/bloomcraft/loot_table/blocks/yellow_petal_block.json

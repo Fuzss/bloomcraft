@@ -3,5 +3,6 @@
   "carried_block": {
     "Name": "minecraft:allium"
   },
+  "laying_loot_table": "bloomcraft:gameplay/cluckbloom/laying/allium",
   "shearing_loot_table": "bloomcraft:shearing/cluckbloom/allium"
 }

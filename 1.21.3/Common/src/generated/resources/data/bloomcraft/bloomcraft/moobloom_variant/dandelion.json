@@ -3,5 +3,11 @@
   "carried_block": {
     "Name": "minecraft:dandelion"
   },
-  "shearing_loot_table": "bloomcraft:shearing/moobloom/dandelion"
+  "shearing_loot_table": "bloomcraft:shearing/moobloom/dandelion",
+  "suspicious_stew_effects": [
+    {
+      "duration": 7,
+      "id": "minecraft:saturation"
+    }
+  ]
 }

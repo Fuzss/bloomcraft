@@ -20,6 +20,13 @@ public class ModLanguageProvider extends AbstractLanguageProvider {
         builder.add(ModBlocks.POTTED_BUTTERCUP.value(), "Potted Buttercup");
         builder.add(ModBlocks.PINK_DAISY.value(), "Pink Daisy");
         builder.add(ModBlocks.POTTED_PINK_DAISY.value(), "Potted Pink Daisy");
+        builder.add(ModBlocks.ROSE.value(), "Rose");
+        builder.add(ModBlocks.POTTED_ROSE.value(), "Potted Rose");
+        builder.add(ModBlocks.FLOWERING_GRASS_BLOCK.value(), "Flowering Grass Block");
+        builder.add(ModBlocks.YELLOW_PETAL_BLOCK.value(), "Yellow Petal Block");
+        builder.add(ModBlocks.RED_PETAL_BLOCK.value(), "Red Petal Block");
+        builder.add(ModBlocks.PINK_PETAL_BLOCK.value(), "Pink Petal Block");
+        builder.add(ModBlocks.ORANGE_PETAL_BLOCK.value(), "Orange Petal Block");
         builder.add(ModRegistry.MOOBLOOM_ENTITY_TYPE.value(), "Moobloom");
         builder.add(ModRegistry.CLUCKBLOOM_ENTITY_TYPE.value(), "Cluckbloom");
         builder.addSpawnEgg(ModItems.MOOBLOOM_SPAWN_EGG.value(), "Moobloom");

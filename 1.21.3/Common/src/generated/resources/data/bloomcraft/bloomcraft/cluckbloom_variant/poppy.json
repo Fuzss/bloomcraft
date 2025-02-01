@@ -3,5 +3,6 @@
   "carried_block": {
     "Name": "minecraft:poppy"
   },
+  "laying_loot_table": "bloomcraft:gameplay/cluckbloom/laying/poppy",
   "shearing_loot_table": "bloomcraft:shearing/cluckbloom/poppy"
 }

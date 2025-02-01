@@ -2,8 +2,9 @@ package fuzs.bloomcraft.init;
 
 import fuzs.bloomcraft.Bloomcraft;
 import fuzs.bloomcraft.world.entity.animal.Cluckbloom;
-import fuzs.bloomcraft.world.entity.animal.FlowerMobVariant;
+import fuzs.bloomcraft.world.entity.animal.CluckbloomVariant;
 import fuzs.bloomcraft.world.entity.animal.Moobloom;
+import fuzs.bloomcraft.world.entity.animal.MoobloomVariant;
 import fuzs.puzzleslib.api.init.v3.registry.RegistryManager;
 import fuzs.puzzleslib.api.init.v3.tags.TagFactory;
 import net.minecraft.core.Holder;
@@ -18,9 +19,9 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.phys.Vec3;
 
 public class ModRegistry {
-    public static final ResourceKey<Registry<FlowerMobVariant>> MOOBLOOM_VARIANT_REGISTRY_KEY = ResourceKey.createRegistryKey(
+    public static final ResourceKey<Registry<MoobloomVariant>> MOOBLOOM_VARIANT_REGISTRY_KEY = ResourceKey.createRegistryKey(
             Bloomcraft.id("moobloom_variant"));
-    public static final ResourceKey<Registry<FlowerMobVariant>> CLUCKBLOOM_VARIANT_REGISTRY_KEY = ResourceKey.createRegistryKey(
+    public static final ResourceKey<Registry<CluckbloomVariant>> CLUCKBLOOM_VARIANT_REGISTRY_KEY = ResourceKey.createRegistryKey(
             Bloomcraft.id("cluckbloom_variant"));
 
     static final RegistryManager REGISTRIES = RegistryManager.from(Bloomcraft.MOD_ID);
@@ -40,16 +41,17 @@ public class ModRegistry {
                     .clientTrackingRange(10));
     public static final Holder.Reference<CreativeModeTab> CREATIVE_MODE_TAB = REGISTRIES.registerCreativeModeTab(
             ModItems.BUTTERCUP);
-    public static final Holder.Reference<EntityDataSerializer<Holder<FlowerMobVariant>>> MOOBLOOM_VARIANT_ENTITY_DATA_SERIALIZER = REGISTRIES.registerEntityDataSerializer(
+    public static final Holder.Reference<EntityDataSerializer<Holder<MoobloomVariant>>> MOOBLOOM_VARIANT_ENTITY_DATA_SERIALIZER = REGISTRIES.registerEntityDataSerializer(
             "moobloom_variant",
-            () -> EntityDataSerializer.forValueType(FlowerMobVariant.streamCodec(MOOBLOOM_VARIANT_REGISTRY_KEY)));
-    public static final Holder.Reference<EntityDataSerializer<Holder<FlowerMobVariant>>> CLUCKBLOOM_VARIANT_ENTITY_DATA_SERIALIZER = REGISTRIES.registerEntityDataSerializer(
+            () -> EntityDataSerializer.forValueType(MoobloomVariant.STREAM_CODEC));
+    public static final Holder.Reference<EntityDataSerializer<Holder<CluckbloomVariant>>> CLUCKBLOOM_VARIANT_ENTITY_DATA_SERIALIZER = REGISTRIES.registerEntityDataSerializer(
             "cluckbloom_variant",
-            () -> EntityDataSerializer.forValueType(FlowerMobVariant.streamCodec(CLUCKBLOOM_VARIANT_REGISTRY_KEY)));
+            () -> EntityDataSerializer.forValueType(CluckbloomVariant.STREAM_CODEC));
 
     static final TagFactory TAGS = TagFactory.make(Bloomcraft.MOD_ID);
     public static final TagKey<Biome> HAS_BUTTERCUP_BIOME_TAG = TAGS.registerBiomeTag("has_buttercup");
     public static final TagKey<Biome> HAS_PINK_DAISY_BIOME_TAG = TAGS.registerBiomeTag("has_pink_daisy");
+    public static final TagKey<Biome> HAS_ROSE_BIOME_TAG = TAGS.registerBiomeTag("has_rose");
 
     public static void bootstrap() {
         ModBlocks.bootstrap();

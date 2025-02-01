@@ -3,5 +3,11 @@
   "carried_block": {
     "Name": "minecraft:poppy"
   },
-  "shearing_loot_table": "bloomcraft:shearing/moobloom/poppy"
+  "shearing_loot_table": "bloomcraft:shearing/moobloom/poppy",
+  "suspicious_stew_effects": [
+    {
+      "duration": 100,
+      "id": "minecraft:night_vision"
+    }
+  ]
 }

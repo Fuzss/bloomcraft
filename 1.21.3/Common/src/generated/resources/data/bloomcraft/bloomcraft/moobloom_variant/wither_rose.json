@@ -3,5 +3,10 @@
   "carried_block": {
     "Name": "minecraft:wither_rose"
   },
-  "shearing_loot_table": "bloomcraft:shearing/moobloom/wither_rose"
+  "shearing_loot_table": "bloomcraft:shearing/moobloom/wither_rose",
+  "suspicious_stew_effects": [
+    {
+      "id": "minecraft:wither"
+    }
+  ]
 }

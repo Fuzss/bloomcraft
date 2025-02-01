@@ -3,5 +3,6 @@
   "carried_block": {
     "Name": "minecraft:oxeye_daisy"
   },
+  "laying_loot_table": "bloomcraft:gameplay/cluckbloom/laying/oxeye_daisy",
   "shearing_loot_table": "bloomcraft:shearing/cluckbloom/oxeye_daisy"
 }

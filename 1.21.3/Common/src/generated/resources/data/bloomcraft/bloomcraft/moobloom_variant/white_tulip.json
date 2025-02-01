@@ -3,5 +3,11 @@
   "carried_block": {
     "Name": "minecraft:white_tulip"
   },
-  "shearing_loot_table": "bloomcraft:shearing/moobloom/white_tulip"
+  "shearing_loot_table": "bloomcraft:shearing/moobloom/white_tulip",
+  "suspicious_stew_effects": [
+    {
+      "duration": 180,
+      "id": "minecraft:weakness"
+    }
+  ]
 }

@@ -3,5 +3,6 @@
   "carried_block": {
     "Name": "minecraft:lily_of_the_valley"
   },
+  "laying_loot_table": "bloomcraft:gameplay/cluckbloom/laying/lily_of_the_valley",
   "shearing_loot_table": "bloomcraft:shearing/cluckbloom/lily_of_the_valley"
 }

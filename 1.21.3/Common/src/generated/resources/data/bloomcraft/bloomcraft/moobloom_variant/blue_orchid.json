@@ -3,5 +3,11 @@
   "carried_block": {
     "Name": "minecraft:blue_orchid"
   },
-  "shearing_loot_table": "bloomcraft:shearing/moobloom/blue_orchid"
+  "shearing_loot_table": "bloomcraft:shearing/moobloom/blue_orchid",
+  "suspicious_stew_effects": [
+    {
+      "duration": 7,
+      "id": "minecraft:saturation"
+    }
+  ]
 }

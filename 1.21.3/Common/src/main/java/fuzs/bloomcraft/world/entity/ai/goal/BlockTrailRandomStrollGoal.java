@@ -16,11 +16,11 @@ import net.minecraft.world.level.gameevent.GameEvent;
 public class BlockTrailRandomStrollGoal extends WaterAvoidingRandomStrollGoal {
     private final int randomChance;
 
-    public <T extends PathfinderMob & VariantHolder<Holder<FlowerMobVariant>>> BlockTrailRandomStrollGoal(T mob, double speedModifier) {
+    public <T extends PathfinderMob & VariantHolder<? extends Holder<? extends FlowerMobVariant>>> BlockTrailRandomStrollGoal(T mob, double speedModifier) {
         this(mob, speedModifier, 1000);
     }
 
-    public <T extends PathfinderMob & VariantHolder<Holder<FlowerMobVariant>>> BlockTrailRandomStrollGoal(T mob, double speedModifier, int randomChance) {
+    public <T extends PathfinderMob & VariantHolder<? extends Holder<? extends FlowerMobVariant>>> BlockTrailRandomStrollGoal(T mob, double speedModifier, int randomChance) {
         super(mob, speedModifier);
         this.randomChance = randomChance;
     }
@@ -32,7 +32,7 @@ public class BlockTrailRandomStrollGoal extends WaterAvoidingRandomStrollGoal {
             if (!this.mob.isBaby() && serverLevel.random.nextInt(this.randomChance) == 0 &&
                     this.mob.getDeltaMovement().lengthSqr() > 1.0E-5F) {
                 BlockPos blockPos = this.mob.blockPosition();
-                BlockState blockState = ((VariantHolder<Holder<FlowerMobVariant>>) this.mob).getVariant()
+                BlockState blockState = ((VariantHolder<Holder<? extends FlowerMobVariant>>) this.mob).getVariant()
                         .value()
                         .blockState();
                 if (serverLevel.getBlockState(blockPos).isAir() && blockState.canSurvive(serverLevel, blockPos)) {

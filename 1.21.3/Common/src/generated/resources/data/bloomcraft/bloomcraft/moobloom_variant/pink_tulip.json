@@ -3,5 +3,11 @@
   "carried_block": {
     "Name": "minecraft:pink_tulip"
   },
-  "shearing_loot_table": "bloomcraft:shearing/moobloom/pink_tulip"
+  "shearing_loot_table": "bloomcraft:shearing/moobloom/pink_tulip",
+  "suspicious_stew_effects": [
+    {
+      "duration": 180,
+      "id": "minecraft:weakness"
+    }
+  ]
 }

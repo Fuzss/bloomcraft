@@ -3,5 +3,6 @@
   "carried_block": {
     "Name": "minecraft:wither_rose"
   },
+  "laying_loot_table": "bloomcraft:gameplay/cluckbloom/laying/wither_rose",
   "shearing_loot_table": "bloomcraft:shearing/cluckbloom/wither_rose"
 }

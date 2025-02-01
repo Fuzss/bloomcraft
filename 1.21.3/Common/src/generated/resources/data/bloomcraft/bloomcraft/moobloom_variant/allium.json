@@ -3,5 +3,11 @@
   "carried_block": {
     "Name": "minecraft:allium"
   },
-  "shearing_loot_table": "bloomcraft:shearing/moobloom/allium"
+  "shearing_loot_table": "bloomcraft:shearing/moobloom/allium",
+  "suspicious_stew_effects": [
+    {
+      "duration": 80,
+      "id": "minecraft:fire_resistance"
+    }
+  ]
 }

@@ -3,5 +3,11 @@
   "carried_block": {
     "Name": "minecraft:cornflower"
   },
-  "shearing_loot_table": "bloomcraft:shearing/moobloom/cornflower"
+  "shearing_loot_table": "bloomcraft:shearing/moobloom/cornflower",
+  "suspicious_stew_effects": [
+    {
+      "duration": 120,
+      "id": "minecraft:jump_boost"
+    }
+  ]
 }

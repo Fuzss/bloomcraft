@@ -1,0 +1,13 @@
+{
+  "asset_id": "bloomcraft:entity/moobloom/rose_moobloom",
+  "carried_block": {
+    "Name": "bloomcraft:rose"
+  },
+  "shearing_loot_table": "bloomcraft:shearing/moobloom/rose",
+  "suspicious_stew_effects": [
+    {
+      "duration": 100,
+      "id": "minecraft:night_vision"
+    }
+  ]
+}

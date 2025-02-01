@@ -11,6 +11,7 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -30,16 +31,16 @@ import net.minecraft.world.item.component.SuspiciousStewEffects;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SuspiciousEffectHolder;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.storage.loot.LootTable;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.UUID;
 
-public class Moobloom extends Cow implements Shearable, VariantHolder<Holder<FlowerMobVariant>> {
-    public static final EntityDataAccessor<Holder<FlowerMobVariant>> DATA_VARIANT = SynchedEntityData.defineId(Moobloom.class,
+public class Moobloom extends Cow implements Shearable, VariantHolder<Holder<MoobloomVariant>> {
+    public static final EntityDataAccessor<Holder<MoobloomVariant>> DATA_VARIANT = SynchedEntityData.defineId(Moobloom.class,
             ModRegistry.MOOBLOOM_VARIANT_ENTITY_DATA_SERIALIZER.value());
 
     @Nullable
@@ -59,7 +60,7 @@ public class Moobloom extends Cow implements Shearable, VariantHolder<Holder<Flo
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
-        Registry<FlowerMobVariant> registry = this.registryAccess()
+        Registry<MoobloomVariant> registry = this.registryAccess()
                 .lookupOrThrow(ModRegistry.MOOBLOOM_VARIANT_REGISTRY_KEY);
         builder.define(DATA_VARIANT, registry.getAny().orElseThrow());
     }
@@ -69,13 +70,13 @@ public class Moobloom extends Cow implements Shearable, VariantHolder<Holder<Flo
         ItemStack itemInHand = player.getItemInHand(hand);
         // need both checks for clients, do not use age getter as it will never return zero
         if (itemInHand.is(Items.BOWL) && !this.isBaby() && this.age == 0) {
-            Block block = this.getVariant().value().blockState().getBlock();
-            if (block instanceof SuspiciousEffectHolder suspiciousEffectHolder) {
+            Optional<SuspiciousStewEffects> optional = this.getVariant().value().suspiciousStewEffects();
+            if (optional.isPresent()) {
 
                 if (this.level() instanceof ServerLevel serverLevel) {
-                    SuspiciousStewEffects stewEffects = suspiciousEffectHolder.getSuspiciousEffects();
+                    SuspiciousStewEffects suspiciousStewEffects = optional.get();
                     ItemStack itemStack = new ItemStack(Items.SUSPICIOUS_STEW);
-                    itemStack.set(DataComponents.SUSPICIOUS_STEW_EFFECTS, stewEffects);
+                    itemStack.set(DataComponents.SUSPICIOUS_STEW_EFFECTS, suspiciousStewEffects);
 
                     ItemStack newItemInHand = ItemUtils.createFilledResult(itemInHand, player, itemStack, false);
                     player.setItemInHand(hand, newItemInHand);
@@ -115,14 +116,14 @@ public class Moobloom extends Cow implements Shearable, VariantHolder<Holder<Flo
 
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, EntitySpawnReason spawnReason, @Nullable SpawnGroupData spawnGroupData) {
-        Holder<FlowerMobVariant> variant;
-        if (spawnGroupData instanceof FlowerMobVariantUtil.VariantGroupData variantGroupData) {
-            variant = variantGroupData.variant;
+        Holder<MoobloomVariant> variant;
+        if (spawnGroupData instanceof FlowerMobVariantUtil.VariantGroupData) {
+            variant = ((FlowerMobVariantUtil.VariantGroupData<MoobloomVariant>) spawnGroupData).variant;
         } else {
             Holder<Biome> biome = level.getBiome(this.blockPosition());
             variant = FlowerMobVariantUtil.getSpawnVariant(this.registryAccess()
                     .lookupOrThrow(ModRegistry.MOOBLOOM_VARIANT_REGISTRY_KEY), biome, level.getRandom());
-            spawnGroupData = new FlowerMobVariantUtil.VariantGroupData(variant);
+            spawnGroupData = new FlowerMobVariantUtil.VariantGroupData<>(variant);
         }
 
         this.setVariant(variant);
@@ -133,7 +134,7 @@ public class Moobloom extends Cow implements Shearable, VariantHolder<Holder<Flo
     public void thunderHit(ServerLevel serverLevel, LightningBolt lightningBolt) {
         UUID uuid = lightningBolt.getUUID();
         if (!uuid.equals(this.lastLightningBoltUUID)) {
-            Registry<FlowerMobVariant> registry = this.registryAccess()
+            Registry<MoobloomVariant> registry = this.registryAccess()
                     .lookupOrThrow(ModRegistry.MOOBLOOM_VARIANT_REGISTRY_KEY);
             int newIndex = (registry.getIdOrThrow(this.getVariant().value()) + 1) % registry.size();
             this.setVariant(registry.get(newIndex).orElseThrow(NoSuchElementException::new));
@@ -144,30 +145,33 @@ public class Moobloom extends Cow implements Shearable, VariantHolder<Holder<Flo
 
     @Override
     public void shear(ServerLevel serverLevel, SoundSource soundSource, ItemStack shearsItemStack) {
-        serverLevel.playSound(null, this, SoundEvents.MOOSHROOM_SHEAR, soundSource, 1.0F, 1.0F);
-        this.convertTo(EntityType.CHICKEN, ConversionParams.single(this, false, false), (Chicken chicken) -> {
-            serverLevel.sendParticles(ParticleTypes.EXPLOSION,
-                    this.getX(),
-                    this.getY(0.5),
-                    this.getZ(),
-                    1,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0);
-            this.dropFromShearingLootTable(serverLevel,
-                    this.getVariant().value().shearingLootTable(),
-                    shearsItemStack,
-                    (ServerLevel serverLevelX, ItemStack itemStackX) -> {
-                        for (int i = 0; i < itemStackX.getCount(); i++) {
-                            serverLevelX.addFreshEntity(new ItemEntity(serverLevelX,
-                                    this.getX(),
-                                    this.getY(1.0),
-                                    this.getZ(),
-                                    itemStackX.copyWithCount(1)));
-                        }
-                    });
-        });
+        Optional<ResourceKey<LootTable>> optional = this.getVariant().value().shearingLootTable();
+        if (optional.isPresent()) {
+            serverLevel.playSound(null, this, SoundEvents.MOOSHROOM_SHEAR, soundSource, 1.0F, 1.0F);
+            this.convertTo(EntityType.CHICKEN, ConversionParams.single(this, false, false), (Chicken chicken) -> {
+                serverLevel.sendParticles(ParticleTypes.EXPLOSION,
+                        this.getX(),
+                        this.getY(0.5),
+                        this.getZ(),
+                        1,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0);
+                this.dropFromShearingLootTable(serverLevel,
+                        optional.get(),
+                        shearsItemStack,
+                        (ServerLevel serverLevelX, ItemStack itemStackX) -> {
+                            for (int i = 0; i < itemStackX.getCount(); i++) {
+                                serverLevelX.addFreshEntity(new ItemEntity(serverLevelX,
+                                        this.getX(),
+                                        this.getY(1.0),
+                                        this.getZ(),
+                                        itemStackX.copyWithCount(1)));
+                            }
+                        });
+            });
+        }
     }
 
     @Override
@@ -176,29 +180,26 @@ public class Moobloom extends Cow implements Shearable, VariantHolder<Holder<Flo
     }
 
     @Override
-    public void setVariant(Holder<FlowerMobVariant> variant) {
+    public void setVariant(Holder<MoobloomVariant> variant) {
         this.entityData.set(DATA_VARIANT, variant);
     }
 
     @Override
-    public Holder<FlowerMobVariant> getVariant() {
+    public Holder<MoobloomVariant> getVariant() {
         return this.entityData.get(DATA_VARIANT);
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        FlowerMobVariant.codec(ModRegistry.MOOBLOOM_VARIANT_REGISTRY_KEY)
-                .encodeStart(NbtOps.INSTANCE, this.getVariant())
+        MoobloomVariant.CODEC.encodeStart(NbtOps.INSTANCE, this.getVariant())
                 .ifSuccess((Tag tagX) -> tag.put("variant", tagX));
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        FlowerMobVariant.codec(ModRegistry.MOOBLOOM_VARIANT_REGISTRY_KEY)
-                .parse(NbtOps.INSTANCE, tag.get("variant"))
-                .ifSuccess(this::setVariant);
+        MoobloomVariant.CODEC.parse(NbtOps.INSTANCE, tag.get("variant")).ifSuccess(this::setVariant);
     }
 
     @Nullable

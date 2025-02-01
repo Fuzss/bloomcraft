@@ -4,13 +4,13 @@ import fuzs.bloomcraft.init.ModRegistry;
 import fuzs.bloomcraft.world.entity.ai.goal.BlockTrailRandomStrollGoal;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -23,22 +23,22 @@ import net.minecraft.world.entity.animal.Chicken;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.component.SuspiciousStewEffects;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SuspiciousEffectHolder;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.storage.loot.BuiltInLootTables;
+import net.minecraft.world.level.storage.loot.LootTable;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.function.BiConsumer;
 
-public class Cluckbloom extends Chicken implements Shearable, VariantHolder<Holder<FlowerMobVariant>> {
-    public static final EntityDataAccessor<Holder<FlowerMobVariant>> DATA_VARIANT = SynchedEntityData.defineId(
+public class Cluckbloom extends Chicken implements Shearable, VariantHolder<Holder<CluckbloomVariant>> {
+    public static final EntityDataAccessor<Holder<CluckbloomVariant>> DATA_VARIANT = SynchedEntityData.defineId(
             Cluckbloom.class,
             ModRegistry.CLUCKBLOOM_VARIANT_ENTITY_DATA_SERIALIZER.value());
 
@@ -59,7 +59,7 @@ public class Cluckbloom extends Chicken implements Shearable, VariantHolder<Hold
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
-        Registry<FlowerMobVariant> registry = this.registryAccess()
+        Registry<CluckbloomVariant> registry = this.registryAccess()
                 .lookupOrThrow(ModRegistry.CLUCKBLOOM_VARIANT_REGISTRY_KEY);
         builder.define(DATA_VARIANT, registry.getAny().orElseThrow());
     }
@@ -67,40 +67,7 @@ public class Cluckbloom extends Chicken implements Shearable, VariantHolder<Hold
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemInHand = player.getItemInHand(hand);
-        // need both checks for clients, do not use age getter as it will never return zero
-        if (itemInHand.is(Items.BOWL) && !this.isBaby() && this.age == 0) {
-            Block block = this.getVariant().value().blockState().getBlock();
-            if (block instanceof SuspiciousEffectHolder suspiciousEffectHolder) {
-
-                if (this.level() instanceof ServerLevel serverLevel) {
-                    SuspiciousStewEffects stewEffects = suspiciousEffectHolder.getSuspiciousEffects();
-                    ItemStack itemStack = new ItemStack(Items.SUSPICIOUS_STEW);
-                    itemStack.set(DataComponents.SUSPICIOUS_STEW_EFFECTS, stewEffects);
-
-                    ItemStack newItemInHand = ItemUtils.createFilledResult(itemInHand, player, itemStack, false);
-                    player.setItemInHand(hand, newItemInHand);
-
-                    // use this as a cooldown, it will tick down to zero again
-                    this.setAge(6000);
-
-                    for (int j = 0; j < 4; j++) {
-                        serverLevel.addParticle(ParticleTypes.EFFECT,
-                                this.getX() + this.random.nextDouble() / 2.0,
-                                this.getY(0.5),
-                                this.getZ() + this.random.nextDouble() / 2.0,
-                                0.0,
-                                this.random.nextDouble() / 5.0,
-                                0.0);
-                    }
-
-                    this.playSound(SoundEvents.MOOSHROOM_MILK_SUSPICIOUSLY, 1.0F, 1.0F);
-                }
-
-                return InteractionResult.SUCCESS;
-            }
-
-            return InteractionResult.PASS;
-        } else if (itemInHand.is(Items.SHEARS) && this.readyForShearing()) {
+        if (itemInHand.is(Items.SHEARS) && this.readyForShearing()) {
             if (this.level() instanceof ServerLevel serverLevel) {
                 this.shear(serverLevel, SoundSource.PLAYERS, itemInHand);
                 this.gameEvent(GameEvent.SHEAR, player);
@@ -115,21 +82,31 @@ public class Cluckbloom extends Chicken implements Shearable, VariantHolder<Hold
 
     @Override
     public void aiStep() {
-        // prevent chicken from laying an egg
-        this.eggTime = 6000;
+        if (this.getVariant().value().layingLootTable().isEmpty()) {
+            // prevent chicken from laying an egg
+            this.eggTime = 6000;
+        }
         super.aiStep();
     }
 
     @Override
+    public boolean dropFromGiftLootTable(ServerLevel level, ResourceKey<LootTable> lootTable, BiConsumer<ServerLevel, ItemStack> dropConsumer) {
+        return super.dropFromGiftLootTable(level,
+                lootTable == BuiltInLootTables.CHICKEN_LAY ?
+                        this.getVariant().value().layingLootTable().orElse(lootTable) : lootTable,
+                dropConsumer);
+    }
+
+    @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, EntitySpawnReason spawnReason, @Nullable SpawnGroupData spawnGroupData) {
-        Holder<FlowerMobVariant> variant;
-        if (spawnGroupData instanceof FlowerMobVariantUtil.VariantGroupData variantGroupData) {
-            variant = variantGroupData.variant;
+        Holder<CluckbloomVariant> variant;
+        if (spawnGroupData instanceof FlowerMobVariantUtil.VariantGroupData) {
+            variant = ((FlowerMobVariantUtil.VariantGroupData<CluckbloomVariant>) spawnGroupData).variant;
         } else {
             Holder<Biome> biome = level.getBiome(this.blockPosition());
             variant = FlowerMobVariantUtil.getSpawnVariant(this.registryAccess()
                     .lookupOrThrow(ModRegistry.CLUCKBLOOM_VARIANT_REGISTRY_KEY), biome, level.getRandom());
-            spawnGroupData = new FlowerMobVariantUtil.VariantGroupData(variant);
+            spawnGroupData = new FlowerMobVariantUtil.VariantGroupData<>(variant);
         }
 
         this.setVariant(variant);
@@ -140,7 +117,7 @@ public class Cluckbloom extends Chicken implements Shearable, VariantHolder<Hold
     public void thunderHit(ServerLevel serverLevel, LightningBolt lightningBolt) {
         UUID uuid = lightningBolt.getUUID();
         if (!uuid.equals(this.lastLightningBoltUUID)) {
-            Registry<FlowerMobVariant> registry = this.registryAccess()
+            Registry<CluckbloomVariant> registry = this.registryAccess()
                     .lookupOrThrow(ModRegistry.CLUCKBLOOM_VARIANT_REGISTRY_KEY);
             int newIndex = (registry.getIdOrThrow(this.getVariant().value()) + 1) % registry.size();
             this.setVariant(registry.get(newIndex).orElseThrow(NoSuchElementException::new));
@@ -151,30 +128,33 @@ public class Cluckbloom extends Chicken implements Shearable, VariantHolder<Hold
 
     @Override
     public void shear(ServerLevel serverLevel, SoundSource soundSource, ItemStack shearsItemStack) {
-        serverLevel.playSound(null, this, SoundEvents.MOOSHROOM_SHEAR, soundSource, 1.0F, 1.0F);
-        this.convertTo(EntityType.CHICKEN, ConversionParams.single(this, false, false), (Chicken chicken) -> {
-            serverLevel.sendParticles(ParticleTypes.EXPLOSION,
-                    this.getX(),
-                    this.getY(0.5),
-                    this.getZ(),
-                    1,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0);
-            this.dropFromShearingLootTable(serverLevel,
-                    this.getVariant().value().shearingLootTable(),
-                    shearsItemStack,
-                    (ServerLevel serverLevelX, ItemStack itemStackX) -> {
-                        for (int i = 0; i < itemStackX.getCount(); i++) {
-                            serverLevelX.addFreshEntity(new ItemEntity(serverLevelX,
-                                    this.getX(),
-                                    this.getY(1.0),
-                                    this.getZ(),
-                                    itemStackX.copyWithCount(1)));
-                        }
-                    });
-        });
+        Optional<ResourceKey<LootTable>> optional = this.getVariant().value().shearingLootTable();
+        if (optional.isPresent()) {
+            serverLevel.playSound(null, this, SoundEvents.MOOSHROOM_SHEAR, soundSource, 1.0F, 1.0F);
+            this.convertTo(EntityType.CHICKEN, ConversionParams.single(this, false, false), (Chicken chicken) -> {
+                serverLevel.sendParticles(ParticleTypes.EXPLOSION,
+                        this.getX(),
+                        this.getY(0.5),
+                        this.getZ(),
+                        1,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0);
+                this.dropFromShearingLootTable(serverLevel,
+                        optional.get(),
+                        shearsItemStack,
+                        (ServerLevel serverLevelX, ItemStack itemStackX) -> {
+                            for (int i = 0; i < itemStackX.getCount(); i++) {
+                                serverLevelX.addFreshEntity(new ItemEntity(serverLevelX,
+                                        this.getX(),
+                                        this.getY(1.0),
+                                        this.getZ(),
+                                        itemStackX.copyWithCount(1)));
+                            }
+                        });
+            });
+        }
     }
 
     @Override
@@ -183,29 +163,26 @@ public class Cluckbloom extends Chicken implements Shearable, VariantHolder<Hold
     }
 
     @Override
-    public void setVariant(Holder<FlowerMobVariant> variant) {
+    public void setVariant(Holder<CluckbloomVariant> variant) {
         this.entityData.set(DATA_VARIANT, variant);
     }
 
     @Override
-    public Holder<FlowerMobVariant> getVariant() {
+    public Holder<CluckbloomVariant> getVariant() {
         return this.entityData.get(DATA_VARIANT);
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        FlowerMobVariant.codec(ModRegistry.CLUCKBLOOM_VARIANT_REGISTRY_KEY)
-                .encodeStart(NbtOps.INSTANCE, this.getVariant())
+        CluckbloomVariant.CODEC.encodeStart(NbtOps.INSTANCE, this.getVariant())
                 .ifSuccess((Tag tagX) -> tag.put("variant", tagX));
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        FlowerMobVariant.codec(ModRegistry.CLUCKBLOOM_VARIANT_REGISTRY_KEY)
-                .parse(NbtOps.INSTANCE, tag.get("variant"))
-                .ifSuccess(this::setVariant);
+        CluckbloomVariant.CODEC.parse(NbtOps.INSTANCE, tag.get("variant")).ifSuccess(this::setVariant);
     }
 
     @Nullable

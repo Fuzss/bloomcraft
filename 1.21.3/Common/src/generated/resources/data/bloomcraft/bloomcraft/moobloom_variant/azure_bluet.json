@@ -3,5 +3,10 @@
   "carried_block": {
     "Name": "minecraft:azure_bluet"
   },
-  "shearing_loot_table": "bloomcraft:shearing/moobloom/azure_bluet"
+  "shearing_loot_table": "bloomcraft:shearing/moobloom/azure_bluet",
+  "suspicious_stew_effects": [
+    {
+      "id": "minecraft:blindness"
+    }
+  ]
 }

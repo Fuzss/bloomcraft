@@ -3,5 +3,6 @@
   "carried_block": {
     "Name": "minecraft:cornflower"
   },
+  "laying_loot_table": "bloomcraft:gameplay/cluckbloom/laying/cornflower",
   "shearing_loot_table": "bloomcraft:shearing/cluckbloom/cornflower"
 }

@@ -3,5 +3,11 @@
   "carried_block": {
     "Name": "minecraft:torchflower"
   },
-  "shearing_loot_table": "bloomcraft:shearing/moobloom/torchflower"
+  "shearing_loot_table": "bloomcraft:shearing/moobloom/torchflower",
+  "suspicious_stew_effects": [
+    {
+      "duration": 100,
+      "id": "minecraft:night_vision"
+    }
+  ]
 }

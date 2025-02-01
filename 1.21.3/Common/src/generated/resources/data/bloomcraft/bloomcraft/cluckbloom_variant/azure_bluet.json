@@ -3,5 +3,6 @@
   "carried_block": {
     "Name": "minecraft:azure_bluet"
   },
+  "laying_loot_table": "bloomcraft:gameplay/cluckbloom/laying/azure_bluet",
   "shearing_loot_table": "bloomcraft:shearing/cluckbloom/azure_bluet"
 }
