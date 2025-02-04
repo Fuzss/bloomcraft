@@ -1,9 +1,7 @@
 package fuzs.bloomcraft;
 
 import fuzs.bloomcraft.handler.HugeFlowerBoneMealHandler;
-import fuzs.bloomcraft.init.ModBlocks;
-import fuzs.bloomcraft.init.ModItems;
-import fuzs.bloomcraft.init.ModRegistry;
+import fuzs.bloomcraft.init.*;
 import fuzs.bloomcraft.util.FlowerPatchFeatureHelper;
 import fuzs.bloomcraft.world.entity.animal.CluckbloomVariant;
 import fuzs.bloomcraft.world.entity.animal.MoobloomVariant;
@@ -24,6 +22,8 @@ import net.minecraft.world.entity.animal.Cow;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.properties.BlockSetType;
+import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.Heightmap;
 import org.slf4j.Logger;
@@ -46,6 +46,10 @@ public class Bloomcraft implements ModConstructor {
 
     @Override
     public void onCommonSetup() {
+        ModBlockFamilies.getAllFamilyRegistrars().forEach((BlockFamilyRegistrar registrar) -> {
+            BlockSetType.register(registrar.getBlockSetType());
+            WoodType.register(registrar.getWoodType());
+        });
         if (ModLoaderEnvironment.INSTANCE.getModLoader().isForgeLike()) {
             ModRegistry.registerTerrablenderRegions();
         }
