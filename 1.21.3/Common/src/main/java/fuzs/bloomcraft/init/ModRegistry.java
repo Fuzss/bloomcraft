@@ -79,22 +79,48 @@ public class ModRegistry {
     }
 
     public static void registerTerrablenderRegions() {
-        SurfaceRules.RuleSource ruleSource = SurfaceRules.sequence(SurfaceRules.ifTrue(SurfaceRules.isBiome(
-                                FLOWERING_GARDEN_BIOME),
-                        SurfaceRules.state(ModBlocks.FLOWERING_GRASS_BLOCK.value().defaultBlockState())),
-                SurfaceRules.sequence(SurfaceRules.ifTrue(SurfaceRules.waterBlockCheck(0, 0),
-                                SurfaceRules.state(Blocks.GRASS_BLOCK.defaultBlockState())),
-                        SurfaceRules.state(Blocks.DIRT.defaultBlockState())));
-        SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, Bloomcraft.MOD_ID, ruleSource);
+        SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD,
+                Bloomcraft.MOD_ID,
+                overworldLike());
         // vanilla is 10, lower values make the region more rare
         Regions.register(new Region(Bloomcraft.id("overworld"), RegionType.OVERWORLD, 5) {
             @Override
             public void addBiomes(Registry<Biome> registry, Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> mapper) {
-//                this.addBiomeSimilar(mapper, Biomes.MUSHROOM_FIELDS, FLOWERING_GARDEN_BIOME);
                 this.addModifiedVanillaOverworldBiomes(mapper, ((ModifiedVanillaOverworldBuilder builder) -> {
                     builder.replaceBiome(Biomes.MUSHROOM_FIELDS, FLOWERING_GARDEN_BIOME);
                 }));
             }
         });
+    }
+
+    private static final SurfaceRules.RuleSource STONE = makeStateRule(Blocks.STONE);
+    private static final SurfaceRules.RuleSource DIRT = makeStateRule(Blocks.DIRT);
+    private static final SurfaceRules.RuleSource GRASS_BLOCK = makeStateRule(Blocks.GRASS_BLOCK);
+    private static final SurfaceRules.RuleSource FLOWERING_GRASS = makeStateRule(ModBlocks.FLOWERING_GRASS_BLOCK.value());
+    private static final SurfaceRules.RuleSource GRAVEL = makeStateRule(Blocks.GRAVEL);
+
+    private static SurfaceRules.RuleSource makeStateRule(Block block) {
+        return SurfaceRules.state(block.defaultBlockState());
+    }
+
+    static SurfaceRules.RuleSource overworldLike() {
+        SurfaceRules.ConditionSource conditionSource8 = SurfaceRules.waterBlockCheck(-1, 0);
+        SurfaceRules.ConditionSource conditionSource9 = SurfaceRules.waterBlockCheck(0, 0);
+        SurfaceRules.ConditionSource conditionSource10 = SurfaceRules.waterStartCheck(-6, -1);
+
+        SurfaceRules.RuleSource ruleSource = SurfaceRules.sequence(SurfaceRules.ifTrue(conditionSource9, GRASS_BLOCK),
+                DIRT);
+        SurfaceRules.RuleSource ruleSource3 = SurfaceRules.sequence(SurfaceRules.ifTrue(SurfaceRules.ON_CEILING, STONE),
+                GRAVEL);
+
+        SurfaceRules.RuleSource ruleSource8 = SurfaceRules.sequence(SurfaceRules.ifTrue(SurfaceRules.isBiome(
+                FLOWERING_GARDEN_BIOME), FLOWERING_GRASS), ruleSource);
+
+        SurfaceRules.RuleSource ruleSource9 = SurfaceRules.sequence(SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR,
+                        SurfaceRules.ifTrue(conditionSource8, ruleSource8)),
+                SurfaceRules.ifTrue(conditionSource10, SurfaceRules.ifTrue(SurfaceRules.UNDER_FLOOR, DIRT)),
+                SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, ruleSource3));
+
+        return SurfaceRules.ifTrue(SurfaceRules.abovePreliminarySurface(), ruleSource9);
     }
 }
