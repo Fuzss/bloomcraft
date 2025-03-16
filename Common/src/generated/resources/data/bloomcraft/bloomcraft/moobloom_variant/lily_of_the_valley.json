@@ -1,0 +1,7 @@
+{
+  "asset_id": "bloomcraft:entity/moobloom/lily_of_the_valley_moobloom",
+  "carried_block": {
+    "Name": "minecraft:lily_of_the_valley"
+  },
+  "shearing_loot_table": "bloomcraft:shearing/moobloom/lily_of_the_valley"
+}
