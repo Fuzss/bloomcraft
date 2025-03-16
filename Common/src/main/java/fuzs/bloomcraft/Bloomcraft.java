@@ -5,8 +5,9 @@ import fuzs.bloomcraft.init.ModItems;
 import fuzs.bloomcraft.init.ModRegistry;
 import fuzs.bloomcraft.util.FlowerPatchFeatureHelper;
 import fuzs.bloomcraft.world.entity.animal.FlowerMobVariant;
+import fuzs.puzzleslib.api.biome.v1.BiomeLoadingContext;
 import fuzs.puzzleslib.api.biome.v1.BiomeLoadingPhase;
-import fuzs.puzzleslib.api.core.v1.ContentRegistrationFlags;
+import fuzs.puzzleslib.api.biome.v1.BiomeModificationContext;
 import fuzs.puzzleslib.api.core.v1.ModConstructor;
 import fuzs.puzzleslib.api.core.v1.context.*;
 import fuzs.puzzleslib.api.core.v1.utility.ResourceLocationHelper;
@@ -36,8 +37,8 @@ public class Bloomcraft implements ModConstructor {
 
     @Override
     public void onDataPackRegistriesContext(DataPackRegistriesContext context) {
-        context.registerSynced(ModRegistry.MOOBLOOM_VARIANT_REGISTRY_KEY, FlowerMobVariant.DIRECT_CODEC);
-        context.registerSynced(ModRegistry.CLUCKBLOOM_VARIANT_REGISTRY_KEY, FlowerMobVariant.DIRECT_CODEC);
+        context.registerSyncedRegistry(ModRegistry.MOOBLOOM_VARIANT_REGISTRY_KEY, FlowerMobVariant.DIRECT_CODEC);
+        context.registerSyncedRegistry(ModRegistry.CLUCKBLOOM_VARIANT_REGISTRY_KEY, FlowerMobVariant.DIRECT_CODEC);
     }
 
     @Override
@@ -59,20 +60,18 @@ public class Bloomcraft implements ModConstructor {
     }
 
     @Override
-    public void onRegisterFlammableBlocks(FlammableBlocksContext context) {
-        context.registerFlammable(60, 100, ModBlocks.BUTTERCUP.value(), ModBlocks.PINK_DAISY.value());
-    }
-
-    @Override
-    public void onRegisterCompostableBlocks(CompostableBlocksContext context) {
-        context.registerCompostable(0.65F, ModItems.BUTTERCUP, ModItems.PINK_DAISY);
+    public void onRegisterGameplayContent(GameplayContentContext context) {
+        context.registerFlammable(ModBlocks.BUTTERCUP, 60, 100);
+        context.registerFlammable(ModBlocks.PINK_DAISY, 60, 100);
+        context.registerCompostable(ModItems.BUTTERCUP, 0.65F);
+        context.registerCompostable(ModItems.PINK_DAISY, 0.65F);
     }
 
     @Override
     public void onRegisterBiomeModifications(BiomeModificationsContext context) {
-        context.register(BiomeLoadingPhase.ADDITIONS, biomeLoadingContext -> {
+        context.registerBiomeModification(BiomeLoadingPhase.ADDITIONS, (BiomeLoadingContext biomeLoadingContext) -> {
             return biomeLoadingContext.is(Biomes.FLOWER_FOREST);
-        }, biomeModificationContext -> {
+        }, (BiomeModificationContext biomeModificationContext) -> {
             biomeModificationContext.mobSpawnSettings()
                     .addSpawn(MobCategory.CREATURE,
                             new MobSpawnSettings.SpawnerData(ModRegistry.MOOBLOOM_ENTITY_TYPE.value(), 16, 4, 8));
@@ -80,31 +79,30 @@ public class Bloomcraft implements ModConstructor {
                     .addSpawn(MobCategory.CREATURE,
                             new MobSpawnSettings.SpawnerData(ModRegistry.CLUCKBLOOM_ENTITY_TYPE.value(), 20, 4, 8));
         });
-        context.register(BiomeLoadingPhase.REMOVALS, biomeLoadingContext -> {
+        context.registerBiomeModification(BiomeLoadingPhase.REMOVALS, (BiomeLoadingContext biomeLoadingContext) -> {
             return biomeLoadingContext.is(Biomes.FLOWER_FOREST);
-        }, biomeModificationContext -> {
+        }, (BiomeModificationContext biomeModificationContext) -> {
             biomeModificationContext.mobSpawnSettings().removeSpawnsOfEntityType(EntityType.COW);
             biomeModificationContext.mobSpawnSettings().removeSpawnsOfEntityType(EntityType.CHICKEN);
         });
-        context.register(BiomeLoadingPhase.MODIFICATIONS, biomeLoadingContext -> {
-            return biomeLoadingContext.is(ModRegistry.HAS_BUTTERCUP_BIOME_TAG);
-        }, biomeModificationContext -> {
-            FlowerPatchFeatureHelper.registerFlowerFeatureModification(biomeModificationContext.generationSettings()
-                            .getFeatures(GenerationStep.Decoration.VEGETAL_DECORATION),
-                    ModBlocks.BUTTERCUP.value().defaultBlockState());
-        });
-        context.register(BiomeLoadingPhase.MODIFICATIONS, biomeLoadingContext -> {
-            return biomeLoadingContext.is(ModRegistry.HAS_PINK_DAISY_BIOME_TAG);
-        }, biomeModificationContext -> {
-            FlowerPatchFeatureHelper.registerFlowerFeatureModification(biomeModificationContext.generationSettings()
-                            .getFeatures(GenerationStep.Decoration.VEGETAL_DECORATION),
-                    ModBlocks.PINK_DAISY.value().defaultBlockState());
-        });
-    }
-
-    @Override
-    public ContentRegistrationFlags[] getContentRegistrationFlags() {
-        return new ContentRegistrationFlags[]{ContentRegistrationFlags.BIOME_MODIFICATIONS};
+        context.registerBiomeModification(BiomeLoadingPhase.MODIFICATIONS,
+                (BiomeLoadingContext biomeLoadingContext) -> {
+                    return biomeLoadingContext.is(ModRegistry.HAS_BUTTERCUP_BIOME_TAG);
+                },
+                (BiomeModificationContext biomeModificationContext) -> {
+                    FlowerPatchFeatureHelper.registerFlowerFeatureModification(biomeModificationContext.generationSettings()
+                                    .getFeatures(GenerationStep.Decoration.VEGETAL_DECORATION),
+                            ModBlocks.BUTTERCUP.value().defaultBlockState());
+                });
+        context.registerBiomeModification(BiomeLoadingPhase.MODIFICATIONS,
+                (BiomeLoadingContext biomeLoadingContext) -> {
+                    return biomeLoadingContext.is(ModRegistry.HAS_PINK_DAISY_BIOME_TAG);
+                },
+                (BiomeModificationContext biomeModificationContext) -> {
+                    FlowerPatchFeatureHelper.registerFlowerFeatureModification(biomeModificationContext.generationSettings()
+                                    .getFeatures(GenerationStep.Decoration.VEGETAL_DECORATION),
+                            ModBlocks.PINK_DAISY.value().defaultBlockState());
+                });
     }
 
     public static ResourceLocation id(String path) {

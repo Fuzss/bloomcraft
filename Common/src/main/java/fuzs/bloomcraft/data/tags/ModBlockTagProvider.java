@@ -16,7 +16,7 @@ public class ModBlockTagProvider extends AbstractTagProvider<Block> {
 
     @Override
     public void addTags(HolderLookup.Provider provider) {
-        this.add(BlockTags.SMALL_FLOWERS).add(ModBlocks.BUTTERCUP.value(), ModBlocks.PINK_DAISY.value());
-        this.add(BlockTags.FLOWER_POTS).add(ModBlocks.POTTED_BUTTERCUP.value(), ModBlocks.POTTED_PINK_DAISY.value());
+        this.tag(BlockTags.SMALL_FLOWERS).add(ModBlocks.BUTTERCUP.value(), ModBlocks.PINK_DAISY.value());
+        this.tag(BlockTags.FLOWER_POTS).add(ModBlocks.POTTED_BUTTERCUP.value(), ModBlocks.POTTED_PINK_DAISY.value());
     }
 }

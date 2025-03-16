@@ -11,8 +11,8 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.state.ChickenRenderState;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class CluckbloomBlockStateLayer<T extends ChickenRenderState & BlockStateCarrierRenderState> extends RenderLayer<T, ChickenModel> {
@@ -68,7 +68,7 @@ public class CluckbloomBlockStateLayer<T extends ChickenRenderState & BlockState
         if (outlineOnly) {
             this.blockRenderer.getModelRenderer()
                     .renderModel(poseStack.last(),
-                            buffer.getBuffer(RenderType.outline(InventoryMenu.BLOCK_ATLAS)),
+                            buffer.getBuffer(RenderType.outline(TextureAtlas.LOCATION_BLOCKS)),
                             blockState,
                             model,
                             0.0F,

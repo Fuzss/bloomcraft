@@ -16,6 +16,6 @@ public class ModEntityTypeTagProvider extends AbstractTagProvider<EntityType<?>>
 
     @Override
     public void addTags(HolderLookup.Provider registries) {
-        this.add(EntityTypeTags.FALL_DAMAGE_IMMUNE).add(ModRegistry.CLUCKBLOOM_ENTITY_TYPE.value());
+        this.tag(EntityTypeTags.FALL_DAMAGE_IMMUNE).add(ModRegistry.CLUCKBLOOM_ENTITY_TYPE.value());
     }
 }

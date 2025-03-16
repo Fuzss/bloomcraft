@@ -11,8 +11,8 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.block.state.BlockState;
 
 /**
@@ -88,7 +88,7 @@ public class MoobloomBlockStateLayer<T extends LivingEntityRenderState & BlockSt
         if (outlineOnly) {
             this.blockRenderer.getModelRenderer()
                     .renderModel(poseStack.last(),
-                            buffer.getBuffer(RenderType.outline(InventoryMenu.BLOCK_ATLAS)),
+                            buffer.getBuffer(RenderType.outline(TextureAtlas.LOCATION_BLOCKS)),
                             state,
                             model,
                             0.0F,
