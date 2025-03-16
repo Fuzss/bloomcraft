@@ -1,0 +1,7 @@
+{
+  "asset_id": "bloomcraft:entity/cluckbloom/pink_daisy_cluckbloom",
+  "carried_block": {
+    "Name": "bloomcraft:pink_daisy"
+  },
+  "shearing_loot_table": "bloomcraft:shearing/cluckbloom/pink_daisy"
+}
