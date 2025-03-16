@@ -1,7 +1,10 @@
 package fuzs.bloomcraft.init;
 
 import fuzs.bloomcraft.world.entity.animal.FlowerMobVariant;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 
 public class ModMoobloomVariants {
     public static final ResourceKey<FlowerMobVariant> DANDELION = register("dandelion");
@@ -21,11 +24,30 @@ public class ModMoobloomVariants {
     public static final ResourceKey<FlowerMobVariant> BUTTERCUP = register("buttercup");
     public static final ResourceKey<FlowerMobVariant> PINK_DAISY = register("pink_daisy");
 
-    public static void bootstrap() {
-        // NO-OP
-    }
-
     private static ResourceKey<FlowerMobVariant> register(String path) {
         return ModRegistry.REGISTRIES.makeResourceKey(ModRegistry.MOOBLOOM_VARIANT_REGISTRY_KEY, path);
+    }
+
+    public static void bootstrap(BootstrapContext<FlowerMobVariant> context) {
+        register(context, DANDELION, Blocks.DANDELION);
+        register(context, POPPY, Blocks.POPPY);
+        register(context, BLUE_ORCHID, Blocks.BLUE_ORCHID);
+        register(context, ALLIUM, Blocks.ALLIUM);
+        register(context, AZURE_BLUET, Blocks.AZURE_BLUET);
+        register(context, RED_TULIP, Blocks.RED_TULIP);
+        register(context, ORANGE_TULIP, Blocks.ORANGE_TULIP);
+        register(context, WHITE_TULIP, Blocks.WHITE_TULIP);
+        register(context, PINK_TULIP, Blocks.PINK_TULIP);
+        register(context, OXEYE_DAISY, Blocks.OXEYE_DAISY);
+        register(context, CORNFLOWER, Blocks.CORNFLOWER);
+        register(context, LILY_OF_THE_VALLEY, Blocks.LILY_OF_THE_VALLEY);
+        register(context, WITHER_ROSE, Blocks.WITHER_ROSE);
+        register(context, TORCHFLOWER, Blocks.TORCHFLOWER);
+        register(context, BUTTERCUP, ModBlocks.BUTTERCUP.value());
+        register(context, PINK_DAISY, ModBlocks.PINK_DAISY.value());
+    }
+
+    private static void register(BootstrapContext<FlowerMobVariant> context, ResourceKey<FlowerMobVariant> resourceKey, Block block) {
+        context.register(resourceKey, new FlowerMobVariant(ModRegistry.MOOBLOOM_ENTITY_TYPE, resourceKey, block));
     }
 }

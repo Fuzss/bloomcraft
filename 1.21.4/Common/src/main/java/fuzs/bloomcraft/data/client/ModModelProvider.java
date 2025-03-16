@@ -4,9 +4,9 @@ import fuzs.bloomcraft.init.ModBlocks;
 import fuzs.bloomcraft.init.ModItems;
 import fuzs.puzzleslib.api.client.data.v2.AbstractModelProvider;
 import fuzs.puzzleslib.api.data.v2.core.DataProviderContext;
-import net.minecraft.data.models.BlockModelGenerators;
-import net.minecraft.data.models.ItemModelGenerators;
-import net.minecraft.data.models.model.ModelTemplates;
+import net.minecraft.client.data.models.BlockModelGenerators;
+import net.minecraft.client.data.models.ItemModelGenerators;
+import net.minecraft.client.data.models.model.ModelTemplates;
 
 public class ModModelProvider extends AbstractModelProvider {
 
@@ -16,12 +16,12 @@ public class ModModelProvider extends AbstractModelProvider {
 
     @Override
     public void addBlockModels(BlockModelGenerators builder) {
-        builder.createPlant(ModBlocks.BUTTERCUP.value(),
+        builder.createPlantWithDefaultItem(ModBlocks.BUTTERCUP.value(),
                 ModBlocks.POTTED_BUTTERCUP.value(),
-                BlockModelGenerators.TintState.NOT_TINTED);
-        builder.createPlant(ModBlocks.PINK_DAISY.value(),
+                BlockModelGenerators.PlantType.NOT_TINTED);
+        builder.createPlantWithDefaultItem(ModBlocks.PINK_DAISY.value(),
                 ModBlocks.POTTED_PINK_DAISY.value(),
-                BlockModelGenerators.TintState.NOT_TINTED);
+                BlockModelGenerators.PlantType.NOT_TINTED);
     }
 
     @Override

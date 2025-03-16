@@ -8,6 +8,7 @@ import fuzs.puzzleslib.api.init.v3.registry.RegistryManager;
 import fuzs.puzzleslib.api.init.v3.tags.TagFactory;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
+import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
@@ -22,6 +23,9 @@ public class ModRegistry {
             Bloomcraft.id("moobloom_variant"));
     public static final ResourceKey<Registry<FlowerMobVariant>> CLUCKBLOOM_VARIANT_REGISTRY_KEY = ResourceKey.createRegistryKey(
             Bloomcraft.id("cluckbloom_variant"));
+    public static final RegistrySetBuilder REGISTRY_SET_BUILDER = new RegistrySetBuilder().add(
+            MOOBLOOM_VARIANT_REGISTRY_KEY,
+            ModMoobloomVariants::bootstrap).add(CLUCKBLOOM_VARIANT_REGISTRY_KEY, ModCluckbloomVariants::bootstrap);
 
     static final RegistryManager REGISTRIES = RegistryManager.from(Bloomcraft.MOD_ID);
     public static final Holder.Reference<EntityType<Moobloom>> MOOBLOOM_ENTITY_TYPE = REGISTRIES.registerEntityType(
@@ -54,7 +58,5 @@ public class ModRegistry {
     public static void bootstrap() {
         ModBlocks.bootstrap();
         ModItems.bootstrap();
-        ModCluckbloomVariants.bootstrap();
-        ModMoobloomVariants.bootstrap();
     }
 }
