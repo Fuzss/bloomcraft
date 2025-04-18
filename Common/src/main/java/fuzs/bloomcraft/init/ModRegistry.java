@@ -9,12 +9,14 @@ import fuzs.puzzleslib.api.init.v3.tags.TagFactory;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistrySetBuilder;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.EitherHolder;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.phys.Vec3;
 
@@ -28,6 +30,20 @@ public class ModRegistry {
             ModMoobloomVariants::bootstrap).add(CLUCKBLOOM_VARIANT_REGISTRY_KEY, ModCluckbloomVariants::bootstrap);
 
     static final RegistryManager REGISTRIES = RegistryManager.from(Bloomcraft.MOD_ID);
+    public static final Holder.Reference<DataComponentType<EitherHolder<FlowerMobVariant>>> MOOBLOOM_VARIANT_DATA_COMPONENT_TYPE = REGISTRIES.registerDataComponentType(
+            "moobloom/variant",
+            (DataComponentType.Builder<EitherHolder<FlowerMobVariant>> builder) -> builder.persistent(EitherHolder.codec(
+                            MOOBLOOM_VARIANT_REGISTRY_KEY,
+                            FlowerMobVariant.codec(MOOBLOOM_VARIANT_REGISTRY_KEY)))
+                    .networkSynchronized(EitherHolder.streamCodec(MOOBLOOM_VARIANT_REGISTRY_KEY,
+                            FlowerMobVariant.streamCodec(MOOBLOOM_VARIANT_REGISTRY_KEY))));
+    public static final Holder.Reference<DataComponentType<EitherHolder<FlowerMobVariant>>> CLUCKBLOOM_VARIANT_DATA_COMPONENT_TYPE = REGISTRIES.registerDataComponentType(
+            "cluckbloom/variant",
+            (DataComponentType.Builder<EitherHolder<FlowerMobVariant>> builder) -> builder.persistent(EitherHolder.codec(
+                            CLUCKBLOOM_VARIANT_REGISTRY_KEY,
+                            FlowerMobVariant.codec(CLUCKBLOOM_VARIANT_REGISTRY_KEY)))
+                    .networkSynchronized(EitherHolder.streamCodec(CLUCKBLOOM_VARIANT_REGISTRY_KEY,
+                            FlowerMobVariant.streamCodec(CLUCKBLOOM_VARIANT_REGISTRY_KEY))));
     public static final Holder.Reference<EntityType<Moobloom>> MOOBLOOM_ENTITY_TYPE = REGISTRIES.registerEntityType(
             "moobloom",
             () -> EntityType.Builder.of(Moobloom::new, MobCategory.CREATURE)

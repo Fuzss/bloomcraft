@@ -1,14 +1,16 @@
 package fuzs.bloomcraft.world.entity.animal;
 
+import fuzs.bloomcraft.Bloomcraft;
 import fuzs.bloomcraft.init.ModRegistry;
 import fuzs.bloomcraft.world.entity.ai.goal.BlockTrailRandomStrollGoal;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponentGetter;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
@@ -22,6 +24,7 @@ import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.animal.Chicken;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.EitherHolder;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.Items;
@@ -31,14 +34,16 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SuspiciousEffectHolder;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.UUID;
 
-public class Cluckbloom extends Chicken implements Shearable, VariantHolder<Holder<FlowerMobVariant>> {
-    public static final EntityDataAccessor<Holder<FlowerMobVariant>> DATA_VARIANT = SynchedEntityData.defineId(
+public class Cluckbloom extends Chicken implements Shearable {
+    public static final EntityDataAccessor<Holder<FlowerMobVariant>> DATA_VARIANT_ID = SynchedEntityData.defineId(
             Cluckbloom.class,
             ModRegistry.CLUCKBLOOM_VARIANT_ENTITY_DATA_SERIALIZER.value());
 
@@ -53,7 +58,12 @@ public class Cluckbloom extends Chicken implements Shearable, VariantHolder<Hold
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.removeAllGoals(WaterAvoidingRandomStrollGoal.class::isInstance);
-        this.goalSelector.addGoal(5, new BlockTrailRandomStrollGoal(this, 1.0));
+        this.goalSelector.addGoal(5, new BlockTrailRandomStrollGoal(this, 1.0) {
+            @Override
+            protected BlockState getBlockState() {
+                return ((Cluckbloom) this.mob).getFlowerVariant().value().blockState();
+            }
+        });
     }
 
     @Override
@@ -61,7 +71,7 @@ public class Cluckbloom extends Chicken implements Shearable, VariantHolder<Hold
         super.defineSynchedData(builder);
         Registry<FlowerMobVariant> registry = this.registryAccess()
                 .lookupOrThrow(ModRegistry.CLUCKBLOOM_VARIANT_REGISTRY_KEY);
-        builder.define(DATA_VARIANT, registry.getAny().orElseThrow());
+        builder.define(DATA_VARIANT_ID, registry.getAny().orElseThrow());
     }
 
     @Override
@@ -69,7 +79,7 @@ public class Cluckbloom extends Chicken implements Shearable, VariantHolder<Hold
         ItemStack itemInHand = player.getItemInHand(hand);
         // need both checks for clients, do not use age getter as it will never return zero
         if (itemInHand.is(Items.BOWL) && !this.isBaby() && this.age == 0) {
-            Block block = this.getVariant().value().blockState().getBlock();
+            Block block = this.getFlowerVariant().value().blockState().getBlock();
             if (block instanceof SuspiciousEffectHolder suspiciousEffectHolder) {
 
                 if (this.level() instanceof ServerLevel serverLevel) {
@@ -132,7 +142,7 @@ public class Cluckbloom extends Chicken implements Shearable, VariantHolder<Hold
             spawnGroupData = new FlowerMobVariantUtil.VariantGroupData(variant);
         }
 
-        this.setVariant(variant);
+        this.setFlowerVariant(variant);
         return super.finalizeSpawn(level, difficulty, spawnReason, spawnGroupData);
     }
 
@@ -142,8 +152,8 @@ public class Cluckbloom extends Chicken implements Shearable, VariantHolder<Hold
         if (!uuid.equals(this.lastLightningBoltUUID)) {
             Registry<FlowerMobVariant> registry = this.registryAccess()
                     .lookupOrThrow(ModRegistry.CLUCKBLOOM_VARIANT_REGISTRY_KEY);
-            int newIndex = (registry.getIdOrThrow(this.getVariant().value()) + 1) % registry.size();
-            this.setVariant(registry.get(newIndex).orElseThrow(NoSuchElementException::new));
+            int newIndex = (registry.getIdOrThrow(this.getFlowerVariant().value()) + 1) % registry.size();
+            this.setFlowerVariant(registry.get(newIndex).orElseThrow(NoSuchElementException::new));
             this.lastLightningBoltUUID = uuid;
             this.playSound(SoundEvents.MOOSHROOM_CONVERT, 2.0F, 1.0F);
         }
@@ -163,7 +173,7 @@ public class Cluckbloom extends Chicken implements Shearable, VariantHolder<Hold
                     0.0,
                     0.0);
             this.dropFromShearingLootTable(serverLevel,
-                    this.getVariant().value().shearingLootTable(),
+                    this.getFlowerVariant().value().shearingLootTable(),
                     shearsItemStack,
                     (ServerLevel serverLevelX, ItemStack itemStackX) -> {
                         for (int i = 0; i < itemStackX.getCount(); i++) {
@@ -182,30 +192,60 @@ public class Cluckbloom extends Chicken implements Shearable, VariantHolder<Hold
         return this.isAlive() && !this.isBaby();
     }
 
-    @Override
-    public void setVariant(Holder<FlowerMobVariant> variant) {
-        this.entityData.set(DATA_VARIANT, variant);
+    public void setFlowerVariant(Holder<FlowerMobVariant> variant) {
+        this.entityData.set(DATA_VARIANT_ID, variant);
     }
 
-    @Override
-    public Holder<FlowerMobVariant> getVariant() {
-        return this.entityData.get(DATA_VARIANT);
+    public Holder<FlowerMobVariant> getFlowerVariant() {
+        return this.entityData.get(DATA_VARIANT_ID);
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        FlowerMobVariant.codec(ModRegistry.CLUCKBLOOM_VARIANT_REGISTRY_KEY)
-                .encodeStart(NbtOps.INSTANCE, this.getVariant())
-                .ifSuccess((Tag tagX) -> tag.put("variant", tagX));
+        tag.store(Bloomcraft.id("variant").toString(),
+                FlowerMobVariant.codec(ModRegistry.CLUCKBLOOM_VARIANT_REGISTRY_KEY),
+                this.registryAccess().createSerializationContext(NbtOps.INSTANCE),
+                this.getFlowerVariant());
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        FlowerMobVariant.codec(ModRegistry.CLUCKBLOOM_VARIANT_REGISTRY_KEY)
-                .parse(NbtOps.INSTANCE, tag.get("variant"))
-                .ifSuccess(this::setVariant);
+        tag.read(Bloomcraft.id("variant").toString(),
+                FlowerMobVariant.codec(ModRegistry.CLUCKBLOOM_VARIANT_REGISTRY_KEY),
+                this.registryAccess().createSerializationContext(NbtOps.INSTANCE)).ifPresent(this::setFlowerVariant);
+    }
+
+    @Nullable
+    @Override
+    public <T> T get(DataComponentType<? extends T> dataComponentType) {
+        return dataComponentType == ModRegistry.CLUCKBLOOM_VARIANT_DATA_COMPONENT_TYPE.value() ?
+                castComponentValue((DataComponentType<T>) dataComponentType,
+                        new EitherHolder<>(this.getFlowerVariant())) : super.get(dataComponentType);
+    }
+
+    @Override
+    protected void applyImplicitComponents(DataComponentGetter dataComponentGetter) {
+        this.applyImplicitComponentIfPresent(dataComponentGetter,
+                ModRegistry.CLUCKBLOOM_VARIANT_DATA_COMPONENT_TYPE.value());
+        super.applyImplicitComponents(dataComponentGetter);
+    }
+
+    @Override
+    protected <T> boolean applyImplicitComponent(DataComponentType<T> dataComponentType, T object) {
+        if (dataComponentType == ModRegistry.CLUCKBLOOM_VARIANT_DATA_COMPONENT_TYPE.value()) {
+            Optional<Holder<FlowerMobVariant>> optional = castComponentValue(ModRegistry.CLUCKBLOOM_VARIANT_DATA_COMPONENT_TYPE.value(),
+                    object).unwrap(this.registryAccess());
+            if (optional.isPresent()) {
+                this.setFlowerVariant(optional.get());
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return super.applyImplicitComponent(dataComponentType, object);
+        }
     }
 
     @Nullable
@@ -213,7 +253,7 @@ public class Cluckbloom extends Chicken implements Shearable, VariantHolder<Hold
     public Cluckbloom getBreedOffspring(ServerLevel level, AgeableMob otherParent) {
         Cluckbloom cluckbloom = (Cluckbloom) this.getType().create(level, EntitySpawnReason.BREEDING);
         if (cluckbloom != null) {
-            cluckbloom.setVariant(this.getVariant());
+            cluckbloom.setFlowerVariant(this.getFlowerVariant());
         }
 
         return cluckbloom;
