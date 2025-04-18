@@ -9,6 +9,7 @@ import net.minecraft.client.model.ChickenModel;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.entity.AgeableMobRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
@@ -26,9 +27,9 @@ public class CluckbloomRenderer extends AgeableMobRenderer<Cluckbloom, Cluckbloo
     }
 
     public static LayerDefinition createBodyLayer() {
-        // fix rotation point to be at body and not in air
-        return ChickenModel.createBodyLayer().apply(meshDefinition -> {
+        return ChickenModel.createBodyLayer().apply((MeshDefinition meshDefinition) -> {
             PartDefinition partDefinition = meshDefinition.getRoot();
+            // fix rotation point to be at body and not in air
             partDefinition.addOrReplaceChild("left_wing",
                     CubeListBuilder.create().texOffs(24, 13).addBox(0.0F, 0.0F, -3.0F, 1.0F, 4.0F, 6.0F),
                     PartPose.offset(3.0F, 13.0F, 0.0F));
@@ -54,9 +55,9 @@ public class CluckbloomRenderer extends AgeableMobRenderer<Cluckbloom, Cluckbloo
         super.extractRenderState(cluckbloom, reusedState, partialTick);
         reusedState.flap = Mth.lerp(partialTick, cluckbloom.oFlap, cluckbloom.flap);
         reusedState.flapSpeed = Mth.lerp(partialTick, cluckbloom.oFlapSpeed, cluckbloom.flapSpeed);
-        reusedState.textureLocation = FlowerMobVariant.transformTextureLocation(cluckbloom.getVariant()
+        reusedState.textureLocation = FlowerMobVariant.transformTextureLocation(cluckbloom.getFlowerVariant()
                 .value()
                 .textureLocation());
-        reusedState.blockState = cluckbloom.getVariant().value().blockState();
+        reusedState.blockState = cluckbloom.getFlowerVariant().value().blockState();
     }
 }

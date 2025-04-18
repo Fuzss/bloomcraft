@@ -4,8 +4,8 @@ accessible  field   net/minecraft/world/level/levelgen/feature/stateproviders/No
 mutable field   net/minecraft/world/level/levelgen/feature/stateproviders/NoiseThresholdProvider    highStates  Ljava/util/List;
 accessible  field   net/minecraft/world/level/levelgen/feature/stateproviders/NoiseProvider states  Ljava/util/List;
 mutable field   net/minecraft/world/level/levelgen/feature/stateproviders/NoiseProvider states  Ljava/util/List;
-accessible  field   net/minecraft/world/level/levelgen/feature/stateproviders/WeightedStateProvider weightedList    Lnet/minecraft/util/random/SimpleWeightedRandomList;
-mutable field   net/minecraft/world/level/levelgen/feature/stateproviders/WeightedStateProvider weightedList    Lnet/minecraft/util/random/SimpleWeightedRandomList;
+accessible  field   net/minecraft/world/level/levelgen/feature/stateproviders/WeightedStateProvider weightedList    Lnet/minecraft/util/random/WeightedList;
+mutable field   net/minecraft/world/level/levelgen/feature/stateproviders/WeightedStateProvider weightedList    Lnet/minecraft/util/random/WeightedList;
 accessible  field   net/minecraft/world/level/levelgen/feature/stateproviders/SimpleStateProvider   state   Lnet/minecraft/world/level/block/state/BlockState;
 accessible  field   net/minecraft/world/level/levelgen/feature/configurations/SimpleBlockConfiguration  toPlace Lnet/minecraft/world/level/levelgen/feature/stateproviders/BlockStateProvider;
 mutable field   net/minecraft/world/level/levelgen/feature/configurations/SimpleBlockConfiguration  toPlace Lnet/minecraft/world/level/levelgen/feature/stateproviders/BlockStateProvider;

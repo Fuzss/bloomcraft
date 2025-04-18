@@ -36,15 +36,9 @@ public class Bloomcraft implements ModConstructor {
     }
 
     @Override
-    public void onDataPackRegistriesContext(DataPackRegistriesContext context) {
-        context.registerSyncedRegistry(ModRegistry.MOOBLOOM_VARIANT_REGISTRY_KEY, FlowerMobVariant.DIRECT_CODEC);
-        context.registerSyncedRegistry(ModRegistry.CLUCKBLOOM_VARIANT_REGISTRY_KEY, FlowerMobVariant.DIRECT_CODEC);
-    }
-
-    @Override
-    public void onEntityAttributeCreation(EntityAttributesCreateContext context) {
-        context.registerEntityAttributes(ModRegistry.MOOBLOOM_ENTITY_TYPE.value(), Cow.createAttributes());
-        context.registerEntityAttributes(ModRegistry.CLUCKBLOOM_ENTITY_TYPE.value(), Chicken.createAttributes());
+    public void onRegisterEntityAttributes(EntityAttributesContext context) {
+        context.registerAttributes(ModRegistry.MOOBLOOM_ENTITY_TYPE.value(), Cow.createAttributes());
+        context.registerAttributes(ModRegistry.CLUCKBLOOM_ENTITY_TYPE.value(), Chicken.createAttributes());
     }
 
     @Override
@@ -68,16 +62,24 @@ public class Bloomcraft implements ModConstructor {
     }
 
     @Override
+    public void onRegisterDataPackRegistriesContext(DataPackRegistriesContext context) {
+        context.registerSyncedRegistry(ModRegistry.MOOBLOOM_VARIANT_REGISTRY_KEY, FlowerMobVariant.DIRECT_CODEC);
+        context.registerSyncedRegistry(ModRegistry.CLUCKBLOOM_VARIANT_REGISTRY_KEY, FlowerMobVariant.DIRECT_CODEC);
+    }
+
+    @Override
     public void onRegisterBiomeModifications(BiomeModificationsContext context) {
         context.registerBiomeModification(BiomeLoadingPhase.ADDITIONS, (BiomeLoadingContext biomeLoadingContext) -> {
             return biomeLoadingContext.is(Biomes.FLOWER_FOREST);
         }, (BiomeModificationContext biomeModificationContext) -> {
             biomeModificationContext.mobSpawnSettings()
                     .addSpawn(MobCategory.CREATURE,
-                            new MobSpawnSettings.SpawnerData(ModRegistry.MOOBLOOM_ENTITY_TYPE.value(), 16, 4, 8));
+                            16,
+                            new MobSpawnSettings.SpawnerData(ModRegistry.MOOBLOOM_ENTITY_TYPE.value(), 4, 8));
             biomeModificationContext.mobSpawnSettings()
                     .addSpawn(MobCategory.CREATURE,
-                            new MobSpawnSettings.SpawnerData(ModRegistry.CLUCKBLOOM_ENTITY_TYPE.value(), 20, 4, 8));
+                            20,
+                            new MobSpawnSettings.SpawnerData(ModRegistry.CLUCKBLOOM_ENTITY_TYPE.value(), 4, 8));
         });
         context.registerBiomeModification(BiomeLoadingPhase.REMOVALS, (BiomeLoadingContext biomeLoadingContext) -> {
             return biomeLoadingContext.is(Biomes.FLOWER_FOREST);
