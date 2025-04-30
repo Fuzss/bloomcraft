@@ -38,6 +38,7 @@ public class ModShearingLootProvider extends AbstractLootProvider.Simple {
         this.registerMoobloomShearingLootTable(ModMoobloomVariants.LILY_OF_THE_VALLEY, Blocks.LILY_OF_THE_VALLEY);
         this.registerMoobloomShearingLootTable(ModMoobloomVariants.WITHER_ROSE, Blocks.WITHER_ROSE);
         this.registerMoobloomShearingLootTable(ModMoobloomVariants.TORCHFLOWER, Blocks.TORCHFLOWER);
+        this.registerMoobloomShearingLootTable(ModMoobloomVariants.EYEBLOSSOM, Blocks.OPEN_EYEBLOSSOM);
         this.registerMoobloomShearingLootTable(ModMoobloomVariants.BUTTERCUP, ModBlocks.BUTTERCUP.value());
         this.registerMoobloomShearingLootTable(ModMoobloomVariants.PINK_DAISY, ModBlocks.PINK_DAISY.value());
 
@@ -55,6 +56,7 @@ public class ModShearingLootProvider extends AbstractLootProvider.Simple {
         this.registerCluckbloomShearingLootTable(ModCluckbloomVariants.LILY_OF_THE_VALLEY, Blocks.LILY_OF_THE_VALLEY);
         this.registerCluckbloomShearingLootTable(ModCluckbloomVariants.WITHER_ROSE, Blocks.WITHER_ROSE);
         this.registerCluckbloomShearingLootTable(ModCluckbloomVariants.TORCHFLOWER, Blocks.TORCHFLOWER);
+        this.registerCluckbloomShearingLootTable(ModCluckbloomVariants.EYEBLOSSOM, Blocks.OPEN_EYEBLOSSOM);
         this.registerCluckbloomShearingLootTable(ModCluckbloomVariants.BUTTERCUP, ModBlocks.BUTTERCUP.value());
         this.registerCluckbloomShearingLootTable(ModCluckbloomVariants.PINK_DAISY, ModBlocks.PINK_DAISY.value());
     }

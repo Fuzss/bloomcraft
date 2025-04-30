@@ -1,10 +1,11 @@
-// 1.21.5	2025-04-18T22:30:04.865903	Mod Shearing Loot Provider
+// 1.21.5	2025-04-30T23:06:20.063706	Mod Shearing Loot Provider
 fa9e2ac2f12cb09f140ef8e86d510275176a06f1 data/bloomcraft/loot_table/shearing/cluckbloom/allium.json
 6710de147bcb3ca3db521645bcb12dcbb50d6ecc data/bloomcraft/loot_table/shearing/cluckbloom/azure_bluet.json
 17cfab0d42032e3e8f7cad28482cea1a384b8501 data/bloomcraft/loot_table/shearing/cluckbloom/blue_orchid.json
 b860b1ee814d035033c047e27c9bd0d0ebee6513 data/bloomcraft/loot_table/shearing/cluckbloom/buttercup.json
 3efacc895717eab8a6e67a5ae193f8fc0ea9305d data/bloomcraft/loot_table/shearing/cluckbloom/cornflower.json
 5e3d9eefd352f861c46a91ee89c2b87c764a30d3 data/bloomcraft/loot_table/shearing/cluckbloom/dandelion.json
+f3dfda0650c6949aa7b141d67b76f965922904ac data/bloomcraft/loot_table/shearing/cluckbloom/eyeblossom.json
 f9b08850f7d5181a472716e5f58ca6581938808d data/bloomcraft/loot_table/shearing/cluckbloom/lily_of_the_valley.json
 3dccfa381d673c454fee45746fb77ad57ceb2670 data/bloomcraft/loot_table/shearing/cluckbloom/orange_tulip.json
 4cfb91080b4a878cdc46443a39e748760dd4fd8e data/bloomcraft/loot_table/shearing/cluckbloom/oxeye_daisy.json
@@ -21,6 +22,7 @@ bf1e016b3dfe9182461d562d9cd27232f7cd9da1 data/bloomcraft/loot_table/shearing/moo
 6f1b553168004c267c0d7f9d4cd2c78cde0ada00 data/bloomcraft/loot_table/shearing/moobloom/buttercup.json
 a7c9f083c562d2f0e05497854b32c2ef4e1ad208 data/bloomcraft/loot_table/shearing/moobloom/cornflower.json
 334cb965161b6344cedd373f185f3273b500d5ce data/bloomcraft/loot_table/shearing/moobloom/dandelion.json
+5704c12b6eca3593cb4e32e34df7908d03ab33a2 data/bloomcraft/loot_table/shearing/moobloom/eyeblossom.json
 82c5c4f3c3f6d07a7cefce3e959be95c4d40575a data/bloomcraft/loot_table/shearing/moobloom/lily_of_the_valley.json
 2e5e88e1d39a0a8e7061b375dfa3c28256543312 data/bloomcraft/loot_table/shearing/moobloom/orange_tulip.json
 308a305490f52b2bbbbbe517e500747e37cb716d data/bloomcraft/loot_table/shearing/moobloom/oxeye_daisy.json

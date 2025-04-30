@@ -21,6 +21,7 @@ public class ModCluckbloomVariants {
     public static final ResourceKey<FlowerMobVariant> LILY_OF_THE_VALLEY = register("lily_of_the_valley");
     public static final ResourceKey<FlowerMobVariant> WITHER_ROSE = register("wither_rose");
     public static final ResourceKey<FlowerMobVariant> TORCHFLOWER = register("torchflower");
+    public static final ResourceKey<FlowerMobVariant> EYEBLOSSOM = register("eyeblossom");
     public static final ResourceKey<FlowerMobVariant> BUTTERCUP = register("buttercup");
     public static final ResourceKey<FlowerMobVariant> PINK_DAISY = register("pink_daisy");
 
@@ -43,6 +44,7 @@ public class ModCluckbloomVariants {
         register(context, LILY_OF_THE_VALLEY, Blocks.LILY_OF_THE_VALLEY);
         register(context, WITHER_ROSE, Blocks.WITHER_ROSE);
         register(context, TORCHFLOWER, Blocks.TORCHFLOWER);
+        register(context, EYEBLOSSOM, Blocks.OPEN_EYEBLOSSOM);
         register(context, BUTTERCUP, ModBlocks.BUTTERCUP.value());
         register(context, PINK_DAISY, ModBlocks.PINK_DAISY.value());
     }
