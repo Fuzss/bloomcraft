@@ -1,0 +1,7 @@
+{
+  "asset_id": "bloomcraft:entity/cluckbloom/orange_tulip_cluckbloom",
+  "carried_block": {
+    "Name": "minecraft:orange_tulip"
+  },
+  "shearing_loot_table": "bloomcraft:shearing/cluckbloom/orange_tulip"
+}
