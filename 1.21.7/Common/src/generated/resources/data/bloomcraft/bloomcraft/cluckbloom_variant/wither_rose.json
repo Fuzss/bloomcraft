@@ -1,0 +1,7 @@
+{
+  "asset_id": "bloomcraft:entity/cluckbloom/wither_rose_cluckbloom",
+  "carried_block": {
+    "Name": "minecraft:wither_rose"
+  },
+  "shearing_loot_table": "bloomcraft:shearing/cluckbloom/wither_rose"
+}

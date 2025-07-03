@@ -1,0 +1,7 @@
+{
+  "asset_id": "bloomcraft:entity/moobloom/poppy_moobloom",
+  "carried_block": {
+    "Name": "minecraft:poppy"
+  },
+  "shearing_loot_table": "bloomcraft:shearing/moobloom/poppy"
+}
