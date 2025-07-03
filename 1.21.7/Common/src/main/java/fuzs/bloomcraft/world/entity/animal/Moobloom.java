@@ -9,8 +9,6 @@ import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
@@ -37,6 +35,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SuspiciousEffectHolder;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.NoSuchElementException;
@@ -195,20 +195,18 @@ public class Moobloom extends Cow implements Shearable {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
-        super.addAdditionalSaveData(tag);
-        tag.store(Bloomcraft.id("variant").toString(),
+    protected void addAdditionalSaveData(ValueOutput valueOutput) {
+        super.addAdditionalSaveData(valueOutput);
+        valueOutput.store(Bloomcraft.id("variant").toString(),
                 FlowerMobVariant.codec(ModRegistry.MOOBLOOM_VARIANT_REGISTRY_KEY),
-                this.registryAccess().createSerializationContext(NbtOps.INSTANCE),
                 this.getFlowerVariant());
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
-        tag.read(Bloomcraft.id("variant").toString(),
-                FlowerMobVariant.codec(ModRegistry.MOOBLOOM_VARIANT_REGISTRY_KEY),
-                this.registryAccess().createSerializationContext(NbtOps.INSTANCE)).ifPresent(this::setFlowerVariant);
+    protected void readAdditionalSaveData(ValueInput valueInput) {
+        super.readAdditionalSaveData(valueInput);
+        valueInput.read(Bloomcraft.id("variant").toString(),
+                FlowerMobVariant.codec(ModRegistry.MOOBLOOM_VARIANT_REGISTRY_KEY)).ifPresent(this::setFlowerVariant);
     }
 
     @Nullable
