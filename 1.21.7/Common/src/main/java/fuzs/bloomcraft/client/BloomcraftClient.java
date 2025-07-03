@@ -11,7 +11,7 @@ import fuzs.puzzleslib.api.client.core.v1.context.LayerDefinitionsContext;
 import fuzs.puzzleslib.api.client.core.v1.context.RenderTypesContext;
 import net.minecraft.client.model.ChickenModel;
 import net.minecraft.client.model.CowModel;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.world.level.block.Block;
 
 public class BloomcraftClient implements ClientModConstructor {
@@ -24,11 +24,10 @@ public class BloomcraftClient implements ClientModConstructor {
 
     @Override
     public void onRegisterBlockRenderTypes(RenderTypesContext<Block> context) {
-        context.registerRenderType(RenderType.cutout(),
-                ModBlocks.BUTTERCUP.value(),
-                ModBlocks.PINK_DAISY.value(),
-                ModBlocks.POTTED_BUTTERCUP.value(),
-                ModBlocks.POTTED_PINK_DAISY.value());
+        context.registerChunkRenderType(ModBlocks.BUTTERCUP.value(), ChunkSectionLayer.CUTOUT);
+        context.registerChunkRenderType(ModBlocks.PINK_DAISY.value(), ChunkSectionLayer.CUTOUT);
+        context.registerChunkRenderType(ModBlocks.POTTED_BUTTERCUP.value(), ChunkSectionLayer.CUTOUT);
+        context.registerChunkRenderType(ModBlocks.POTTED_PINK_DAISY.value(), ChunkSectionLayer.CUTOUT);
     }
 
     @Override
