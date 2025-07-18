@@ -1,0 +1,10 @@
+{
+  "values": {
+    "bloomcraft:buttercup": {
+      "chance": 0.65
+    },
+    "bloomcraft:pink_daisy": {
+      "chance": 0.65
+    }
+  }
+}

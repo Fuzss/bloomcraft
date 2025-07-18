@@ -1,0 +1,7 @@
+{
+  "asset_id": "bloomcraft:entity/cluckbloom/azure_bluet_cluckbloom",
+  "carried_block": {
+    "Name": "minecraft:azure_bluet"
+  },
+  "shearing_loot_table": "bloomcraft:shearing/cluckbloom/azure_bluet"
+}
