@@ -62,7 +62,7 @@ public class Bloomcraft implements ModConstructor {
     }
 
     @Override
-    public void onRegisterDataPackRegistriesContext(DataPackRegistriesContext context) {
+    public void onRegisterDataPackRegistries(DataPackRegistriesContext context) {
         context.registerSyncedRegistry(ModRegistry.MOOBLOOM_VARIANT_REGISTRY_KEY, FlowerMobVariant.DIRECT_CODEC);
         context.registerSyncedRegistry(ModRegistry.CLUCKBLOOM_VARIANT_REGISTRY_KEY, FlowerMobVariant.DIRECT_CODEC);
     }
