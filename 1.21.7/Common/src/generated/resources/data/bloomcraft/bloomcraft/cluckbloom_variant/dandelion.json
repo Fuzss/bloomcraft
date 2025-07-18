@@ -1,7 +1,0 @@
-{
-  "asset_id": "bloomcraft:entity/cluckbloom/dandelion_cluckbloom",
-  "carried_block": {
-    "Name": "minecraft:dandelion"
-  },
-  "shearing_loot_table": "bloomcraft:shearing/cluckbloom/dandelion"
-}

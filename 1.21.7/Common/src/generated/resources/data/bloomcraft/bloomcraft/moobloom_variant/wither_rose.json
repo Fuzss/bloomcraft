@@ -1,7 +1,0 @@
-{
-  "asset_id": "bloomcraft:entity/moobloom/wither_rose_moobloom",
-  "carried_block": {
-    "Name": "minecraft:wither_rose"
-  },
-  "shearing_loot_table": "bloomcraft:shearing/moobloom/wither_rose"
-}
