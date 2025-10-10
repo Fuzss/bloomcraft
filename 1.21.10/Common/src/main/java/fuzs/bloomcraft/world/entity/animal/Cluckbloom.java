@@ -9,6 +9,7 @@ import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.SpellParticleOption;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
@@ -75,8 +76,8 @@ public class Cluckbloom extends Chicken implements Shearable {
     }
 
     @Override
-    public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        ItemStack itemInHand = player.getItemInHand(hand);
+    public InteractionResult mobInteract(Player player, InteractionHand interactionHand) {
+        ItemStack itemInHand = player.getItemInHand(interactionHand);
         // need both checks for clients, do not use age getter as it will never return zero
         if (itemInHand.is(Items.BOWL) && !this.isBaby() && this.age == 0) {
             Block block = this.getFlowerVariant().value().blockState().getBlock();
@@ -88,13 +89,16 @@ public class Cluckbloom extends Chicken implements Shearable {
                     itemStack.set(DataComponents.SUSPICIOUS_STEW_EFFECTS, stewEffects);
 
                     ItemStack newItemInHand = ItemUtils.createFilledResult(itemInHand, player, itemStack, false);
-                    player.setItemInHand(hand, newItemInHand);
+                    player.setItemInHand(interactionHand, newItemInHand);
 
                     // use this as a cooldown, it will tick down to zero again
                     this.setAge(6000);
 
+                    SpellParticleOption spellParticleOption = SpellParticleOption.create(ParticleTypes.EFFECT,
+                            -1,
+                            1.0F);
                     for (int j = 0; j < 4; j++) {
-                        serverLevel.addParticle(ParticleTypes.EFFECT,
+                        serverLevel.addParticle(spellParticleOption,
                                 this.getX() + this.random.nextDouble() / 2.0,
                                 this.getY(0.5),
                                 this.getZ() + this.random.nextDouble() / 2.0,
@@ -114,12 +118,12 @@ public class Cluckbloom extends Chicken implements Shearable {
             if (this.level() instanceof ServerLevel serverLevel) {
                 this.shear(serverLevel, SoundSource.PLAYERS, itemInHand);
                 this.gameEvent(GameEvent.SHEAR, player);
-                itemInHand.hurtAndBreak(1, player, getSlotForHand(hand));
+                itemInHand.hurtAndBreak(1, player, interactionHand.asEquipmentSlot());
             }
 
             return InteractionResult.SUCCESS;
         } else {
-            return super.mobInteract(player, hand);
+            return super.mobInteract(player, interactionHand);
         }
     }
 

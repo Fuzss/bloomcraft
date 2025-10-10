@@ -4,10 +4,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import fuzs.bloomcraft.client.renderer.entity.state.BlockStateCarrierRenderState;
 import net.minecraft.client.model.ChickenModel;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
-import net.minecraft.client.renderer.block.ModelBlockRenderer;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
@@ -16,6 +15,9 @@ import net.minecraft.client.renderer.entity.state.ChickenRenderState;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.world.level.block.state.BlockState;
 
+/**
+ * @see net.minecraft.client.renderer.entity.layers.MushroomCowMushroomLayer
+ */
 public class CluckbloomBlockStateLayer<T extends ChickenRenderState & BlockStateCarrierRenderState> extends RenderLayer<T, ChickenModel> {
     private final BlockRenderDispatcher blockRenderer;
 
@@ -25,40 +27,40 @@ public class CluckbloomBlockStateLayer<T extends ChickenRenderState & BlockState
     }
 
     @Override
-    public void render(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, T renderState, float yRot, float xRot) {
+    public void submit(PoseStack poseStack, SubmitNodeCollector nodeCollector, int packedLight, T renderState, float yRot, float xRot) {
         if (!renderState.isBaby) {
-            boolean outlineOnly = renderState.appearsGlowing && renderState.isInvisible;
+            boolean outlineOnly = renderState.appearsGlowing() && renderState.isInvisible;
             if (!renderState.isInvisible || outlineOnly) {
                 BlockState blockState = renderState.blockState();
-                int overlayCoords = LivingEntityRenderer.getOverlayCoords(renderState, 0.0F);
+                int packedOverlay = LivingEntityRenderer.getOverlayCoords(renderState, 0.0F);
                 BlockStateModel blockStateModel = this.blockRenderer.getBlockModel(blockState);
-
                 poseStack.pushPose();
                 poseStack.translate(-0.03F, 0.58F, 0.09F);
                 poseStack.mulPose(Axis.YP.rotationDegrees(-6.0F));
                 poseStack.scale(-0.5F, -0.5F, 0.5F);
                 poseStack.translate(-0.5F, -0.5F, -0.5F);
-                this.renderBlockState(poseStack,
-                        bufferSource,
+                this.submitBlock(poseStack,
+                        nodeCollector,
                         packedLight,
                         outlineOnly,
+                        renderState.outlineColor,
                         blockState,
-                        overlayCoords,
+                        packedOverlay,
                         blockStateModel);
                 poseStack.popPose();
-
                 poseStack.pushPose();
                 this.getParentModel().head.translateAndRotate(poseStack);
                 poseStack.translate(0.03F, -0.6F, -0.03F);
                 poseStack.mulPose(Axis.YP.rotationDegrees(-48.0F));
                 poseStack.scale(-0.5F, -0.5F, 0.5F);
                 poseStack.translate(-0.5F, -0.5F, -0.5F);
-                this.renderBlockState(poseStack,
-                        bufferSource,
+                this.submitBlock(poseStack,
+                        nodeCollector,
                         packedLight,
                         outlineOnly,
+                        renderState.outlineColor,
                         blockState,
-                        overlayCoords,
+                        packedOverlay,
                         blockStateModel);
                 poseStack.popPose();
             }
@@ -66,21 +68,22 @@ public class CluckbloomBlockStateLayer<T extends ChickenRenderState & BlockState
     }
 
     /**
-     * @see net.minecraft.client.renderer.entity.layers.MushroomCowMushroomLayer#renderMushroomBlock(PoseStack,
-     *         MultiBufferSource, int, boolean, BlockState, int, BlockStateModel)
+     * @see net.minecraft.client.renderer.entity.layers.MushroomCowMushroomLayer#submitMushroomBlock(PoseStack,
+     *         SubmitNodeCollector, int, boolean, int, BlockState, int, BlockStateModel)
      */
-    private void renderBlockState(PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight, boolean outlineOnly, BlockState blockState, int packedOverlay, BlockStateModel blockStateModel) {
+    private void submitBlock(PoseStack poseStack, SubmitNodeCollector nodeCollector, int packedLight, boolean outlineOnly, int outlineColor, BlockState blockState, int packedOverlay, BlockStateModel model) {
         if (outlineOnly) {
-            ModelBlockRenderer.renderModel(poseStack.last(),
-                    multiBufferSource.getBuffer(RenderType.outline(TextureAtlas.LOCATION_BLOCKS)),
-                    blockStateModel,
+            nodeCollector.submitBlockModel(poseStack,
+                    RenderType.outline(TextureAtlas.LOCATION_BLOCKS),
+                    model,
                     0.0F,
                     0.0F,
                     0.0F,
                     packedLight,
-                    packedOverlay);
+                    packedOverlay,
+                    outlineColor);
         } else {
-            this.blockRenderer.renderSingleBlock(blockState, poseStack, multiBufferSource, packedLight, packedOverlay);
+            nodeCollector.submitBlock(poseStack, blockState, packedLight, packedOverlay, outlineColor);
         }
     }
 }
