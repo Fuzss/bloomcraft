@@ -1,0 +1,7 @@
+{
+  "asset_id": "bloomcraft:entity/cluckbloom/blue_orchid_cluckbloom",
+  "carried_block": {
+    "Name": "minecraft:blue_orchid"
+  },
+  "shearing_loot_table": "bloomcraft:shearing/cluckbloom/blue_orchid"
+}
