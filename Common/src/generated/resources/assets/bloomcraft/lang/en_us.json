@@ -1,0 +1,11 @@
+{
+  "block.bloomcraft.buttercup": "Buttercup",
+  "block.bloomcraft.pink_daisy": "Pink Daisy",
+  "block.bloomcraft.potted_buttercup": "Potted Buttercup",
+  "block.bloomcraft.potted_pink_daisy": "Potted Pink Daisy",
+  "entity.bloomcraft.cluckbloom": "Cluckbloom",
+  "entity.bloomcraft.moobloom": "Moobloom",
+  "item.bloomcraft.cluckbloom_spawn_egg": "Cluckbloom Spawn Egg",
+  "item.bloomcraft.moobloom_spawn_egg": "Moobloom Spawn Egg",
+  "itemGroup.bloomcraft.main": "Bloomcraft"
+}
