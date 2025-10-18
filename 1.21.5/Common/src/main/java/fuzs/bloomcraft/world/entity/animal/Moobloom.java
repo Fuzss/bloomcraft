@@ -21,7 +21,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
-import net.minecraft.world.entity.animal.Chicken;
 import net.minecraft.world.entity.animal.Cow;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -156,7 +155,7 @@ public class Moobloom extends Cow implements Shearable {
     @Override
     public void shear(ServerLevel serverLevel, SoundSource soundSource, ItemStack shearsItemStack) {
         serverLevel.playSound(null, this, SoundEvents.MOOSHROOM_SHEAR, soundSource, 1.0F, 1.0F);
-        this.convertTo(EntityType.CHICKEN, ConversionParams.single(this, false, false), (Chicken chicken) -> {
+        this.convertTo(EntityType.COW, ConversionParams.single(this, false, false), (Cow cow) -> {
             serverLevel.sendParticles(ParticleTypes.EXPLOSION,
                     this.getX(),
                     this.getY(0.5),
