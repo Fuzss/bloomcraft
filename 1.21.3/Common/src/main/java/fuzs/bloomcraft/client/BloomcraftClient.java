@@ -33,9 +33,9 @@ public class BloomcraftClient implements ClientModConstructor {
 
     @Override
     public void onRegisterLayerDefinitions(LayerDefinitionsContext context) {
-        context.registerLayerDefinition(ModModelLayers.MOOBLOOM, CowModel::createBodyLayer);
+        context.registerLayerDefinition(ModModelLayers.MOOBLOOM, MoobloomRenderer::createBodyLayer);
         context.registerLayerDefinition(ModModelLayers.MOOBLOOM_BABY,
-                () -> CowModel.createBodyLayer().apply(CowModel.BABY_TRANSFORMER));
+                () -> MoobloomRenderer.createBodyLayer().apply(CowModel.BABY_TRANSFORMER));
         context.registerLayerDefinition(ModModelLayers.CLUCKBLOOM, CluckbloomRenderer::createBodyLayer);
         context.registerLayerDefinition(ModModelLayers.CLUCKBLOOM_BABY,
                 () -> CluckbloomRenderer.createBodyLayer().apply(ChickenModel.BABY_TRANSFORMER));
