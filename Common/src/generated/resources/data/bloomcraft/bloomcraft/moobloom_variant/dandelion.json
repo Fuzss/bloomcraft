@@ -1,0 +1,7 @@
+{
+  "asset_id": "bloomcraft:entity/moobloom/dandelion_moobloom",
+  "carried_block": {
+    "Name": "minecraft:dandelion"
+  },
+  "shearing_loot_table": "bloomcraft:shearing/moobloom/dandelion"
+}
