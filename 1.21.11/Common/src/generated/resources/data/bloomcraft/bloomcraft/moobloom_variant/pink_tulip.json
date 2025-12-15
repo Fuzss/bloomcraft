@@ -1,0 +1,7 @@
+{
+  "asset_id": "bloomcraft:entity/moobloom/pink_tulip_moobloom",
+  "carried_block": {
+    "Name": "minecraft:pink_tulip"
+  },
+  "shearing_loot_table": "bloomcraft:shearing/moobloom/pink_tulip"
+}
