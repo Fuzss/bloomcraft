@@ -5,7 +5,7 @@ import fuzs.bloomcraft.client.renderer.entity.layer.CluckbloomBlockStateLayer;
 import fuzs.bloomcraft.client.renderer.entity.state.CluckbloomRenderState;
 import fuzs.bloomcraft.world.entity.animal.Cluckbloom;
 import fuzs.bloomcraft.world.entity.animal.FlowerMobVariant;
-import net.minecraft.client.model.ChickenModel;
+import net.minecraft.client.model.animal.chicken.ChickenModel;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
@@ -13,7 +13,7 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.entity.AgeableMobRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 
 public class CluckbloomRenderer extends AgeableMobRenderer<Cluckbloom, CluckbloomRenderState, ChickenModel> {
@@ -41,7 +41,7 @@ public class CluckbloomRenderer extends AgeableMobRenderer<Cluckbloom, Cluckbloo
     }
 
     @Override
-    public ResourceLocation getTextureLocation(CluckbloomRenderState renderState) {
+    public Identifier getTextureLocation(CluckbloomRenderState renderState) {
         return renderState.textureLocation;
     }
 

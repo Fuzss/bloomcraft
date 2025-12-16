@@ -3,8 +3,7 @@ package fuzs.bloomcraft.client.renderer.entity.layer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import fuzs.bloomcraft.client.renderer.entity.state.BlockStateCarrierRenderState;
-import net.minecraft.client.model.ChickenModel;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.model.animal.chicken.ChickenModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
@@ -12,6 +11,7 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.state.ChickenRenderState;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -74,7 +74,7 @@ public class CluckbloomBlockStateLayer<T extends ChickenRenderState & BlockState
     private void submitBlock(PoseStack poseStack, SubmitNodeCollector nodeCollector, int packedLight, boolean outlineOnly, int outlineColor, BlockState blockState, int packedOverlay, BlockStateModel model) {
         if (outlineOnly) {
             nodeCollector.submitBlockModel(poseStack,
-                    RenderType.outline(TextureAtlas.LOCATION_BLOCKS),
+                    RenderTypes.outline(TextureAtlas.LOCATION_BLOCKS),
                     model,
                     0.0F,
                     0.0F,

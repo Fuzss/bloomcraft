@@ -5,7 +5,7 @@ import fuzs.bloomcraft.client.renderer.entity.layer.MoobloomBlockStateLayer;
 import fuzs.bloomcraft.client.renderer.entity.state.MoobloomRenderState;
 import fuzs.bloomcraft.world.entity.animal.FlowerMobVariant;
 import fuzs.bloomcraft.world.entity.animal.Moobloom;
-import net.minecraft.client.model.CowModel;
+import net.minecraft.client.model.animal.cow.CowModel;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
@@ -13,7 +13,7 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.entity.AgeableMobRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class MoobloomRenderer extends AgeableMobRenderer<Moobloom, MoobloomRenderState, CowModel> {
 
@@ -37,7 +37,7 @@ public class MoobloomRenderer extends AgeableMobRenderer<Moobloom, MoobloomRende
     }
 
     @Override
-    public ResourceLocation getTextureLocation(MoobloomRenderState renderState) {
+    public Identifier getTextureLocation(MoobloomRenderState renderState) {
         return renderState.textureLocation;
     }
 
