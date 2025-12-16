@@ -9,8 +9,8 @@ import fuzs.puzzleslib.api.client.core.v1.ClientModConstructor;
 import fuzs.puzzleslib.api.client.core.v1.context.EntityRenderersContext;
 import fuzs.puzzleslib.api.client.core.v1.context.LayerDefinitionsContext;
 import fuzs.puzzleslib.api.client.core.v1.context.RenderTypesContext;
-import net.minecraft.client.model.ChickenModel;
-import net.minecraft.client.model.CowModel;
+import net.minecraft.client.model.animal.chicken.ChickenModel;
+import net.minecraft.client.model.animal.cow.CowModel;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.world.level.block.Block;
 

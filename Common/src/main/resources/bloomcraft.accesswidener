@@ -1,5 +1,5 @@
 accessWidener   v2  named
-accessible  field   net/minecraft/client/model/ChickenModel head    Lnet/minecraft/client/model/geom/ModelPart;
+accessible  field   net/minecraft/client/model/animal/chicken/ChickenModel  head    Lnet/minecraft/client/model/geom/ModelPart;
 accessible  field   net/minecraft/world/level/levelgen/feature/stateproviders/NoiseThresholdProvider    highStates  Ljava/util/List;
 mutable field   net/minecraft/world/level/levelgen/feature/stateproviders/NoiseThresholdProvider    highStates  Ljava/util/List;
 accessible  field   net/minecraft/world/level/levelgen/feature/stateproviders/NoiseProvider states  Ljava/util/List;

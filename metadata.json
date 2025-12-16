@@ -1,0 +1,61 @@
+{
+    "mod": {
+        "id": "bloomcraft",
+        "group": "fuzs.bloomcraft",
+        "name": "Bloomcraft",
+        "version": "21.11.0",
+        "authors": [
+            "Fuzs"
+        ],
+        "description": "Flower-covered mooblooms and cluckblooms bring fresh color and life to your world!",
+        "license": "MPL-2.0"
+    },
+    "dependencies": [
+        {
+            "name": "fabricapi",
+            "type": "required",
+            "platforms": [
+                "fabric"
+            ]
+        },
+        {
+            "name": "forgeconfigapiport",
+            "type": "required",
+            "platforms": [
+                "fabric"
+            ]
+        },
+        {
+            "name": "puzzleslib",
+            "type": "required",
+            "platforms": [
+                "fabric",
+                "neoforge"
+            ]
+        }
+    ],
+    "links": [
+        {
+            "name": "github",
+            "slug": "bloomcraft"
+        },
+        {
+            "name": "curseforge",
+            "slug": "bloomcraft",
+            "id": "1367782"
+        },
+        {
+            "name": "modrinth",
+            "slug": "bloomcraft",
+            "id": "i6w1VobP"
+        }
+    ],
+    "environments": {
+        "client": "required",
+        "server": "required"
+    },
+    "platforms": [
+        "fabric",
+        "neoforge"
+    ]
+}
