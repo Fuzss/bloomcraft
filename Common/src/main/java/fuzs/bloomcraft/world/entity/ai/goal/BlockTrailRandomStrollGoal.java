@@ -1,6 +1,6 @@
 package fuzs.bloomcraft.world.entity.ai.goal;
 
-import fuzs.puzzleslib.api.util.v1.EntityHelper;
+import fuzs.puzzleslib.common.api.util.v1.EntityHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
@@ -28,7 +28,7 @@ public abstract class BlockTrailRandomStrollGoal extends WaterAvoidingRandomStro
     public void tick() {
         ServerLevel serverLevel = getServerLevel(this.mob);
         if (EntityHelper.isMobGriefingAllowed(serverLevel, this.mob)) {
-            if (!this.mob.isBaby() && serverLevel.random.nextInt(this.randomChance) == 0
+            if (!this.mob.isBaby() && serverLevel.getRandom().nextInt(this.randomChance) == 0
                     && this.mob.getDeltaMovement().lengthSqr() > 1.0E-5F) {
                 BlockPos blockPos = this.mob.blockPosition();
                 BlockState blockState = this.getBlockState();

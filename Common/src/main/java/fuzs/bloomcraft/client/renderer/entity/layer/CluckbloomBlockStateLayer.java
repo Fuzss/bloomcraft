@@ -3,50 +3,41 @@ package fuzs.bloomcraft.client.renderer.entity.layer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import fuzs.bloomcraft.client.renderer.entity.state.BlockStateCarrierRenderState;
-import net.minecraft.client.model.animal.chicken.ChickenModel;
+import net.minecraft.client.model.animal.chicken.AdultChickenModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.block.BlockRenderDispatcher;
-import net.minecraft.client.renderer.block.model.BlockStateModel;
+import net.minecraft.client.renderer.block.BlockModelRenderState;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.state.ChickenRenderState;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
-import net.minecraft.client.renderer.texture.TextureAtlas;
-import net.minecraft.world.level.block.state.BlockState;
 
 /**
  * @see net.minecraft.client.renderer.entity.layers.MushroomCowMushroomLayer
  */
-public class CluckbloomBlockStateLayer<T extends ChickenRenderState & BlockStateCarrierRenderState> extends RenderLayer<T, ChickenModel> {
-    private final BlockRenderDispatcher blockRenderer;
+public class CluckbloomBlockStateLayer<T extends ChickenRenderState & BlockStateCarrierRenderState> extends RenderLayer<T, AdultChickenModel> {
 
-    public CluckbloomBlockStateLayer(RenderLayerParent<T, ChickenModel> renderer, BlockRenderDispatcher blockRenderer) {
+    public CluckbloomBlockStateLayer(RenderLayerParent<T, AdultChickenModel> renderer) {
         super(renderer);
-        this.blockRenderer = blockRenderer;
     }
 
     @Override
-    public void submit(PoseStack poseStack, SubmitNodeCollector nodeCollector, int packedLight, T renderState, float yRot, float xRot) {
-        if (!renderState.isBaby) {
-            boolean outlineOnly = renderState.appearsGlowing() && renderState.isInvisible;
-            if (!renderState.isInvisible || outlineOnly) {
-                BlockState blockState = renderState.blockState();
-                int packedOverlay = LivingEntityRenderer.getOverlayCoords(renderState, 0.0F);
-                BlockStateModel blockStateModel = this.blockRenderer.getBlockModel(blockState);
+    public void submit(PoseStack poseStack, SubmitNodeCollector nodeCollector, int packedLight, T state, float yRot, float xRot) {
+        if (!state.isBaby && !state.blockModel().isEmpty()) {
+            boolean outlineOnly = state.appearsGlowing() && state.isInvisible;
+            if (!state.isInvisible || outlineOnly) {
+                int packedOverlay = LivingEntityRenderer.getOverlayCoords(state, 0.0F);
                 poseStack.pushPose();
                 poseStack.translate(-0.03F, 0.58F, 0.09F);
                 poseStack.mulPose(Axis.YP.rotationDegrees(-6.0F));
                 poseStack.scale(-0.5F, -0.5F, 0.5F);
                 poseStack.translate(-0.5F, -0.5F, -0.5F);
-                this.submitBlock(poseStack,
+                this.submitMushroomBlock(poseStack,
                         nodeCollector,
                         packedLight,
                         outlineOnly,
-                        renderState.outlineColor,
-                        blockState,
-                        packedOverlay,
-                        blockStateModel);
+                        state.outlineColor,
+                        state.blockModel(),
+                        packedOverlay);
                 poseStack.popPose();
                 poseStack.pushPose();
                 this.getParentModel().head.translateAndRotate(poseStack);
@@ -54,14 +45,13 @@ public class CluckbloomBlockStateLayer<T extends ChickenRenderState & BlockState
                 poseStack.mulPose(Axis.YP.rotationDegrees(-48.0F));
                 poseStack.scale(-0.5F, -0.5F, 0.5F);
                 poseStack.translate(-0.5F, -0.5F, -0.5F);
-                this.submitBlock(poseStack,
+                this.submitMushroomBlock(poseStack,
                         nodeCollector,
                         packedLight,
                         outlineOnly,
-                        renderState.outlineColor,
-                        blockState,
-                        packedOverlay,
-                        blockStateModel);
+                        state.outlineColor,
+                        state.blockModel(),
+                        packedOverlay);
                 poseStack.popPose();
             }
         }
@@ -69,21 +59,13 @@ public class CluckbloomBlockStateLayer<T extends ChickenRenderState & BlockState
 
     /**
      * @see net.minecraft.client.renderer.entity.layers.MushroomCowMushroomLayer#submitMushroomBlock(PoseStack,
-     *         SubmitNodeCollector, int, boolean, int, BlockState, int, BlockStateModel)
+     *         SubmitNodeCollector, int, boolean, int, BlockModelRenderState, int)
      */
-    private void submitBlock(PoseStack poseStack, SubmitNodeCollector nodeCollector, int packedLight, boolean outlineOnly, int outlineColor, BlockState blockState, int packedOverlay, BlockStateModel model) {
-        if (outlineOnly) {
-            nodeCollector.submitBlockModel(poseStack,
-                    RenderTypes.outline(TextureAtlas.LOCATION_BLOCKS),
-                    model,
-                    0.0F,
-                    0.0F,
-                    0.0F,
-                    packedLight,
-                    packedOverlay,
-                    outlineColor);
+    private void submitMushroomBlock(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, boolean appearsGlowingWithInvisibility, int outlineColor, BlockModelRenderState mushroomModel, int overlayCoords) {
+        if (appearsGlowingWithInvisibility) {
+            mushroomModel.submitOnlyOutline(poseStack, submitNodeCollector, lightCoords, overlayCoords, outlineColor);
         } else {
-            nodeCollector.submitBlock(poseStack, blockState, packedLight, packedOverlay, outlineColor);
+            mushroomModel.submit(poseStack, submitNodeCollector, lightCoords, overlayCoords, outlineColor);
         }
     }
 }

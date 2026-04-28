@@ -23,7 +23,6 @@ import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.animal.chicken.Chicken;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.EitherHolder;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.Items;
@@ -40,7 +39,6 @@ import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
 
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.UUID;
 
 public class Cluckbloom extends Chicken implements Shearable {
@@ -222,9 +220,11 @@ public class Cluckbloom extends Chicken implements Shearable {
     @Nullable
     @Override
     public <T> T get(DataComponentType<? extends T> dataComponentType) {
-        return dataComponentType == ModRegistry.CLUCKBLOOM_VARIANT_DATA_COMPONENT_TYPE.value() ?
-                castComponentValue((DataComponentType<T>) dataComponentType,
-                        new EitherHolder<>(this.getFlowerVariant())) : super.get(dataComponentType);
+        if (dataComponentType == ModRegistry.CLUCKBLOOM_VARIANT_DATA_COMPONENT_TYPE.value()) {
+            return castComponentValue((DataComponentType<T>) dataComponentType, this.getFlowerVariant());
+        } else {
+            return super.get(dataComponentType);
+        }
     }
 
     @Override
@@ -237,14 +237,9 @@ public class Cluckbloom extends Chicken implements Shearable {
     @Override
     protected <T> boolean applyImplicitComponent(DataComponentType<T> dataComponentType, T object) {
         if (dataComponentType == ModRegistry.CLUCKBLOOM_VARIANT_DATA_COMPONENT_TYPE.value()) {
-            Optional<Holder<FlowerMobVariant>> optional = castComponentValue(ModRegistry.CLUCKBLOOM_VARIANT_DATA_COMPONENT_TYPE.value(),
-                    object).unwrap(this.registryAccess());
-            if (optional.isPresent()) {
-                this.setFlowerVariant(optional.get());
-                return true;
-            } else {
-                return false;
-            }
+            this.setFlowerVariant(castComponentValue(ModRegistry.CLUCKBLOOM_VARIANT_DATA_COMPONENT_TYPE.value(),
+                    object));
+            return true;
         } else {
             return super.applyImplicitComponent(dataComponentType, object);
         }

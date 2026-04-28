@@ -1,9 +1,10 @@
 {
+    "minecraft": "26.1.2",
     "mod": {
         "id": "bloomcraft",
         "group": "fuzs.bloomcraft",
         "name": "Bloomcraft",
-        "version": "21.11.0",
+        "version": "26.1.0",
         "authors": [
             "Fuzs"
         ],
@@ -36,13 +37,13 @@
     ],
     "links": [
         {
-            "name": "github",
-            "slug": "bloomcraft"
-        },
-        {
             "name": "curseforge",
             "slug": "bloomcraft",
             "id": "1367782"
+        },
+        {
+            "name": "github",
+            "slug": "bloomcraft"
         },
         {
             "name": "modrinth",

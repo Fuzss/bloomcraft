@@ -1,8 +1,7 @@
 package fuzs.bloomcraft.client.renderer.entity.state;
 
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.client.renderer.block.BlockModelRenderState;
 
 public interface BlockStateCarrierRenderState {
-
-    BlockState blockState();
+    BlockModelRenderState blockModel();
 }

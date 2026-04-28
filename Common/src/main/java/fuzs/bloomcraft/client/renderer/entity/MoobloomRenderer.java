@@ -11,18 +11,22 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.renderer.block.BlockModelResolver;
 import net.minecraft.client.renderer.entity.AgeableMobRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
+import net.minecraft.client.renderer.entity.MushroomCowRenderer;
 import net.minecraft.resources.Identifier;
 
 public class MoobloomRenderer extends AgeableMobRenderer<Moobloom, MoobloomRenderState, CowModel> {
+    private final BlockModelResolver blockModelResolver;
 
     public MoobloomRenderer(Context context) {
         super(context,
                 new CowModel(context.bakeLayer(ModModelLayers.MOOBLOOM)),
                 new CowModel(context.bakeLayer(ModModelLayers.MOOBLOOM_BABY)),
                 0.7F);
-        this.addLayer(new MoobloomBlockStateLayer<>(this, context.getBlockRenderDispatcher()));
+        this.blockModelResolver = context.getBlockModelResolver();
+        this.addLayer(new MoobloomBlockStateLayer<>(this));
     }
 
     public static LayerDefinition createBodyLayer() {
@@ -47,11 +51,13 @@ public class MoobloomRenderer extends AgeableMobRenderer<Moobloom, MoobloomRende
     }
 
     @Override
-    public void extractRenderState(Moobloom moobloom, MoobloomRenderState reusedState, float partialTick) {
-        super.extractRenderState(moobloom, reusedState, partialTick);
-        reusedState.textureLocation = FlowerMobVariant.transformTextureLocation(moobloom.getFlowerVariant()
+    public void extractRenderState(Moobloom moobloom, MoobloomRenderState state, float partialTick) {
+        super.extractRenderState(moobloom, state, partialTick);
+        state.textureLocation = FlowerMobVariant.transformTextureLocation(moobloom.getFlowerVariant()
                 .value()
                 .textureLocation());
-        reusedState.blockState = moobloom.getFlowerVariant().value().blockState();
+        this.blockModelResolver.update(state.blockModel,
+                moobloom.getFlowerVariant().value().blockState(),
+                MushroomCowRenderer.BLOCK_DISPLAY_CONTEXT);
     }
 }
