@@ -1,7 +1,7 @@
 package fuzs.bloomcraft.fabric.client;
 
-import fuzs.bloomcraft.Bloomcraft;
-import fuzs.bloomcraft.client.BloomcraftClient;
+import fuzs.bloomcraft.common.Bloomcraft;
+import fuzs.bloomcraft.common.client.BloomcraftClient;
 import fuzs.puzzleslib.common.api.client.core.v1.ClientModConstructor;
 import net.fabricmc.api.ClientModInitializer;
 

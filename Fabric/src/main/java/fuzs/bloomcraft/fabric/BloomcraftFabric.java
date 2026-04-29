@@ -1,6 +1,6 @@
 package fuzs.bloomcraft.fabric;
 
-import fuzs.bloomcraft.Bloomcraft;
+import fuzs.bloomcraft.common.Bloomcraft;
 import fuzs.puzzleslib.common.api.core.v1.ModConstructor;
 import net.fabricmc.api.ModInitializer;
 
