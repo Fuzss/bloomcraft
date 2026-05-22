@@ -14,7 +14,13 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
 
     @Override
     public void addRecipes(RecipeOutput recipeOutput) {
-        this.oneToOneConversionRecipe(Items.YELLOW_DYE, ModItems.BUTTERCUP.value(), getItemName(Items.YELLOW_DYE));
-        this.oneToOneConversionRecipe(Items.PINK_DYE, ModItems.PINK_DAISY.value(), getItemName(Items.PINK_DYE));
+        oneToOneConversionRecipe(recipeOutput,
+                Items.YELLOW_DYE,
+                ModItems.BUTTERCUP.value(),
+                getItemName(Items.YELLOW_DYE));
+        oneToOneConversionRecipe(recipeOutput,
+                Items.PINK_DYE,
+                ModItems.PINK_DAISY.value(),
+                getItemName(Items.PINK_DYE));
     }
 }

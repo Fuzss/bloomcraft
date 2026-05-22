@@ -26,7 +26,7 @@ public final class FlowerMobVariantUtil {
     }
 
     public static Optional<Holder<FlowerMobVariant>> getRandomSpawnVariant(Registry<FlowerMobVariant> registry, Predicate<Holder<FlowerMobVariant>> filter) {
-        return Optional.ofNullable(registry.listElements()
+        return Optional.ofNullable(registry.holders()
                 .filter(filter)
                 .collect(Collectors.collectingAndThen(Collectors.toCollection(ArrayList::new),
                         (List<Holder.Reference<FlowerMobVariant>> list) -> {

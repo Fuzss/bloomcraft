@@ -3,15 +3,18 @@ package fuzs.bloomcraft.world.entity.animal;
 import fuzs.bloomcraft.Bloomcraft;
 import fuzs.bloomcraft.init.ModRegistry;
 import fuzs.bloomcraft.world.entity.ai.goal.BlockTrailRandomStrollGoal;
+import fuzs.puzzleslib.api.util.v1.CompoundTagHelper;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
-import net.minecraft.core.component.DataComponentGetter;
-import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.particles.SpellParticleOption;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.RegistryOps;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -20,10 +23,9 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
-import net.minecraft.world.entity.animal.cow.Cow;
+import net.minecraft.world.entity.animal.Cow;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.EitherHolder;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.Items;
@@ -35,13 +37,17 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SuspiciousEffectHolder;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
-import org.jspecify.annotations.Nullable;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.UUID;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 public class Moobloom extends Cow implements Shearable {
     public static final EntityDataAccessor<Holder<FlowerMobVariant>> DATA_VARIANT_ID = SynchedEntityData.defineId(
@@ -71,7 +77,7 @@ public class Moobloom extends Cow implements Shearable {
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         Registry<FlowerMobVariant> registry = this.registryAccess()
-                .lookupOrThrow(ModRegistry.MOOBLOOM_VARIANT_REGISTRY_KEY);
+                .registryOrThrow(ModRegistry.MOOBLOOM_VARIANT_REGISTRY_KEY);
         builder.define(DATA_VARIANT_ID, registry.getAny().orElseThrow());
     }
 
@@ -94,11 +100,8 @@ public class Moobloom extends Cow implements Shearable {
                     // use this as a cooldown, it will tick down to zero again
                     this.setAge(6000);
 
-                    SpellParticleOption spellParticleOption = SpellParticleOption.create(ParticleTypes.EFFECT,
-                            -1,
-                            1.0F);
                     for (int j = 0; j < 4; j++) {
-                        serverLevel.addParticle(spellParticleOption,
+                        serverLevel.addParticle(ParticleTypes.EFFECT,
                                 this.getX() + this.random.nextDouble() / 2.0,
                                 this.getY(0.5),
                                 this.getZ() + this.random.nextDouble() / 2.0,
@@ -116,9 +119,9 @@ public class Moobloom extends Cow implements Shearable {
             return InteractionResult.PASS;
         } else if (itemInHand.is(Items.SHEARS) && this.readyForShearing()) {
             if (this.level() instanceof ServerLevel serverLevel) {
-                this.shear(serverLevel, SoundSource.PLAYERS, itemInHand);
+                this.shear(SoundSource.PLAYERS);
                 this.gameEvent(GameEvent.SHEAR, player);
-                itemInHand.hurtAndBreak(1, player, interactionHand.asEquipmentSlot());
+                itemInHand.hurtAndBreak(1, player, getSlotForHand(interactionHand));
             }
 
             return InteractionResult.SUCCESS;
@@ -128,14 +131,14 @@ public class Moobloom extends Cow implements Shearable {
     }
 
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, EntitySpawnReason spawnReason, @Nullable SpawnGroupData spawnGroupData) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnReason, @Nullable SpawnGroupData spawnGroupData) {
         Holder<FlowerMobVariant> variant;
         if (spawnGroupData instanceof FlowerMobVariantUtil.VariantGroupData variantGroupData) {
             variant = variantGroupData.variant;
         } else {
             Holder<Biome> biome = level.getBiome(this.blockPosition());
             variant = FlowerMobVariantUtil.getSpawnVariant(this.registryAccess()
-                    .lookupOrThrow(ModRegistry.MOOBLOOM_VARIANT_REGISTRY_KEY), biome, level.getRandom());
+                    .registryOrThrow(ModRegistry.MOOBLOOM_VARIANT_REGISTRY_KEY), biome, level.getRandom());
             spawnGroupData = new FlowerMobVariantUtil.VariantGroupData(variant);
         }
 
@@ -148,18 +151,19 @@ public class Moobloom extends Cow implements Shearable {
         UUID uuid = lightningBolt.getUUID();
         if (!uuid.equals(this.lastLightningBoltUUID)) {
             Registry<FlowerMobVariant> registry = this.registryAccess()
-                    .lookupOrThrow(ModRegistry.MOOBLOOM_VARIANT_REGISTRY_KEY);
+                    .registryOrThrow(ModRegistry.MOOBLOOM_VARIANT_REGISTRY_KEY);
             int newIndex = (registry.getIdOrThrow(this.getFlowerVariant().value()) + 1) % registry.size();
-            this.setFlowerVariant(registry.get(newIndex).orElseThrow(NoSuchElementException::new));
+            this.setFlowerVariant(registry.getHolder(newIndex).orElseThrow(NoSuchElementException::new));
             this.lastLightningBoltUUID = uuid;
             this.playSound(SoundEvents.MOOSHROOM_CONVERT, 2.0F, 1.0F);
         }
     }
 
     @Override
-    public void shear(ServerLevel serverLevel, SoundSource soundSource, ItemStack shearsItemStack) {
-        serverLevel.playSound(null, this, SoundEvents.MOOSHROOM_SHEAR, soundSource, 1.0F, 1.0F);
-        this.convertTo(EntityType.COW, ConversionParams.single(this, false, false), (Cow cow) -> {
+    public void shear(SoundSource soundSource) {
+        if (this.level() instanceof ServerLevel serverLevel) {
+            serverLevel.playSound(null, this, SoundEvents.MOOSHROOM_SHEAR, soundSource, 1.0F, 1.0F);
+            Cow cow = this.convertTo(EntityType.COW, false);
             serverLevel.sendParticles(ParticleTypes.EXPLOSION,
                     this.getX(),
                     this.getY(0.5),
@@ -171,7 +175,6 @@ public class Moobloom extends Cow implements Shearable {
                     0.0);
             this.dropFromShearingLootTable(serverLevel,
                     this.getFlowerVariant().value().shearingLootTable(),
-                    shearsItemStack,
                     (ServerLevel serverLevelX, ItemStack itemStackX) -> {
                         for (int i = 0; i < itemStackX.getCount(); i++) {
                             serverLevelX.addFreshEntity(new ItemEntity(serverLevelX,
@@ -181,7 +184,34 @@ public class Moobloom extends Cow implements Shearable {
                                     itemStackX.copyWithCount(1)));
                         }
                     });
-        });
+        }
+    }
+
+    /**
+     * Copied from Minecraft 26.1.
+     */
+    protected void dropFromShearingLootTable(ServerLevel level, ResourceKey<LootTable> key, BiConsumer<ServerLevel, ItemStack> consumer) {
+        this.dropFromLootTable(level,
+                key,
+                params -> params.withParameter(LootContextParams.ORIGIN, this.position())
+                        .withParameter(LootContextParams.THIS_ENTITY, this)
+                        .create(LootContextParamSets.SHEARING),
+                consumer);
+    }
+
+    /**
+     * Copied from Minecraft 26.1.
+     */
+    protected boolean dropFromLootTable(ServerLevel level, ResourceKey<LootTable> key, Function<LootParams.Builder, LootParams> paramsBuilder, BiConsumer<ServerLevel, ItemStack> consumer) {
+        LootTable lootTable = level.getServer().reloadableRegistries().getLootTable(key);
+        LootParams params = paramsBuilder.apply(new LootParams.Builder(level));
+        List<ItemStack> drops = lootTable.getRandomItems(params);
+        if (!drops.isEmpty()) {
+            drops.forEach(stack -> consumer.accept(level, stack));
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
@@ -198,55 +228,30 @@ public class Moobloom extends Cow implements Shearable {
     }
 
     @Override
-    protected void addAdditionalSaveData(ValueOutput valueOutput) {
+    public void addAdditionalSaveData(CompoundTag valueOutput) {
         super.addAdditionalSaveData(valueOutput);
-        valueOutput.store(Bloomcraft.id("variant").toString(),
+        RegistryOps<Tag> registryOps = this.registryAccess().createSerializationContext(NbtOps.INSTANCE);
+        CompoundTagHelper.store(valueOutput,
+                Bloomcraft.id("variant").toString(),
                 FlowerMobVariant.codec(ModRegistry.MOOBLOOM_VARIANT_REGISTRY_KEY),
+                registryOps,
                 this.getFlowerVariant());
     }
 
     @Override
-    protected void readAdditionalSaveData(ValueInput valueInput) {
+    public void readAdditionalSaveData(CompoundTag valueInput) {
         super.readAdditionalSaveData(valueInput);
-        valueInput.read(Bloomcraft.id("variant").toString(),
-                FlowerMobVariant.codec(ModRegistry.MOOBLOOM_VARIANT_REGISTRY_KEY)).ifPresent(this::setFlowerVariant);
-    }
-
-    @Nullable
-    @Override
-    public <T> T get(DataComponentType<? extends T> dataComponentType) {
-        return dataComponentType == ModRegistry.MOOBLOOM_VARIANT_DATA_COMPONENT_TYPE.value() ?
-                castComponentValue((DataComponentType<T>) dataComponentType,
-                        new EitherHolder<>(this.getFlowerVariant())) : super.get(dataComponentType);
-    }
-
-    @Override
-    protected void applyImplicitComponents(DataComponentGetter dataComponentGetter) {
-        this.applyImplicitComponentIfPresent(dataComponentGetter,
-                ModRegistry.MOOBLOOM_VARIANT_DATA_COMPONENT_TYPE.value());
-        super.applyImplicitComponents(dataComponentGetter);
-    }
-
-    @Override
-    protected <T> boolean applyImplicitComponent(DataComponentType<T> dataComponentType, T object) {
-        if (dataComponentType == ModRegistry.MOOBLOOM_VARIANT_DATA_COMPONENT_TYPE.value()) {
-            Optional<Holder<FlowerMobVariant>> optional = castComponentValue(ModRegistry.MOOBLOOM_VARIANT_DATA_COMPONENT_TYPE.value(),
-                    object).unwrap(this.registryAccess());
-            if (optional.isPresent()) {
-                this.setFlowerVariant(optional.get());
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return super.applyImplicitComponent(dataComponentType, object);
-        }
+        RegistryOps<Tag> registryOps = this.registryAccess().createSerializationContext(NbtOps.INSTANCE);
+        CompoundTagHelper.read(valueInput,
+                Bloomcraft.id("variant").toString(),
+                FlowerMobVariant.codec(ModRegistry.MOOBLOOM_VARIANT_REGISTRY_KEY),
+                registryOps).ifPresent(this::setFlowerVariant);
     }
 
     @Nullable
     @Override
     public Moobloom getBreedOffspring(ServerLevel level, AgeableMob otherParent) {
-        Moobloom moobloom = (Moobloom) this.getType().create(level, EntitySpawnReason.BREEDING);
+        Moobloom moobloom = (Moobloom) this.getType().create(level);
         if (moobloom != null) {
             moobloom.setFlowerVariant(this.getFlowerVariant());
         }

@@ -2,8 +2,8 @@ package fuzs.bloomcraft.util;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.core.Holder;
-import net.minecraft.util.random.Weighted;
-import net.minecraft.util.random.WeightedList;
+import net.minecraft.util.random.SimpleWeightedRandomList;
+import net.minecraft.util.random.WeightedEntry;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -35,8 +35,8 @@ public final class FlowerPatchFeatureHelper {
     public static void registerFlowerFeatureModification(Iterable<Holder<PlacedFeature>> vegetalDecoration, List<BlockState> blockStates) {
         for (Holder<PlacedFeature> holder : vegetalDecoration) {
             ConfiguredFeature<?, ?> flowerConfiguredFeature = holder.value().feature().value();
-            if (flowerConfiguredFeature.feature() == Feature.FLOWER &&
-                    flowerConfiguredFeature.config() instanceof RandomPatchConfiguration randomPatchConfiguration) {
+            if (flowerConfiguredFeature.feature() == Feature.FLOWER
+                    && flowerConfiguredFeature.config() instanceof RandomPatchConfiguration randomPatchConfiguration) {
                 ConfiguredFeature<?, ?> blockConfigurationConfiguredFeature = randomPatchConfiguration.feature()
                         .value()
                         .feature()
@@ -75,13 +75,13 @@ public final class FlowerPatchFeatureHelper {
     }
 
     private static void addWeightedStateProviderStates(WeightedStateProvider weightedStateProvider, List<BlockState> blockStates) {
-        List<Weighted<BlockState>> list = weightedStateProvider.weightedList.unwrap();
-        WeightedList.Builder<BlockState> builder = WeightedList.builder();
+        List<WeightedEntry.Wrapper<BlockState>> list = weightedStateProvider.weightedList.unwrap();
+        SimpleWeightedRandomList.Builder<BlockState> builder = SimpleWeightedRandomList.builder();
         int maxWeight = 1;
-        for (Weighted<BlockState> blockStateWrapper : list) {
-            int weight = blockStateWrapper.weight();
+        for (WeightedEntry.Wrapper<BlockState> blockStateWrapper : list) {
+            int weight = blockStateWrapper.weight().asInt();
             if (weight > maxWeight) maxWeight = weight;
-            builder.add(blockStateWrapper.value(), weight);
+            builder.add(blockStateWrapper.data(), weight);
         }
         for (BlockState blockState : blockStates) {
             builder.add(blockState, maxWeight);
@@ -90,7 +90,7 @@ public final class FlowerPatchFeatureHelper {
     }
 
     private static void addSimpleStateProviderStates(SimpleBlockConfiguration simpleBlockConfiguration, SimpleStateProvider simpleStateProvider, List<BlockState> blockStates) {
-        WeightedList.Builder<BlockState> builder = WeightedList.builder();
+        SimpleWeightedRandomList.Builder<BlockState> builder = SimpleWeightedRandomList.builder();
         builder.add(simpleStateProvider.state);
         blockStates.forEach(builder::add);
         simpleBlockConfiguration.toPlace = new WeightedStateProvider(builder.build());

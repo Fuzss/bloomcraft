@@ -1,7 +1,0 @@
-{
-  "asset_id": "bloomcraft:entity/cluckbloom/eyeblossom_cluckbloom",
-  "carried_block": {
-    "Name": "minecraft:open_eyeblossom"
-  },
-  "shearing_loot_table": "bloomcraft:shearing/cluckbloom/eyeblossom"
-}

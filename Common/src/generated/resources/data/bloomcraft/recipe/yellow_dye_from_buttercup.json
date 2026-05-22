@@ -3,7 +3,9 @@
   "category": "misc",
   "group": "yellow_dye",
   "ingredients": [
-    "bloomcraft:buttercup"
+    {
+      "item": "bloomcraft:buttercup"
+    }
   ],
   "result": {
     "count": 1,

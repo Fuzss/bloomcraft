@@ -9,14 +9,18 @@ import fuzs.puzzleslib.api.biome.v1.BiomeLoadingContext;
 import fuzs.puzzleslib.api.biome.v1.BiomeLoadingPhase;
 import fuzs.puzzleslib.api.biome.v1.BiomeModificationContext;
 import fuzs.puzzleslib.api.core.v1.ModConstructor;
-import fuzs.puzzleslib.api.core.v1.context.*;
-import net.minecraft.resources.Identifier;
+import fuzs.puzzleslib.api.core.v1.context.DataPackRegistriesContext;
+import fuzs.puzzleslib.api.core.v1.context.EntityAttributesContext;
+import fuzs.puzzleslib.api.core.v1.context.GameplayContentContext;
+import fuzs.puzzleslib.api.core.v1.context.SpawnPlacementsContext;
+import fuzs.puzzleslib.api.core.v2.context.BiomeModificationsContext;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.animal.chicken.Chicken;
-import net.minecraft.world.entity.animal.cow.Cow;
+import net.minecraft.world.entity.animal.Chicken;
+import net.minecraft.world.entity.animal.Cow;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
@@ -73,12 +77,10 @@ public class Bloomcraft implements ModConstructor {
         }, (BiomeModificationContext biomeModificationContext) -> {
             biomeModificationContext.mobSpawnSettings()
                     .addSpawn(MobCategory.CREATURE,
-                            16,
-                            new MobSpawnSettings.SpawnerData(ModRegistry.MOOBLOOM_ENTITY_TYPE.value(), 4, 8));
+                            new MobSpawnSettings.SpawnerData(ModRegistry.MOOBLOOM_ENTITY_TYPE.value(), 16, 4, 8));
             biomeModificationContext.mobSpawnSettings()
                     .addSpawn(MobCategory.CREATURE,
-                            20,
-                            new MobSpawnSettings.SpawnerData(ModRegistry.CLUCKBLOOM_ENTITY_TYPE.value(), 4, 8));
+                            new MobSpawnSettings.SpawnerData(ModRegistry.CLUCKBLOOM_ENTITY_TYPE.value(), 20, 4, 8));
         });
         context.registerBiomeModification(BiomeLoadingPhase.REMOVALS, (BiomeLoadingContext biomeLoadingContext) -> {
             return biomeLoadingContext.is(Biomes.FLOWER_FOREST);
@@ -106,7 +108,7 @@ public class Bloomcraft implements ModConstructor {
                 });
     }
 
-    public static Identifier id(String path) {
-        return Identifier.fromNamespaceAndPath(MOD_ID, path);
+    public static ResourceLocation id(String path) {
+        return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
     }
 }

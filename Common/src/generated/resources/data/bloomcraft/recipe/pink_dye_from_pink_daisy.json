@@ -3,7 +3,9 @@
   "category": "misc",
   "group": "pink_dye",
   "ingredients": [
-    "bloomcraft:pink_daisy"
+    {
+      "item": "bloomcraft:pink_daisy"
+    }
   ],
   "result": {
     "count": 1,

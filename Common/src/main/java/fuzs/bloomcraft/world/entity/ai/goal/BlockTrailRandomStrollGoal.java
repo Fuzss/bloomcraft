@@ -26,7 +26,7 @@ public abstract class BlockTrailRandomStrollGoal extends WaterAvoidingRandomStro
 
     @Override
     public void tick() {
-        ServerLevel serverLevel = getServerLevel(this.mob);
+        ServerLevel serverLevel = (ServerLevel) this.mob.level();
         if (EntityHelper.isMobGriefingAllowed(serverLevel, this.mob)) {
             if (!this.mob.isBaby() && serverLevel.random.nextInt(this.randomChance) == 0
                     && this.mob.getDeltaMovement().lengthSqr() > 1.0E-5F) {

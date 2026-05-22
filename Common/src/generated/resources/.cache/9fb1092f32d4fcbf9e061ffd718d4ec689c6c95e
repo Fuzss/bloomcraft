@@ -1,5 +1,5 @@
-// 1.21.11	2025-12-16T00:09:59.464853	Recipes
-b317e0c4c7e921a1172920435fb8b28a98277f07 data/bloomcraft/advancement/recipes/misc/pink_dye_from_pink_daisy.json
-06960a2349c96535143c322a74e689958a9c9925 data/bloomcraft/advancement/recipes/misc/yellow_dye_from_buttercup.json
-f4c78266197cd6397a157c88557329042a9e27e6 data/bloomcraft/recipe/pink_dye_from_pink_daisy.json
-d499dc9bb93903dea0218380e81e2c3a38749f98 data/bloomcraft/recipe/yellow_dye_from_buttercup.json
+// 1.21.1	2026-05-22T16:25:03.008753	Recipes
+acfae735eccd6c75eb877fad3f87aaeac3c92d40 data/bloomcraft/advancement/recipes/misc/pink_dye_from_pink_daisy.json
+a80444fdb855c16eb2594d49f388f5e18161afdf data/bloomcraft/advancement/recipes/misc/yellow_dye_from_buttercup.json
+2c9e3b9e318b7afc5697cd27dc8fb4cbeabc388e data/bloomcraft/recipe/pink_dye_from_pink_daisy.json
+747d459877496bdb58f3d355fa9cdde227f500ff data/bloomcraft/recipe/yellow_dye_from_buttercup.json

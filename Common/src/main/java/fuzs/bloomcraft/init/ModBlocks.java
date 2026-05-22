@@ -7,6 +7,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FlowerBlock;
 import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.PushReaction;
 
 public class ModBlocks {
     public static final Holder.Reference<Block> BUTTERCUP = ModRegistry.REGISTRIES.registerBlock("buttercup",
@@ -18,11 +19,11 @@ public class ModBlocks {
     public static final Holder.Reference<Block> POTTED_BUTTERCUP = ModRegistry.REGISTRIES.registerBlock(
             "potted_buttercup",
             (BlockBehaviour.Properties properties) -> new FlowerPotBlock(BUTTERCUP.value(), properties),
-            Blocks::flowerPotProperties);
+            () -> BlockBehaviour.Properties.of().instabreak().noOcclusion().pushReaction(PushReaction.DESTROY));
     public static final Holder.Reference<Block> POTTED_PINK_DAISY = ModRegistry.REGISTRIES.registerBlock(
             "potted_pink_daisy",
             (BlockBehaviour.Properties properties) -> new FlowerPotBlock(PINK_DAISY.value(), properties),
-            Blocks::flowerPotProperties);
+            () -> BlockBehaviour.Properties.of().instabreak().noOcclusion().pushReaction(PushReaction.DESTROY));
 
     public static void bootstrap() {
         // NO-OP
