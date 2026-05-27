@@ -173,27 +173,28 @@ public class Cluckbloom extends Chicken implements Shearable {
     public void shear(SoundSource soundSource) {
         if (this.level() instanceof ServerLevel serverLevel) {
             serverLevel.playSound(null, this, SoundEvents.MOOSHROOM_SHEAR, soundSource, 1.0F, 1.0F);
-            Chicken chicken = this.convertTo(EntityType.CHICKEN, false);
-            serverLevel.sendParticles(ParticleTypes.EXPLOSION,
-                    this.getX(),
-                    this.getY(0.5),
-                    this.getZ(),
-                    1,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0);
-            this.dropFromShearingLootTable(serverLevel,
-                    this.getFlowerVariant().value().shearingLootTable(),
-                    (ServerLevel serverLevelX, ItemStack itemStackX) -> {
-                        for (int i = 0; i < itemStackX.getCount(); i++) {
-                            serverLevelX.addFreshEntity(new ItemEntity(serverLevelX,
-                                    this.getX(),
-                                    this.getY(1.0),
-                                    this.getZ(),
-                                    itemStackX.copyWithCount(1)));
-                        }
-                    });
+            if (this.convertTo(EntityType.CHICKEN, false) != null) {
+                serverLevel.sendParticles(ParticleTypes.EXPLOSION,
+                        this.getX(),
+                        this.getY(0.5),
+                        this.getZ(),
+                        1,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0);
+                this.dropFromShearingLootTable(serverLevel,
+                        this.getFlowerVariant().value().shearingLootTable(),
+                        (ServerLevel serverLevelX, ItemStack itemStackX) -> {
+                            for (int i = 0; i < itemStackX.getCount(); i++) {
+                                serverLevelX.addFreshEntity(new ItemEntity(serverLevelX,
+                                        this.getX(),
+                                        this.getY(1.0),
+                                        this.getZ(),
+                                        itemStackX.copyWithCount(1)));
+                            }
+                        });
+            }
         }
     }
 
