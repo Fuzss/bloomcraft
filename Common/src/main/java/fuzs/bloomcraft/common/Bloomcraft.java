@@ -12,7 +12,7 @@ import fuzs.puzzleslib.common.api.core.v1.ModConstructor;
 import fuzs.puzzleslib.common.api.core.v1.context.*;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.animal.Animal;
@@ -84,8 +84,8 @@ public class Bloomcraft implements ModConstructor {
         context.registerBiomeModification(BiomeLoadingPhase.REMOVALS, (BiomeLoadingContext biomeLoadingContext) -> {
             return biomeLoadingContext.is(Biomes.FLOWER_FOREST);
         }, (BiomeModificationContext biomeModificationContext) -> {
-            biomeModificationContext.mobSpawnSettings().removeSpawnsOfEntityType(EntityType.COW);
-            biomeModificationContext.mobSpawnSettings().removeSpawnsOfEntityType(EntityType.CHICKEN);
+            biomeModificationContext.mobSpawnSettings().removeSpawnsOfEntityType(EntityTypes.COW);
+            biomeModificationContext.mobSpawnSettings().removeSpawnsOfEntityType(EntityTypes.CHICKEN);
         });
         context.registerBiomeModification(BiomeLoadingPhase.MODIFICATIONS,
                 (BiomeLoadingContext biomeLoadingContext) -> {

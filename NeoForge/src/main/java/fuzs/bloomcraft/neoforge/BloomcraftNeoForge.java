@@ -5,9 +5,9 @@ import fuzs.bloomcraft.common.data.ModRecipeProvider;
 import fuzs.bloomcraft.common.data.loot.ModBlockLootProvider;
 import fuzs.bloomcraft.common.data.loot.ModEntityLootProvider;
 import fuzs.bloomcraft.common.data.loot.ModShearingLootProvider;
-import fuzs.bloomcraft.common.data.tags.ModBiomeTagProvider;
-import fuzs.bloomcraft.common.data.tags.ModBlockTagProvider;
-import fuzs.bloomcraft.common.data.tags.ModEntityTypeTagProvider;
+import fuzs.bloomcraft.common.data.tags.ModBiomeTagsProvider;
+import fuzs.bloomcraft.common.data.tags.ModBlockTagsProvider;
+import fuzs.bloomcraft.common.data.tags.ModEntityTypeTagsProvider;
 import fuzs.bloomcraft.common.init.ModRegistry;
 import fuzs.puzzleslib.common.api.core.v1.ModConstructor;
 import fuzs.puzzleslib.neoforge.api.data.v2.core.DataProviderHelper;
@@ -23,9 +23,9 @@ public class BloomcraftNeoForge {
                 ModBlockLootProvider::new,
                 ModEntityLootProvider::new,
                 ModShearingLootProvider::new,
-                ModBlockTagProvider::new,
-                ModEntityTypeTagProvider::new,
-                ModBiomeTagProvider::new,
+                ModBlockTagsProvider::new,
+                ModEntityTypeTagsProvider::new,
+                ModBiomeTagsProvider::new,
                 ModRecipeProvider::new);
     }
 }

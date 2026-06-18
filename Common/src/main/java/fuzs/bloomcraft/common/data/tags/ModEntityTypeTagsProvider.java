@@ -8,14 +8,14 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.entity.EntityType;
 
-public class ModEntityTypeTagProvider extends AbstractTagProvider<EntityType<?>> {
+public class ModEntityTypeTagsProvider extends AbstractTagProvider<EntityType<?>> {
 
-    public ModEntityTypeTagProvider(DataProviderContext context) {
+    public ModEntityTypeTagsProvider(DataProviderContext context) {
         super(Registries.ENTITY_TYPE, context);
     }
 
     @Override
     public void addTags(HolderLookup.Provider registries) {
-        this.tag(EntityTypeTags.FALL_DAMAGE_IMMUNE).add(ModRegistry.CLUCKBLOOM_ENTITY_TYPE.value());
+        this.tag(EntityTypeTags.FALL_DAMAGE_IMMUNE).add(ModRegistry.CLUCKBLOOM_ENTITY_TYPE);
     }
 }

@@ -157,7 +157,7 @@ public class Moobloom extends Cow implements Shearable {
     @Override
     public void shear(ServerLevel serverLevel, SoundSource soundSource, ItemStack shearsItemStack) {
         serverLevel.playSound(null, this, SoundEvents.MOOSHROOM_SHEAR, soundSource, 1.0F, 1.0F);
-        this.convertTo(EntityType.COW, ConversionParams.single(this, false, false), (Cow cow) -> {
+        this.convertTo(EntityTypes.COW, ConversionParams.single(this, false, false), (Cow cow) -> {
             serverLevel.sendParticles(ParticleTypes.EXPLOSION,
                     this.getX(),
                     this.getY(0.5),
