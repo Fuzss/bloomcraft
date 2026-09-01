@@ -5,11 +5,17 @@
     "26.1.x": "maintained",
     "26.2.x": "primary"
   },
-  "properties": {
-    "distributions.curseforge.id": "1367782",
-    "distributions.curseforge.slug": "bloomcraft",
-    "distributions.github.slug": "bloomcraft",
-    "distributions.modrinth.id": "i6w1VobP",
-    "distributions.modrinth.slug": "bloomcraft"
+  "distributions": {
+    "curseforge": {
+      "id": "1367782",
+      "slug": "bloomcraft"
+    },
+    "github": {
+      "slug": "bloomcraft"
+    },
+    "modrinth": {
+      "id": "i6w1VobP",
+      "slug": "bloomcraft"
+    }
   }
 }
