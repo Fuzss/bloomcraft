@@ -1,7 +1,5 @@
 {
   "asset_id": "bloomcraft:entity/cluckbloom/allium_cluckbloom",
-  "carried_block": {
-    "Name": "minecraft:allium"
-  },
+  "carried_block": "minecraft:allium",
   "shearing_loot_table": "bloomcraft:shearing/cluckbloom/allium"
 }

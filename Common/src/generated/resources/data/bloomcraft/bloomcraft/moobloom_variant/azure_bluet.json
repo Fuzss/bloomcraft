@@ -1,7 +1,5 @@
 {
   "asset_id": "bloomcraft:entity/moobloom/azure_bluet_moobloom",
-  "carried_block": {
-    "Name": "minecraft:azure_bluet"
-  },
+  "carried_block": "minecraft:azure_bluet",
   "shearing_loot_table": "bloomcraft:shearing/moobloom/azure_bluet"
 }

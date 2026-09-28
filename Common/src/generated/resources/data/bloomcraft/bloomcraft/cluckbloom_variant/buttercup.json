@@ -1,7 +1,5 @@
 {
   "asset_id": "bloomcraft:entity/cluckbloom/buttercup_cluckbloom",
-  "carried_block": {
-    "Name": "bloomcraft:buttercup"
-  },
+  "carried_block": "bloomcraft:buttercup",
   "shearing_loot_table": "bloomcraft:shearing/cluckbloom/buttercup"
 }

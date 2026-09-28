@@ -1,2 +1,3 @@
-// 26.2	2026-06-18T22:13:48.492099	Tags for minecraft:entity_type mod id vanilla
+// 26.3	2026-09-28T19:44:50.708653	Tags for minecraft:entity_type mod id vanilla
 637da57b02f3da0d0827aa669ffd190d53c38146 data/minecraft/tags/entity_type/fall_damage_immune.json
+637da57b02f3da0d0827aa669ffd190d53c38146 data/minecraft/tags/entity_type/followable_friendly_mobs.json
