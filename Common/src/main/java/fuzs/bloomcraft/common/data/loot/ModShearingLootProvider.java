@@ -1,79 +1,79 @@
 package fuzs.bloomcraft.common.data.loot;
 
+import fuzs.bloomcraft.common.init.CluckbloomVariants;
 import fuzs.bloomcraft.common.init.ModBlocks;
-import fuzs.bloomcraft.common.init.ModCluckbloomVariants;
-import fuzs.bloomcraft.common.init.ModMoobloomVariants;
-import fuzs.bloomcraft.common.init.ModRegistry;
+import fuzs.bloomcraft.common.init.ModEntityTypes;
+import fuzs.bloomcraft.common.init.MoobloomVariants;
 import fuzs.bloomcraft.common.world.entity.animal.FlowerMobVariant;
-import fuzs.puzzleslib.common.api.data.v2.AbstractLootProvider;
-import fuzs.puzzleslib.common.api.data.v2.core.DataProviderContext;
+import fuzs.puzzleslib.common.api.data.v3.loot.AbstractLootSubProvider;
+import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 
-public class ModShearingLootProvider extends AbstractLootProvider.Simple {
+public class ModShearingLootProvider extends AbstractLootSubProvider {
 
-    public ModShearingLootProvider(DataProviderContext context) {
-        super(LootContextParamSets.SHEARING, context);
+    public ModShearingLootProvider(LootTableSubProvider.Context output) {
+        super(output);
     }
 
     @Override
-    public void addLootTables() {
-        this.registerMoobloomShearingLootTable(ModMoobloomVariants.DANDELION, Blocks.DANDELION);
-        this.registerMoobloomShearingLootTable(ModMoobloomVariants.POPPY, Blocks.POPPY);
-        this.registerMoobloomShearingLootTable(ModMoobloomVariants.BLUE_ORCHID, Blocks.BLUE_ORCHID);
-        this.registerMoobloomShearingLootTable(ModMoobloomVariants.ALLIUM, Blocks.ALLIUM);
-        this.registerMoobloomShearingLootTable(ModMoobloomVariants.AZURE_BLUET, Blocks.AZURE_BLUET);
-        this.registerMoobloomShearingLootTable(ModMoobloomVariants.RED_TULIP, Blocks.RED_TULIP);
-        this.registerMoobloomShearingLootTable(ModMoobloomVariants.ORANGE_TULIP, Blocks.ORANGE_TULIP);
-        this.registerMoobloomShearingLootTable(ModMoobloomVariants.WHITE_TULIP, Blocks.WHITE_TULIP);
-        this.registerMoobloomShearingLootTable(ModMoobloomVariants.PINK_TULIP, Blocks.PINK_TULIP);
-        this.registerMoobloomShearingLootTable(ModMoobloomVariants.OXEYE_DAISY, Blocks.OXEYE_DAISY);
-        this.registerMoobloomShearingLootTable(ModMoobloomVariants.CORNFLOWER, Blocks.CORNFLOWER);
-        this.registerMoobloomShearingLootTable(ModMoobloomVariants.LILY_OF_THE_VALLEY, Blocks.LILY_OF_THE_VALLEY);
-        this.registerMoobloomShearingLootTable(ModMoobloomVariants.WITHER_ROSE, Blocks.WITHER_ROSE);
-        this.registerMoobloomShearingLootTable(ModMoobloomVariants.TORCHFLOWER, Blocks.TORCHFLOWER);
-        this.registerMoobloomShearingLootTable(ModMoobloomVariants.EYEBLOSSOM, Blocks.OPEN_EYEBLOSSOM);
-        this.registerMoobloomShearingLootTable(ModMoobloomVariants.BUTTERCUP, ModBlocks.BUTTERCUP.value());
-        this.registerMoobloomShearingLootTable(ModMoobloomVariants.PINK_DAISY, ModBlocks.PINK_DAISY.value());
-
-        this.registerCluckbloomShearingLootTable(ModCluckbloomVariants.DANDELION, Blocks.DANDELION);
-        this.registerCluckbloomShearingLootTable(ModCluckbloomVariants.POPPY, Blocks.POPPY);
-        this.registerCluckbloomShearingLootTable(ModCluckbloomVariants.BLUE_ORCHID, Blocks.BLUE_ORCHID);
-        this.registerCluckbloomShearingLootTable(ModCluckbloomVariants.ALLIUM, Blocks.ALLIUM);
-        this.registerCluckbloomShearingLootTable(ModCluckbloomVariants.AZURE_BLUET, Blocks.AZURE_BLUET);
-        this.registerCluckbloomShearingLootTable(ModCluckbloomVariants.RED_TULIP, Blocks.RED_TULIP);
-        this.registerCluckbloomShearingLootTable(ModCluckbloomVariants.ORANGE_TULIP, Blocks.ORANGE_TULIP);
-        this.registerCluckbloomShearingLootTable(ModCluckbloomVariants.WHITE_TULIP, Blocks.WHITE_TULIP);
-        this.registerCluckbloomShearingLootTable(ModCluckbloomVariants.PINK_TULIP, Blocks.PINK_TULIP);
-        this.registerCluckbloomShearingLootTable(ModCluckbloomVariants.OXEYE_DAISY, Blocks.OXEYE_DAISY);
-        this.registerCluckbloomShearingLootTable(ModCluckbloomVariants.CORNFLOWER, Blocks.CORNFLOWER);
-        this.registerCluckbloomShearingLootTable(ModCluckbloomVariants.LILY_OF_THE_VALLEY, Blocks.LILY_OF_THE_VALLEY);
-        this.registerCluckbloomShearingLootTable(ModCluckbloomVariants.WITHER_ROSE, Blocks.WITHER_ROSE);
-        this.registerCluckbloomShearingLootTable(ModCluckbloomVariants.TORCHFLOWER, Blocks.TORCHFLOWER);
-        this.registerCluckbloomShearingLootTable(ModCluckbloomVariants.EYEBLOSSOM, Blocks.OPEN_EYEBLOSSOM);
-        this.registerCluckbloomShearingLootTable(ModCluckbloomVariants.BUTTERCUP, ModBlocks.BUTTERCUP.value());
-        this.registerCluckbloomShearingLootTable(ModCluckbloomVariants.PINK_DAISY, ModBlocks.PINK_DAISY.value());
+    public void generate() {
+        // Moobloom
+        this.registerMoobloomShearingLootTable(MoobloomVariants.DANDELION, Blocks.DANDELION);
+        this.registerMoobloomShearingLootTable(MoobloomVariants.POPPY, Blocks.POPPY);
+        this.registerMoobloomShearingLootTable(MoobloomVariants.BLUE_ORCHID, Blocks.BLUE_ORCHID);
+        this.registerMoobloomShearingLootTable(MoobloomVariants.ALLIUM, Blocks.ALLIUM);
+        this.registerMoobloomShearingLootTable(MoobloomVariants.AZURE_BLUET, Blocks.AZURE_BLUET);
+        this.registerMoobloomShearingLootTable(MoobloomVariants.RED_TULIP, Blocks.RED_TULIP);
+        this.registerMoobloomShearingLootTable(MoobloomVariants.ORANGE_TULIP, Blocks.ORANGE_TULIP);
+        this.registerMoobloomShearingLootTable(MoobloomVariants.WHITE_TULIP, Blocks.WHITE_TULIP);
+        this.registerMoobloomShearingLootTable(MoobloomVariants.PINK_TULIP, Blocks.PINK_TULIP);
+        this.registerMoobloomShearingLootTable(MoobloomVariants.OXEYE_DAISY, Blocks.OXEYE_DAISY);
+        this.registerMoobloomShearingLootTable(MoobloomVariants.CORNFLOWER, Blocks.CORNFLOWER);
+        this.registerMoobloomShearingLootTable(MoobloomVariants.LILY_OF_THE_VALLEY, Blocks.LILY_OF_THE_VALLEY);
+        this.registerMoobloomShearingLootTable(MoobloomVariants.WITHER_ROSE, Blocks.WITHER_ROSE);
+        this.registerMoobloomShearingLootTable(MoobloomVariants.TORCHFLOWER, Blocks.TORCHFLOWER);
+        this.registerMoobloomShearingLootTable(MoobloomVariants.EYEBLOSSOM, Blocks.OPEN_EYEBLOSSOM);
+        this.registerMoobloomShearingLootTable(MoobloomVariants.BUTTERCUP, ModBlocks.BUTTERCUP.value());
+        this.registerMoobloomShearingLootTable(MoobloomVariants.PINK_DAISY, ModBlocks.PINK_DAISY.value());
+        // Cluckbloom
+        this.registerCluckbloomShearingLootTable(CluckbloomVariants.DANDELION, Blocks.DANDELION);
+        this.registerCluckbloomShearingLootTable(CluckbloomVariants.POPPY, Blocks.POPPY);
+        this.registerCluckbloomShearingLootTable(CluckbloomVariants.BLUE_ORCHID, Blocks.BLUE_ORCHID);
+        this.registerCluckbloomShearingLootTable(CluckbloomVariants.ALLIUM, Blocks.ALLIUM);
+        this.registerCluckbloomShearingLootTable(CluckbloomVariants.AZURE_BLUET, Blocks.AZURE_BLUET);
+        this.registerCluckbloomShearingLootTable(CluckbloomVariants.RED_TULIP, Blocks.RED_TULIP);
+        this.registerCluckbloomShearingLootTable(CluckbloomVariants.ORANGE_TULIP, Blocks.ORANGE_TULIP);
+        this.registerCluckbloomShearingLootTable(CluckbloomVariants.WHITE_TULIP, Blocks.WHITE_TULIP);
+        this.registerCluckbloomShearingLootTable(CluckbloomVariants.PINK_TULIP, Blocks.PINK_TULIP);
+        this.registerCluckbloomShearingLootTable(CluckbloomVariants.OXEYE_DAISY, Blocks.OXEYE_DAISY);
+        this.registerCluckbloomShearingLootTable(CluckbloomVariants.CORNFLOWER, Blocks.CORNFLOWER);
+        this.registerCluckbloomShearingLootTable(CluckbloomVariants.LILY_OF_THE_VALLEY, Blocks.LILY_OF_THE_VALLEY);
+        this.registerCluckbloomShearingLootTable(CluckbloomVariants.WITHER_ROSE, Blocks.WITHER_ROSE);
+        this.registerCluckbloomShearingLootTable(CluckbloomVariants.TORCHFLOWER, Blocks.TORCHFLOWER);
+        this.registerCluckbloomShearingLootTable(CluckbloomVariants.EYEBLOSSOM, Blocks.OPEN_EYEBLOSSOM);
+        this.registerCluckbloomShearingLootTable(CluckbloomVariants.BUTTERCUP, ModBlocks.BUTTERCUP.value());
+        this.registerCluckbloomShearingLootTable(CluckbloomVariants.PINK_DAISY, ModBlocks.PINK_DAISY.value());
     }
 
-    void registerMoobloomShearingLootTable(ResourceKey<FlowerMobVariant> resourceKey, Block block) {
-        this.add(FlowerMobVariant.getShearingLootTable(ModRegistry.MOOBLOOM_ENTITY_TYPE, resourceKey),
+    public final void registerMoobloomShearingLootTable(ResourceKey<FlowerMobVariant> resourceKey, Block block) {
+        this.output.accept(FlowerMobVariant.getShearingLootTable(ModEntityTypes.MOOBLOOM_ENTITY_TYPE, resourceKey),
                 LootTable.lootTable()
                         .withPool(LootPool.lootPool()
-                                .setRolls(ConstantValue.exactly(5.0F))
+                                .setRolls(ContextIntProviders.exactly(5))
                                 .add(LootItem.lootTableItem(block))));
     }
 
-    void registerCluckbloomShearingLootTable(ResourceKey<FlowerMobVariant> resourceKey, Block block) {
-        this.add(FlowerMobVariant.getShearingLootTable(ModRegistry.CLUCKBLOOM_ENTITY_TYPE, resourceKey),
+    public final void registerCluckbloomShearingLootTable(ResourceKey<FlowerMobVariant> resourceKey, Block block) {
+        this.output.accept(FlowerMobVariant.getShearingLootTable(ModEntityTypes.CLUCKBLOOM_ENTITY_TYPE, resourceKey),
                 LootTable.lootTable()
                         .withPool(LootPool.lootPool()
-                                .setRolls(ConstantValue.exactly(3.0F))
+                                .setRolls(ContextIntProviders.exactly(3))
                                 .add(LootItem.lootTableItem(block))));
     }
 }

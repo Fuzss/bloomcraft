@@ -1,20 +1,16 @@
 package fuzs.bloomcraft.common.util;
 
 import com.google.common.collect.ImmutableList;
-import fuzs.bloomcraft.common.mixin.accessor.SimpleBlockConfigurationAccessor;
+import fuzs.bloomcraft.common.mixin.accessor.SimpleBlockFeatureAccessor;
+import fuzs.bloomcraft.common.mixin.accessor.WeightedStateProviderAccessor;
 import net.minecraft.core.Holder;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.random.Weighted;
 import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.configurations.SimpleBlockConfiguration;
-import net.minecraft.world.level.levelgen.feature.stateproviders.NoiseProvider;
-import net.minecraft.world.level.levelgen.feature.stateproviders.NoiseThresholdProvider;
-import net.minecraft.world.level.levelgen.feature.stateproviders.SimpleStateProvider;
-import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
+import net.minecraft.world.level.levelgen.feature.SimpleBlockFeature;
+import net.minecraft.world.level.levelgen.feature.stateproviders.*;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 import java.util.Collections;
@@ -45,23 +41,22 @@ public final class FlowerPatchFeatureHelper {
 
     public static void registerFlowerFeatureModification(Iterable<Holder<PlacedFeature>> vegetalDecoration, List<BlockState> blockStates, Predicate<BlockState> blockFilter) {
         for (Holder<PlacedFeature> holder : vegetalDecoration) {
-            ConfiguredFeature<?, ?> flowerConfiguredFeature = holder.value().feature().value();
-            if (flowerConfiguredFeature.feature() == Feature.SIMPLE_BLOCK
-                    && flowerConfiguredFeature.config() instanceof SimpleBlockConfiguration simpleBlockConfiguration) {
-                if (simpleBlockConfiguration.toPlace() instanceof NoiseProvider noiseProvider) {
+            if (holder.value().feature().value() instanceof SimpleBlockFeature simpleBlockFeature
+                    && simpleBlockFeature.toPlace().value() instanceof BlockStateProvider blockStateProvider) {
+                if (blockStateProvider instanceof NoiseProvider noiseProvider) {
                     if (addNoiseProviderStates(noiseProvider, blockStates, blockFilter)) {
                         break;
                     }
-                } else if (simpleBlockConfiguration.toPlace() instanceof NoiseThresholdProvider noiseThresholdProvider) {
+                } else if (blockStateProvider instanceof NoiseThresholdProvider noiseThresholdProvider) {
                     if (addNoiseThresholdProviderStates(noiseThresholdProvider, blockStates, blockFilter)) {
                         break;
                     }
-                } else if (simpleBlockConfiguration.toPlace() instanceof WeightedStateProvider weightedStateProvider) {
+                } else if (blockStateProvider instanceof WeightedStateProvider weightedStateProvider) {
                     if (addWeightedStateProviderStates(weightedStateProvider, blockStates, blockFilter)) {
                         break;
                     }
-                } else if (simpleBlockConfiguration.toPlace() instanceof SimpleStateProvider simpleStateProvider) {
-                    if (addSimpleStateProviderStates(simpleBlockConfiguration,
+                } else if (blockStateProvider instanceof SimpleStateProvider simpleStateProvider) {
+                    if (addSimpleStateProviderStates(simpleBlockFeature,
                             simpleStateProvider,
                             blockStates,
                             blockFilter)) {
@@ -96,14 +91,17 @@ public final class FlowerPatchFeatureHelper {
         }
     }
 
-    private static boolean addWeightedStateProviderStates(WeightedStateProvider weightedStateProvider, List<BlockState> blockStates, Predicate<BlockState> blockFilter) {
-        List<Weighted<BlockState>> list = weightedStateProvider.weightedList.unwrap();
-        if (list.stream().map(Weighted::value).allMatch(blockFilter)) {
+    private static boolean addWeightedStateProviderStates(WeightedStateProvider provider, List<BlockState> blockStates, Predicate<BlockState> blockFilter) {
+        List<Weighted<BlockState>> providerStates = provider.weightedList().unwrap();
+        if (providerStates.stream().map(Weighted::value).allMatch(blockFilter)) {
             WeightedList.Builder<BlockState> builder = WeightedList.builder();
             int maxWeight = 1;
-            for (Weighted<BlockState> blockStateWrapper : list) {
+            for (Weighted<BlockState> blockStateWrapper : providerStates) {
                 int weight = blockStateWrapper.weight();
-                if (weight > maxWeight) maxWeight = weight;
+                if (weight > maxWeight) {
+                    maxWeight = weight;
+                }
+
                 builder.add(blockStateWrapper.value(), weight);
             }
 
@@ -111,20 +109,20 @@ public final class FlowerPatchFeatureHelper {
                 builder.add(blockState, maxWeight);
             }
 
-            weightedStateProvider.weightedList = builder.build();
+            WeightedStateProviderAccessor.class.cast(provider).bloomcraft$setWeightedList(builder.build());
             return true;
         } else {
             return false;
         }
     }
 
-    private static boolean addSimpleStateProviderStates(SimpleBlockConfiguration simpleBlockConfiguration, SimpleStateProvider simpleStateProvider, List<BlockState> blockStates, Predicate<BlockState> blockFilter) {
-        if (blockFilter.test(simpleStateProvider.state)) {
+    private static boolean addSimpleStateProviderStates(SimpleBlockFeature feature, SimpleStateProvider provider, List<BlockState> blockStates, Predicate<BlockState> blockFilter) {
+        if (blockFilter.test(provider.state())) {
             WeightedList.Builder<BlockState> builder = WeightedList.builder();
-            builder.add(simpleStateProvider.state);
+            builder.add(provider.state());
             blockStates.forEach(builder::add);
-            SimpleBlockConfigurationAccessor.class.cast(simpleBlockConfiguration)
-                    .bloomcraft$setToPlace(new WeightedStateProvider(builder.build()));
+            SimpleBlockFeatureAccessor.class.cast(feature)
+                    .bloomcraft$setToPlace(Holder.direct(new WeightedStateProvider(builder.build())));
             return true;
         } else {
             return false;

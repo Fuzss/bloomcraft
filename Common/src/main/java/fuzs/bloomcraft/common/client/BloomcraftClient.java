@@ -1,9 +1,9 @@
 package fuzs.bloomcraft.common.client;
 
-import fuzs.bloomcraft.common.client.init.ModModelLayers;
+import fuzs.bloomcraft.common.client.model.geom.ModModelLayers;
 import fuzs.bloomcraft.common.client.renderer.entity.CluckbloomRenderer;
 import fuzs.bloomcraft.common.client.renderer.entity.MoobloomRenderer;
-import fuzs.bloomcraft.common.init.ModRegistry;
+import fuzs.bloomcraft.common.init.ModEntityTypes;
 import fuzs.puzzleslib.common.api.client.core.v1.ClientModConstructor;
 import fuzs.puzzleslib.common.api.client.core.v1.context.EntityRenderersContext;
 import fuzs.puzzleslib.common.api.client.core.v1.context.LayerDefinitionsContext;
@@ -13,8 +13,8 @@ public class BloomcraftClient implements ClientModConstructor {
 
     @Override
     public void onRegisterEntityRenderers(EntityRenderersContext context) {
-        context.registerEntityRenderer(ModRegistry.MOOBLOOM_ENTITY_TYPE.value(), MoobloomRenderer::new);
-        context.registerEntityRenderer(ModRegistry.CLUCKBLOOM_ENTITY_TYPE.value(), CluckbloomRenderer::new);
+        context.registerEntityRenderer(ModEntityTypes.MOOBLOOM_ENTITY_TYPE.value(), MoobloomRenderer::new);
+        context.registerEntityRenderer(ModEntityTypes.CLUCKBLOOM_ENTITY_TYPE.value(), CluckbloomRenderer::new);
     }
 
     @Override

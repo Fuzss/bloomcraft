@@ -1,7 +1,9 @@
 package fuzs.bloomcraft.common.world.entity.animal;
 
 import fuzs.bloomcraft.common.Bloomcraft;
-import fuzs.bloomcraft.common.init.ModRegistry;
+import fuzs.bloomcraft.common.init.CluckbloomVariants;
+import fuzs.bloomcraft.common.init.ModDataComponentTypes;
+import fuzs.bloomcraft.common.init.ModEntityDataSerializers;
 import fuzs.bloomcraft.common.world.entity.ai.goal.BlockTrailRandomStrollGoal;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
@@ -44,7 +46,7 @@ import java.util.UUID;
 public class Cluckbloom extends Chicken implements Shearable {
     public static final EntityDataAccessor<Holder<FlowerMobVariant>> DATA_VARIANT_ID = SynchedEntityData.defineId(
             Cluckbloom.class,
-            ModRegistry.CLUCKBLOOM_VARIANT_ENTITY_DATA_SERIALIZER.value());
+            ModEntityDataSerializers.CLUCKBLOOM_VARIANT_ENTITY_DATA_SERIALIZER.value());
 
     @Nullable
     private UUID lastLightningBoltUUID;
@@ -69,7 +71,7 @@ public class Cluckbloom extends Chicken implements Shearable {
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         Registry<FlowerMobVariant> registry = this.registryAccess()
-                .lookupOrThrow(ModRegistry.CLUCKBLOOM_VARIANT_REGISTRY_KEY);
+                .lookupOrThrow(CluckbloomVariants.CLUCKBLOOM_VARIANT_KEY);
         builder.define(DATA_VARIANT_ID, registry.getAny().orElseThrow());
     }
 
@@ -140,7 +142,7 @@ public class Cluckbloom extends Chicken implements Shearable {
         } else {
             Holder<Biome> biome = level.getBiome(this.blockPosition());
             variant = FlowerMobVariantUtil.getSpawnVariant(this.registryAccess()
-                    .lookupOrThrow(ModRegistry.CLUCKBLOOM_VARIANT_REGISTRY_KEY), biome, level.getRandom());
+                    .lookupOrThrow(CluckbloomVariants.CLUCKBLOOM_VARIANT_KEY), biome, level.getRandom());
             spawnGroupData = new FlowerMobVariantUtil.VariantGroupData(variant);
         }
 
@@ -153,7 +155,7 @@ public class Cluckbloom extends Chicken implements Shearable {
         UUID uuid = lightningBolt.getUUID();
         if (!uuid.equals(this.lastLightningBoltUUID)) {
             Registry<FlowerMobVariant> registry = this.registryAccess()
-                    .lookupOrThrow(ModRegistry.CLUCKBLOOM_VARIANT_REGISTRY_KEY);
+                    .lookupOrThrow(CluckbloomVariants.CLUCKBLOOM_VARIANT_KEY);
             int newIndex = (registry.getIdOrThrow(this.getFlowerVariant().value()) + 1) % registry.size();
             this.setFlowerVariant(registry.get(newIndex).orElseThrow(NoSuchElementException::new));
             this.lastLightningBoltUUID = uuid;
@@ -206,7 +208,7 @@ public class Cluckbloom extends Chicken implements Shearable {
     protected void addAdditionalSaveData(ValueOutput valueOutput) {
         super.addAdditionalSaveData(valueOutput);
         valueOutput.store(Bloomcraft.id("variant").toString(),
-                FlowerMobVariant.codec(ModRegistry.CLUCKBLOOM_VARIANT_REGISTRY_KEY),
+                FlowerMobVariant.codec(CluckbloomVariants.CLUCKBLOOM_VARIANT_KEY),
                 this.getFlowerVariant());
     }
 
@@ -214,13 +216,13 @@ public class Cluckbloom extends Chicken implements Shearable {
     protected void readAdditionalSaveData(ValueInput valueInput) {
         super.readAdditionalSaveData(valueInput);
         valueInput.read(Bloomcraft.id("variant").toString(),
-                FlowerMobVariant.codec(ModRegistry.CLUCKBLOOM_VARIANT_REGISTRY_KEY)).ifPresent(this::setFlowerVariant);
+                FlowerMobVariant.codec(CluckbloomVariants.CLUCKBLOOM_VARIANT_KEY)).ifPresent(this::setFlowerVariant);
     }
 
     @Nullable
     @Override
     public <T> T get(DataComponentType<? extends T> dataComponentType) {
-        if (dataComponentType == ModRegistry.CLUCKBLOOM_VARIANT_DATA_COMPONENT_TYPE.value()) {
+        if (dataComponentType == ModDataComponentTypes.CLUCKBLOOM_VARIANT_DATA_COMPONENT_TYPE.value()) {
             return castComponentValue((DataComponentType<T>) dataComponentType, this.getFlowerVariant());
         } else {
             return super.get(dataComponentType);
@@ -230,14 +232,14 @@ public class Cluckbloom extends Chicken implements Shearable {
     @Override
     protected void applyImplicitComponents(DataComponentGetter dataComponentGetter) {
         this.applyImplicitComponentIfPresent(dataComponentGetter,
-                ModRegistry.CLUCKBLOOM_VARIANT_DATA_COMPONENT_TYPE.value());
+                ModDataComponentTypes.CLUCKBLOOM_VARIANT_DATA_COMPONENT_TYPE.value());
         super.applyImplicitComponents(dataComponentGetter);
     }
 
     @Override
     protected <T> boolean applyImplicitComponent(DataComponentType<T> dataComponentType, T object) {
-        if (dataComponentType == ModRegistry.CLUCKBLOOM_VARIANT_DATA_COMPONENT_TYPE.value()) {
-            this.setFlowerVariant(castComponentValue(ModRegistry.CLUCKBLOOM_VARIANT_DATA_COMPONENT_TYPE.value(),
+        if (dataComponentType == ModDataComponentTypes.CLUCKBLOOM_VARIANT_DATA_COMPONENT_TYPE.value()) {
+            this.setFlowerVariant(castComponentValue(ModDataComponentTypes.CLUCKBLOOM_VARIANT_DATA_COMPONENT_TYPE.value(),
                     object));
             return true;
         } else {

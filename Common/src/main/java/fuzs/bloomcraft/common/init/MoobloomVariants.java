@@ -1,12 +1,16 @@
 package fuzs.bloomcraft.common.init;
 
+import fuzs.bloomcraft.common.Bloomcraft;
 import fuzs.bloomcraft.common.world.entity.animal.FlowerMobVariant;
+import net.minecraft.core.Registry;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
-public class ModCluckbloomVariants {
+public class MoobloomVariants {
+    public static final ResourceKey<Registry<FlowerMobVariant>> MOOBLOOM_VARIANT_KEY = ResourceKey.createRegistryKey(
+            Bloomcraft.id("moobloom_variant"));
     public static final ResourceKey<FlowerMobVariant> DANDELION = register("dandelion");
     public static final ResourceKey<FlowerMobVariant> POPPY = register("poppy");
     public static final ResourceKey<FlowerMobVariant> BLUE_ORCHID = register("blue_orchid");
@@ -26,7 +30,7 @@ public class ModCluckbloomVariants {
     public static final ResourceKey<FlowerMobVariant> PINK_DAISY = register("pink_daisy");
 
     private static ResourceKey<FlowerMobVariant> register(String path) {
-        return ModRegistry.REGISTRIES.makeResourceKey(ModRegistry.CLUCKBLOOM_VARIANT_REGISTRY_KEY, path);
+        return ResourceKey.create(MOOBLOOM_VARIANT_KEY, Bloomcraft.id(path));
     }
 
     public static void bootstrap(BootstrapContext<FlowerMobVariant> context) {
@@ -50,6 +54,6 @@ public class ModCluckbloomVariants {
     }
 
     private static void register(BootstrapContext<FlowerMobVariant> context, ResourceKey<FlowerMobVariant> resourceKey, Block block) {
-        context.register(resourceKey, new FlowerMobVariant(ModRegistry.CLUCKBLOOM_ENTITY_TYPE, resourceKey, block));
+        context.register(resourceKey, new FlowerMobVariant(ModEntityTypes.MOOBLOOM_ENTITY_TYPE, resourceKey, block));
     }
 }

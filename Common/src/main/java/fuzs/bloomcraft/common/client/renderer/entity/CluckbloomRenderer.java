@@ -1,6 +1,6 @@
 package fuzs.bloomcraft.common.client.renderer.entity;
 
-import fuzs.bloomcraft.common.client.init.ModModelLayers;
+import fuzs.bloomcraft.common.client.model.geom.ModModelLayers;
 import fuzs.bloomcraft.common.client.renderer.entity.layer.CluckbloomBlockStateLayer;
 import fuzs.bloomcraft.common.client.renderer.entity.state.CluckbloomRenderState;
 import fuzs.bloomcraft.common.world.entity.animal.Cluckbloom;

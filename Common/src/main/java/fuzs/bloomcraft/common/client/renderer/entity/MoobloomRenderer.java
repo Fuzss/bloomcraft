@@ -1,6 +1,6 @@
 package fuzs.bloomcraft.common.client.renderer.entity;
 
-import fuzs.bloomcraft.common.client.init.ModModelLayers;
+import fuzs.bloomcraft.common.client.model.geom.ModModelLayers;
 import fuzs.bloomcraft.common.client.renderer.entity.layer.MoobloomBlockStateLayer;
 import fuzs.bloomcraft.common.client.renderer.entity.state.MoobloomRenderState;
 import fuzs.bloomcraft.common.world.entity.animal.FlowerMobVariant;

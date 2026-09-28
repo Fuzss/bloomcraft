@@ -8,6 +8,7 @@ dependencies {
 
 multiloader {
     mixins {
-        accessor("SimpleBlockConfigurationAccessor")
+        accessor("SimpleBlockFeatureAccessor")
+        accessor("WeightedStateProviderAccessor")
     }
 }

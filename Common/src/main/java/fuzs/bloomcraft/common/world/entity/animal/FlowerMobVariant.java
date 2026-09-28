@@ -5,13 +5,13 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
-import net.minecraft.core.RegistryCodecs;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.core.registries.codec.RegistryCodecs;
+import net.minecraft.core.registries.codec.RegistryFixedCodec;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.Identifier;
-import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.biome.Biome;
@@ -29,7 +29,7 @@ public record FlowerMobVariant(Identifier textureLocation,
             ResourceKey.codec(Registries.LOOT_TABLE)
                     .fieldOf("shearing_loot_table")
                     .forGetter(FlowerMobVariant::shearingLootTable),
-            RegistryCodecs.homogeneousList(Registries.BIOME)
+            RegistryCodecs.holderSet(Registries.BIOME)
                     .optionalFieldOf("biomes", HolderSet.empty())
                     .forGetter(FlowerMobVariant::biomes)).apply(instance, FlowerMobVariant::new));
     public static final StreamCodec<RegistryFriendlyByteBuf, FlowerMobVariant> DIRECT_STREAM_CODEC = StreamCodec.composite(
